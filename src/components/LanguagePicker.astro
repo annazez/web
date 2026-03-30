@@ -1,0 +1,28 @@
+---
+// src/components/LanguagePicker.astro
+import { getLangFromUrl } from '../i18n/utils';
+import { languages } from '../i18n/dictionary';
+
+const currentLang = getLangFromUrl(Astro.url);
+const langEntries = Object.entries(languages);
+---
+
+<nav class="absolute top-8 right-8 flex gap-4 font-mono text-xs tracking-widest uppercase">
+  {
+    langEntries.map(([code, label], index) => (
+      <>
+        <a
+          href={`/${code}/`}
+          class={
+            currentLang === code
+              ? 'font-medium text-zinc-900'
+              : 'text-zinc-400 transition-colors hover:text-zinc-900'
+          }
+        >
+          {label}
+        </a>
+        {index < langEntries.length - 1 && <span class="text-zinc-300">/</span>}
+      </>
+    ))
+  }
+</nav>

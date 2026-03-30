@@ -1,0 +1,10 @@
+---
+import Home from '../../templates/Home.astro';
+import { dictionary } from '../../i18n/dictionary';
+
+export function getStaticPaths() {
+  return Object.keys(dictionary).map(lang => ({ params: { lang } }));
+}
+---
+
+<Home />

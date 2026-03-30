@@ -1,0 +1,18 @@
+---
+// src/templates/Home.astro
+import Layout from '../layouts/Layout.astro';
+import LanguagePicker from '../components/LanguagePicker.astro';
+import Hero from '../components/Hero.astro';
+import Footer from '../components/Footer.astro';
+
+const seoTitle = 'Anna Zezulka';
+---
+
+<Layout title={seoTitle}>
+  <LanguagePicker />
+
+  <main class="mx-auto flex max-w-2xl flex-col gap-16 px-6 py-32">
+    <Hero />
+    <Footer />
+  </main>
+</Layout>
