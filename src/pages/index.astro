@@ -27,7 +27,7 @@ const langEntries = Object.entries(languages);
       ))
     }
 
-    <script define:vars={{ supportedLangs, defaultLang }}>
+    <script is:inline define:vars={{ supportedLangs, defaultLang }}>
       const preferred =
         Array.isArray(navigator.languages) && navigator.languages.length
           ? navigator.languages[0]
