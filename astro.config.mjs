@@ -9,11 +9,10 @@ import icon from 'astro-icon';
 
 // TODO: Add a repository README with setup, build, and deploy instructions.
 // TODO: Add CI workflow to run Astro checks and production build on push/PR.
-const site = process.env.SITE_URL ?? 'http://localhost:4321'; // TODO: Configure SITE_URL in production environment.
 
 // TODO: enhance with https://astro.build/config tags
 export default defineConfig({
-  site,
+  site: 'https://annazez.codeberg.page',
 
   vite: {
     plugins: [tailwindcss()],
