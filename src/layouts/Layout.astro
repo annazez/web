@@ -1,28 +1,27 @@
 ---
 import { SEO } from 'astro-seo';
 import '../styles/global.css';
+import { languages } from '../i18n/dictionary';
 
 interface Props {
   title: string;
   description?: string;
-  image?: string;
+  lang?: string;
 }
 
-const {
-  title,
-  description = 'Anna Zezulka | Software Architect',
-  image = '/og-image.jpg', // TODO: replace with actual image
-} = Astro.props;
+const { title, description = 'Anna Zezulka', lang = 'en' } = Astro.props;
 
-const currentLang = Astro.currentLocale || 'en';
+const langKeys = Object.keys(languages).join('|');
+const langRegex = new RegExp(`^/(${langKeys})`);
+const pathname = Astro.url.pathname;
+const pathWithoutLang = pathname.replace(langRegex, '');
 ---
 
 <!doctype html>
-<html lang={currentLang} class="antialiased selection:bg-zinc-300 selection:text-zinc-900">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <SEO
       title={title}
       description={description}
@@ -30,12 +29,24 @@ const currentLang = Astro.currentLocale || 'en';
         basic: {
           title: title,
           type: 'website',
-          image: new URL(image, Astro.site || Astro.url).toString(),
-        },
+          image: '/og-image.jpg',
+        }
       }}
     />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {
+      Object.keys(languages).map((l) => (
+        <link
+          rel="alternate"
+          hreflang={l}
+          href={new URL(`/${l}${pathWithoutLang}`, Astro.site)}
+        />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={Astro.site} />
   </head>
-  <body class="min-h-screen bg-zinc-50 text-zinc-900 transition-colors duration-1000">
+  <body>
     <slot />
   </body>
 </html>
