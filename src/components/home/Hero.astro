@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -17,4 +18,19 @@ const t = useTranslations(lang);
       {t('hero.layerSuffix')}
     </p>
   </section>
+
+  <ul class="flex gap-6 font-mono text-sm text-zinc-500">
+    <li>
+      <a href="https://github.com/annazez" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100">
+        <Icon name="lucide:github" class="size-5" />
+        <span>GitHub</span>
+      </a>
+    </li>
+    <li>
+      <a href="mailto:anna.zezulka@proton.me" class="flex items-center gap-2 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100">
+        <Icon name="lucide:mail" class="size-5" />
+        <span>Email</span>
+      </a>
+    </li>
+  </ul>
 </div>
