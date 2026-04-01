@@ -52,6 +52,7 @@ const t = useTranslations(lang);
       if (!valueElement) return;
 
       const loadingText = valueElement.getAttribute('data-loading') || '...';
+      valueElement.textContent = loadingText;
 
       const updateCarbonFootprint = () => {
         const navigationEntries = performance.getEntriesByType('navigation');
@@ -64,10 +65,11 @@ const t = useTranslations(lang);
         };
 
         const navigationSize = getSize(navigationEntry);
+        const bodySize = new TextEncoder().encode(document.body?.innerHTML || '').length;
 
         const totalSize = resources.reduce((sum, entry) => {
           return sum + getSize(entry);
-        }, navigationSize);
+        }, navigationSize + bodySize);
 
         if (!Number.isFinite(totalSize) || totalSize <= 0) {
           valueElement.textContent = 'N/A';
