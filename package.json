@@ -10,6 +10,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "preview:ci": "astro preview --host 127.0.0.1 --port 4322",
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -18,12 +19,19 @@
     "check": "npm run format:check && npm run lint",
     "check:fix": "npm run lint:fix && npm run format",
     "typecheck": "astro check",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:install": "playwright install chromium",
+    "size:check": "node ./scripts/check-bundle-size.mjs",
+    "lighthouse:ci": "CHROME_PATH=$(node ./scripts/chrome-path.mjs) lhci autorun --config=./lighthouserc.json",
     "clean": "rm -rf dist node_modules/.vite .astro",
-    "deploy": "npm run build && gh-pages -d dist -b pages"
+    "deploy": "npm run build && gh-pages -d dist -b pages",
+    "deploy:ci": "npm run build && gh-pages -d dist -b pages -r https://oauth2:${CODEBERG_TOKEN}@codeberg.org/annazez/pages.git"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/sitemap": "^3.7.2",
+    "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@iconify-json/lucide": "^1.2.100",
     "@tailwindcss/vite": "^4.2.2",
@@ -34,6 +42,8 @@
   },
   "devDependencies": {
     "@cspell/dict-cs-cz": "^3.0.8",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.55.1",
     "cspell": "^9.7.0",
     "eslint": "^10.1.0",
     "eslint-plugin-astro": "^1.6.0",

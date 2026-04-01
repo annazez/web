@@ -1,5 +1,4 @@
-// src/i18n/utils.ts
-import { dictionary, defaultLang } from './dictionary';
+import { dictionary, defaultLang, type LanguageCode, type TranslationKey } from './dictionary';
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split('/');
@@ -7,8 +6,8 @@ export function getLangFromUrl(url: URL) {
   return defaultLang;
 }
 
-export function useTranslations(lang: keyof typeof dictionary) {
-  return function t(key: keyof (typeof dictionary)[typeof defaultLang]) {
+export function useTranslations(lang: LanguageCode) {
+  return function t(key: TranslationKey) {
     return dictionary[lang][key] || dictionary[defaultLang][key];
   };
 }

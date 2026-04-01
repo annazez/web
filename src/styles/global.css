@@ -1,50 +1,66 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @layer base {
   :root {
-    /* U variable fontů je dobré specifikovat název s 'Variable' */
-    --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
-    --font-mono: "JetBrains Mono Variable", "JetBrains Mono", monospace;
-    
-    --color-brand: #18181b; 
+    /* Variable font names with fallback families. */
+    --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+
+    --color-brand: #18181b;
     --color-bg: #fafafa;
-    --color-dot: #e4e4e7; /* zinc-200 pro náš jemný grid */
+    --color-dot: #e4e4e7;
   }
 
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     background-color: var(--color-bg);
-    
-    /* Architektonický 'Dot Matrix' vzor pozadí */
+
+    /* Dot-grid background texture. */
     background-image: radial-gradient(var(--color-dot) 1px, transparent 1px);
     background-size: 24px 24px;
-    
+
     color: var(--color-brand);
     font-family: var(--font-sans);
-    
-    /* Maximální čitelnost a ostrost */
+
+    /* Improve text rendering consistency. */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
-  /* Inverzní a ostrá selekce textu */
   body::selection {
     background-color: var(--color-brand);
     color: var(--color-bg);
   }
 
-  /* Čistý focus ring s lehce větším odstupem pro vzdušnost */
+  .skip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    transform: translateY(-200%);
+    border: 1px solid var(--color-brand);
+    background: var(--color-bg);
+    color: var(--color-brand);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-brand);
     outline-offset: 4px;
     border-radius: 2px;
   }
 
-  /* Moderní, nenápadný posuvník */
   ::-webkit-scrollbar {
     width: 6px;
   }

@@ -26,6 +26,9 @@ pnpm-debug.log*
 # linters & formatters
 .eslintcache
 .prettierignore
+.lighthouseci/
+playwright-report/
+test-results/
 
 # editor
 .vscode/extensions.json

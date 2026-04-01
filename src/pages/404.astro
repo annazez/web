@@ -1,22 +1,39 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { dictionary } from '../i18n/dictionary';
+import { defaultLang, dictionary } from '../i18n/dictionary';
 
 const msg = dictionary.en['404.message'];
 const returnBtn = dictionary.en['404.return'];
 ---
 
-<Layout title="404 | Not Found">
-  <main class="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+<Layout title="404 | Not Found" description="The requested page was not found.">
+  <main
+    id="main-content"
+    class="flex min-h-screen flex-col items-center justify-center px-6 text-center"
+  >
     <h1 class="mb-4 text-7xl font-bold tracking-tighter text-zinc-900">404</h1>
     <p class="mb-8 font-mono text-sm tracking-wide text-zinc-500">
       {msg}
     </p>
-    <a
-      href="/"
-      class="border border-zinc-200 px-6 py-2 font-mono text-xs tracking-widest text-zinc-600 uppercase transition-colors hover:border-zinc-400 hover:text-zinc-900"
-    >
-      {returnBtn}
-    </a>
+    <div class="flex flex-col items-center gap-4 sm:flex-row">
+      <a
+        href={`/${defaultLang}/`}
+        class="border border-zinc-200 px-6 py-2 font-mono text-xs tracking-widest text-zinc-600 uppercase transition-colors hover:border-zinc-400 hover:text-zinc-900"
+      >
+        {returnBtn}
+      </a>
+      <a
+        href="/en/"
+        class="text-sm text-zinc-500 underline-offset-4 transition-colors hover:text-zinc-900 hover:underline"
+      >
+        English
+      </a>
+      <a
+        href="/cs/"
+        class="text-sm text-zinc-500 underline-offset-4 transition-colors hover:text-zinc-900 hover:underline"
+      >
+        Čeština
+      </a>
+    </div>
   </main>
 </Layout>

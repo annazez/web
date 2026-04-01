@@ -11,6 +11,7 @@ A fast, static personal website built with Astro and Tailwind CSS.
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 - **Routing:** Custom i18n static routing (`/cs/`, `/en/`)
 - **Deployment:** Codeberg Pages
+- **CI/CD:** Woodpecker pipelines (verify, e2e, performance, deploy)
 
 ## 📁 Project Structure
 
@@ -18,19 +19,43 @@ A fast, static personal website built with Astro and Tailwind CSS.
 - `src/pages/` - Static page templates and localized routes
 - `src/components/` - Reusable UI components
 - `src/styles/` - Global Tailwind CSS configuration
+- `tests/e2e/` - Playwright end-to-end and web-vitals tests
+- `docs/` - Manifesto, architecture, operations, and AI workflow docs
 
 ## 💻 Commands
 
 All commands are run from the root of the project, from a terminal:
 
-| Command          | Action                                               |
-| :--------------- | :--------------------------------------------------- |
-| `npm run dev`    | Starts local dev server at `localhost:4321`          |
-| `npm run build`  | Builds your production site to `./dist/`             |
-| `npm run deploy` | Builds the site and deploys it to the `pages` branch |
-| `npm run lint`   | Runs ESLint to check code quality                    |
-| `npm run format` | Runs Prettier to format the codebase                 |
-| `npm run clean`  | Removes cached files and build outputs               |
+| Command                 | Action                                               |
+| :---------------------- | :--------------------------------------------------- |
+| `npm run dev`           | Starts local dev server at `localhost:4321`          |
+| `npm run build`         | Builds your production site to `./dist/`             |
+| `npm run deploy`        | Builds the site and deploys it to the `pages` branch |
+| `npm run lint`          | Runs ESLint to check code quality                    |
+| `npm run format`        | Runs Prettier to format the codebase                 |
+| `npm run clean`         | Removes cached files and build outputs               |
+| `npm run test:e2e`      | Runs Playwright end-to-end tests                     |
+| `npm run size:check`    | Validates JS/CSS bundle budget                       |
+| `npm run lighthouse:ci` | Runs privacy-friendly Lighthouse assertions          |
+
+## CI/CD on Codeberg
+
+- CI is configured via `.woodpecker.yml`.
+- Deployment keeps your existing flow and runs an automated variant of `npm run deploy`.
+- Required secret in Woodpecker: `codeberg_token`.
+
+## PGP Key
+
+- Public key file path: `public/pgp/public-key.asc`
+- Public URL after deployment: `/pgp/public-key.asc`
+- `security.txt` references this URL via `Encryption:`.
+
+## AI-Optimized Docs
+
+- `docs/MANIFESTO.md`
+- `docs/AI_WORKFLOW.md`
+- `docs/ARCHITECTURE.md`
+- `docs/OPERATIONS.md`
 
 ## ⚖️ License
 

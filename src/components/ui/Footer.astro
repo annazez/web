@@ -1,6 +1,5 @@
 ---
 import { Icon } from 'astro-icon/components';
-// TODO: Add PGP key
 ---
 
 <footer class="flex items-center gap-6 border-t border-zinc-200 pt-8">
@@ -23,5 +22,11 @@ import { Icon } from 'astro-icon/components';
     aria-label="Humans.txt"
     class="text-zinc-400 transition-colors hover:text-zinc-900"
     ><Icon name="lucide:file-text" class="h-5 w-5" /></a
+  >
+  <a
+    href="/pgp/public-key.asc"
+    aria-label="PGP public key"
+    class="text-zinc-400 transition-colors hover:text-zinc-900"
+    ><Icon name="lucide:key-round" class="h-5 w-5" /></a
   >
 </footer>

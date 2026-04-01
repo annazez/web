@@ -1,29 +1,28 @@
+import en from './locales/en';
+import cs from './locales/cs';
+import type { TranslationDictionary, TranslationKey } from './locales/en';
+
 export const languages = {
   en: 'EN',
   cs: 'CS',
+} as const;
+
+export type LanguageCode = keyof typeof languages;
+
+export const defaultLang: LanguageCode = 'en';
+
+export const dictionary: Record<LanguageCode, TranslationDictionary> = {
+  en,
+  cs,
 };
 
-export const defaultLang = 'en';
+export type { TranslationKey };
 
-export const dictionary = {
-  en: {
-    'role.title': 'Software Architect',
-    'hero.manifesto':
-      'I create architecture that leaves no room for chaos. Systems must be uncompromisingly optimized, secure, and aligned with moral values for the greater good. Now in the era of AI, I am dedicated to building a web that is not only fast and secure but also ethical and sustainable.',
-    'hero.status': 'Currently running only the',
-    'hero.layer': 'core',
-    'hero.layerSuffix': 'layer.',
-    '404.message': 'Page not found',
-    '404.return': 'Home',
-  },
-  cs: {
-    'role.title': 'Softwarová architektka',
-    'hero.manifesto':
-      'Vytvářím architekturu, která nezanechává prostor pro chaos. Systémy musí být nekompromisně optimalizované, bezpečné a v souladu s morálními hodnotami pro vyšší společenské dobro. Nyní v éře AI se věnuji budování webu, který není jen rychlý a bezpečný, ale také etický a udržitelný.',
-    'hero.status': 'Zatím běží pouze',
-    'hero.layer': 'základní',
-    'hero.layerSuffix': 'vrstva webu.',
-    '404.message': 'Stránka nenalezena',
-    '404.return': 'Domů',
-  },
-} as const;
+export function isLanguageCode(value: string): value is LanguageCode {
+  return value in languages;
+}
+
+export function getValidLanguageCode(value: string | undefined): LanguageCode {
+  if (value && isLanguageCode(value)) return value;
+  return defaultLang;
+}

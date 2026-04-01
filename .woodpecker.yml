@@ -1,0 +1,39 @@
+when:
+  - event: [push, pull_request]
+
+steps:
+  verify:
+    image: node:22-alpine
+    commands:
+      - npm ci
+      - npm run check
+      - npm run typecheck
+      - npm run build
+
+  e2e:
+    image: mcr.microsoft.com/playwright:v1.55.0-noble
+    commands:
+      - npm ci
+      - npm run test:e2e:install
+      - npm run test:e2e
+
+  performance:
+    image: mcr.microsoft.com/playwright:v1.55.0-noble
+    commands:
+      - npm ci
+      - npm run test:e2e:install
+      - npm run build
+      - npm run size:check
+      - npm run lighthouse:ci
+
+  deploy:
+    image: node:22-alpine
+    environment:
+      CODEBERG_TOKEN:
+        from_secret: codeberg_token
+    commands:
+      - npm ci
+      - npm run deploy:ci
+    when:
+      - event: push
+        branch: main

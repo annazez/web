@@ -1,10 +1,23 @@
 ---
-import Home from '../../templates/Home.astro';
-import { dictionary } from '../../i18n/dictionary';
+import Layout from '../../layouts/Layout.astro';
+import LanguagePicker from '../../components/ui/LanguagePicker.astro';
+import Hero from '../../components/home/Hero.astro';
+import Footer from '../../components/ui/Footer.astro';
+import { dictionary, getValidLanguageCode } from '../../i18n/dictionary';
 
 export function getStaticPaths() {
   return Object.keys(dictionary).map(lang => ({ params: { lang } }));
 }
+
+const currentLang = getValidLanguageCode(Astro.params.lang);
+const seoTitle = 'Anna Zezulka';
 ---
 
-<Home />
+<Layout title={seoTitle} lang={currentLang}>
+  <LanguagePicker />
+
+  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-16 px-6 py-32">
+    <Hero />
+    <Footer />
+  </main>
+</Layout>

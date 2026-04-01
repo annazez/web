@@ -1,7 +1,8 @@
 ---
 import { SEO } from 'astro-seo';
-import '../styles/global.css';
+import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
 import { languages } from '../i18n/dictionary';
 
 interface Props {
@@ -16,7 +17,9 @@ const langKeys = Object.keys(languages).join('|');
 const langRegex = new RegExp(`^/(${langKeys})`);
 const pathname = Astro.url.pathname;
 const pathWithoutLang = pathname.replace(langRegex, '');
+const siteUrl = Astro.site ?? Astro.url;
 ---
+
 <!doctype html>
 <html lang={lang}>
   <head>
@@ -37,12 +40,13 @@ const pathWithoutLang = pathname.replace(langRegex, '');
     <link rel="sitemap" href="/sitemap-index.xml" />
     {
       Object.keys(languages).map(l => (
-        <link rel="alternate" hreflang={l} href={new URL(`/${l}${pathWithoutLang}`, Astro.site)} />
+        <link rel="alternate" hreflang={l} href={new URL(`/${l}${pathWithoutLang}`, siteUrl)} />
       ))
     }
-    <link rel="alternate" hreflang="x-default" href={Astro.site} />
+    <link rel="alternate" hreflang="x-default" href={siteUrl} />
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <slot />
   </body>
 </html>
