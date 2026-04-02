@@ -39,6 +39,8 @@ steps:
         from_secret: codeberg_token
     commands:
       - apk add --no-cache git
+      - git config --global user.name "Woodpecker CI"
+      - git config --global user.email "anna.zezulka@proton.me"
       - npm ci
       - npm run deploy:ci
     when:
