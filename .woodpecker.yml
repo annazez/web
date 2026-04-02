@@ -41,8 +41,18 @@ steps:
       - apk add --no-cache git
       - git config --global user.name "Woodpecker CI"
       - git config --global user.email "anna.zezulka@proton.me"
+      - |
+        git config --global credential.helper "store --file /tmp/.git-credentials"
+        git credential approve << EOF
+        protocol=https
+        host=codeberg.org
+        username=oauth2
+        password=${CODEBERG_TOKEN}
+        EOF
+        chmod 600 /tmp/.git-credentials
       - npm ci
-      - npm run deploy:ci
+      - npm run deploy
+      - rm -f /tmp/.git-credentials
     when:
       - event: push
         branch: main
