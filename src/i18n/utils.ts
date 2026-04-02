@@ -1,4 +1,4 @@
-import { dictionary, defaultLang, type LanguageCode, type TranslationKey } from './dictionary';
+import { dictionary, defaultLang, type LanguageCode, type TranslationKey } from './dictionary.ts';
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split('/');
