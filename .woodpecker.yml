@@ -41,8 +41,9 @@ steps:
       - apk add --no-cache git
       - git config --global user.name "Woodpecker CI"
       - git config --global user.email "anna.zezulka@proton.me"
+      - git config --global url."https://oauth2:${CODEBERG_TOKEN}@codeberg.org/".insteadOf "https://codeberg.org/"
       - npm ci
-      - npm run deploy:ci
+      - npm run deploy
     when:
       - event: push
         branch: main

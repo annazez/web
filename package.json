@@ -28,8 +28,7 @@
     "lighthouse:ci": "CHROME_PATH=$(node ./scripts/chrome-path.mjs) lhci autorun --config=./lighthouserc.json",
     "hooks:install": "git config core.hooksPath .githooks",
     "clean": "rm -rf dist node_modules/.vite .astro",
-    "deploy": "npm run build && gh-pages -d dist -b pages",
-    "deploy:ci": "npm run build && gh-pages -d dist -b pages -r https://oauth2:${CODEBERG_TOKEN}@codeberg.org/annazez/pages.git"
+    "deploy": "npm run build && gh-pages -d dist -b pages"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
