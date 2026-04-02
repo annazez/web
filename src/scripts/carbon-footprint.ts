@@ -14,14 +14,18 @@ const updateCarbonFootprint = () => {
   const getSize = (entry: PerformanceEntry | null) => {
     if (!entry) return 0;
 
-    if ('transferSize' in entry) {
-      return (entry as PerformanceResourceTiming).transferSize;
-    }
-    if ('encodedBodySize' in entry) {
-      return (entry as PerformanceResourceTiming).encodedBodySize;
-    }
-    if ('decodedBodySize' in entry) {
-      return (entry as PerformanceResourceTiming).decodedBodySize;
+    if (
+      'transferSize' in entry &&
+      'encodedBodySize' in entry &&
+      'decodedBodySize' in entry
+    ) {
+      const timingEntry = entry as PerformanceResourceTiming;
+      return (
+        timingEntry.transferSize ||
+        timingEntry.encodedBodySize ||
+        timingEntry.decodedBodySize ||
+        0
+      );
     }
     return 0;
   };
@@ -59,6 +63,8 @@ const updateCarbonFootprint = () => {
 };
 
 document.addEventListener('astro:page-load', () => {
+  performance.clearResourceTimings();
+
   const valueElement = document.getElementById('carbon-footprint-value');
   if (valueElement) {
     const loadingText = valueElement.getAttribute('data-loading') || '...';
