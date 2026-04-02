@@ -16,6 +16,13 @@ export const dictionary: Record<LanguageCode, TranslationDictionary> = {
   cs,
 };
 
+export const routes = {
+  workspace: {
+    en: 'inventory',
+    cs: 'inventar',
+  },
+} as const;
+
 export type { TranslationKey };
 
 export function isLanguageCode(value: string): value is LanguageCode {

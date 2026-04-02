@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { useTranslations } from '../../i18n/utils';
-import { defaultLang, type LanguageCode } from '../../i18n/dictionary';
+import { defaultLang, routes, type LanguageCode } from '../../i18n/dictionary';
 
 interface Props {
   lang?: LanguageCode;
@@ -9,12 +9,6 @@ interface Props {
 
 const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
-const workspacePathByLang: Record<LanguageCode, string> = {
-  en: '/en/inventory',
-  cs: '/cs/inventar',
-};
-const workspacePath = workspacePathByLang[lang];
-const workspaceAriaLabel = lang === 'cs' ? 'Inventar' : 'Inventory';
 ---
 
 <footer
@@ -22,9 +16,9 @@ const workspaceAriaLabel = lang === 'cs' ? 'Inventar' : 'Inventory';
 >
   <div class="flex items-center gap-6">
     <a
-      href={workspacePath}
-      aria-label={workspaceAriaLabel}
-      title={workspaceAriaLabel}
+      href={`/${lang}/${routes.workspace[lang]}`}
+      aria-label={t('hero.inventory')}
+      title={t('hero.inventory')}
       class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
       ><Icon name="lucide:laptop-minimal" class="h-5 w-5" /></a
     >
