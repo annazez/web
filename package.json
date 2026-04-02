@@ -1,7 +1,8 @@
 {
   "name": "personal-web",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
   "engines": {
     "node": ">=22.12.0"
   },
