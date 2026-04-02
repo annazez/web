@@ -1,0 +1,5 @@
+
+> personal-web@1.0.0 build
+> astro check && astro build
+
+sh: 1: astro: not found
