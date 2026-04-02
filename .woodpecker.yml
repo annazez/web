@@ -38,6 +38,7 @@ steps:
       CODEBERG_TOKEN:
         from_secret: codeberg_token
     commands:
+      - apk add --no-cache git
       - npm ci
       - npm run deploy:ci
     when:
