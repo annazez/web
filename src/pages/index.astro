@@ -1,12 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { defaultLang, languages } from '../i18n/dictionary';
+import { defaultLang, supportedLangs, languageEntries } from '../i18n/dictionary';
 import { useTranslations } from '../i18n/utils';
 
 const t = useTranslations(defaultLang);
 const canonicalEn = new URL(`/${defaultLang}/`, Astro.site ?? Astro.url).toString();
-const supportedLangs = Object.keys(languages); // ['en', 'cs']
-const langEntries = Object.entries(languages);
 ---
 
 <Layout title={t('seo.home')} lang={defaultLang} noIndex={true}>
@@ -32,10 +30,10 @@ const langEntries = Object.entries(languages);
       <p class="home-body-text">Choose language:</p>
       <p class="home-body-text">
         {
-          langEntries.map(([code, label], index) => (
+          languageEntries.map(([code, label], index) => (
             <>
               <a href={`/${code}/`}>{label}</a>
-              {index < langEntries.length - 1 && ' | '}
+              {index < languageEntries.length - 1 && ' | '}
             </>
           ))
         }

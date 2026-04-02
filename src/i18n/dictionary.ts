@@ -9,6 +9,9 @@ export const languages = {
 
 export type LanguageCode = keyof typeof languages;
 
+export const supportedLangs = Object.keys(languages) as readonly LanguageCode[];
+export const languageEntries = Object.entries(languages) as readonly [LanguageCode, string][];
+
 export const defaultLang: LanguageCode = 'en';
 
 export const dictionary: Record<LanguageCode, TranslationDictionary> = {

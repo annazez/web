@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import { languages } from '../i18n/dictionary';
+import { supportedLangs } from '../i18n/dictionary';
 
 interface Props {
   title?: string;
@@ -23,7 +23,7 @@ const pageTitle = normalizedTitle
     ? siteName
     : siteName;
 
-const langKeys = Object.keys(languages).join('|');
+const langKeys = supportedLangs.join('|');
 const langRegex = new RegExp(`^/(${langKeys})`);
 const pathname = Astro.url.pathname;
 const pathWithoutLang = pathname.replace(langRegex, '');
@@ -92,7 +92,7 @@ const siteUrl = Astro.site ?? Astro.url;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     {
-      Object.keys(languages).map(l => (
+      supportedLangs.map(l => (
         <link rel="alternate" hreflang={l} href={new URL(`/${l}${pathWithoutLang}`, siteUrl)} />
       ))
     }
