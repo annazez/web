@@ -36,3 +36,6 @@ test-results/
 # OS
 .DS_Store
 Thumbs.db
+
+# dev logs
+*.log
