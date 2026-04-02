@@ -30,5 +30,7 @@ test('getLangFromUrl', async t => {
     assert.strictEqual(getLangFromUrl(new URL('https://example.com/english/about')), defaultLang);
     assert.strictEqual(getLangFromUrl(new URL('https://example.com/c/about')), defaultLang);
     assert.strictEqual(getLangFromUrl(new URL('https://example.com/invalid/')), defaultLang);
+    assert.strictEqual(getLangFromUrl(new URL('https://example.com/toString/about')), defaultLang);
+    assert.strictEqual(getLangFromUrl(new URL('https://example.com/__proto__/about')), defaultLang);
   });
 });
