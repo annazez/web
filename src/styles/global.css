@@ -154,9 +154,7 @@
     nav,
     #theme-toggle,
     .skip-link,
-    svg,
-    #carbon-footprint-value,
-    .language-picker {
+    :has(> #carbon-footprint-value) {
       display: none !important;
     }
 
