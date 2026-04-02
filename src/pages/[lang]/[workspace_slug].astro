@@ -3,14 +3,14 @@ import { getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Footer from '../../components/ui/Footer.astro';
 import LanguagePicker from '../../components/ui/LanguagePicker.astro';
-import { defaultLang, getValidLanguageCode } from '../../i18n/dictionary';
+import { defaultLang, getValidLanguageCode, routes } from '../../i18n/dictionary';
 import { useTranslations } from '../../i18n/utils';
 import Layout from '../../layouts/Layout.astro';
 
 export function getStaticPaths() {
   return [
-    { params: { lang: 'en', workspace_slug: 'inventory' } },
-    { params: { lang: 'cs', workspace_slug: 'inventar' } },
+    { params: { lang: 'en', workspace_slug: routes.workspace.en } },
+    { params: { lang: 'cs', workspace_slug: routes.workspace.cs } },
   ];
 }
 
