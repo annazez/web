@@ -24,6 +24,7 @@ const workspaceAriaLabel = lang === 'cs' ? 'Inventar' : 'Inventory';
     <a
       href={workspacePath}
       aria-label={workspaceAriaLabel}
+      title={workspaceAriaLabel}
       class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
       ><Icon name="lucide:laptop-minimal" class="h-5 w-5" /></a
     >
@@ -32,18 +33,21 @@ const workspaceAriaLabel = lang === 'cs' ? 'Inventar' : 'Inventory';
       target="_blank"
       rel="me noopener noreferrer"
       aria-label="Source code on Codeberg"
+      title="Source code on Codeberg"
       class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
       ><Icon name="lucide:code-2" class="h-5 w-5" /></a
     >
     <a
       href="/humans.txt"
       aria-label="Humans.txt"
+      title="Humans.txt"
       class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
       ><Icon name="lucide:file-text" class="h-5 w-5" /></a
     >
     <a
       href="/pgp/public-key.asc"
       aria-label="PGP public key"
+      title="PGP public key"
       class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
       ><Icon name="lucide:key-round" class="h-5 w-5" /></a
     >

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import { languages } from '../i18n/dictionary';
 
 interface Props {
@@ -38,6 +39,7 @@ const siteUrl = Astro.site ?? Astro.url;
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
     />
+    <ClientRouter />
     <script is:inline>
       const root = document.documentElement;
 
