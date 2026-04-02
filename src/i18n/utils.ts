@@ -1,8 +1,14 @@
-import { dictionary, defaultLang, type LanguageCode, type TranslationKey } from './dictionary';
+import {
+  dictionary,
+  defaultLang,
+  langPrefixRegex,
+  type LanguageCode,
+  type TranslationKey,
+} from './dictionary';
 
 export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split('/');
-  if (isLanguageCode(lang)) return lang;
+  const match = langPrefixRegex.exec(url.pathname);
+  if (match) return match[1] as LanguageCode;
   return defaultLang;
 }
 
