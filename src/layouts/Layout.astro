@@ -39,50 +39,11 @@ const siteUrl = Astro.site ?? Astro.url;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
+      content="default-src 'self'; script-src 'self' 'sha256-OVhk/f/mfTM1dgnPcPK/gEx3VS+RFXqpWHAfIHZScXA=' 'sha256-In0vSEX5Tvt/QxQDMj4fkAfnRyo7fTjYLgA1CZKCz3Q='; style-src 'self'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
     />
+    <link rel="preload" href="/theme-init.js" as="script" />
     <ClientRouter />
-    <script is:inline>
-      const root = document.documentElement;
-
-      const platform = (() => {
-        const ua = navigator.userAgent.toLowerCase();
-        const platformName = (navigator.userAgentData?.platform ?? '').toLowerCase();
-        const fingerprint = `${platformName} ${ua}`;
-
-        if (fingerprint.includes('android')) return 'android';
-        if (
-          fingerprint.includes('iphone') ||
-          fingerprint.includes('ipad') ||
-          fingerprint.includes('ipod')
-        ) {
-          return 'apple';
-        }
-        if (fingerprint.includes('mac')) return 'apple';
-        if (fingerprint.includes('win')) return 'windows';
-        if (fingerprint.includes('linux')) return 'linux';
-        return 'other';
-      })();
-
-      root.classList.add(`platform-${platform}`);
-
-      const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
-        }
-        return 'light';
-      })();
-      if (theme === 'dark') {
-        root.classList.add('dark');
-        root.style.colorScheme = 'dark';
-      } else {
-        root.classList.remove('dark');
-        root.style.colorScheme = 'light';
-      }
-    </script>
+    <script is:inline src="/theme-init.js"></script>
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta property="og:title" content={pageTitle} />
@@ -101,9 +62,9 @@ const siteUrl = Astro.site ?? Astro.url;
     <link rel="alternate" hreflang="x-default" href={siteUrl} />
   </head>
   <body>
-    <div id="arch" style="display: none;" aria-hidden="true"></div>
-    <div id="audit" style="display: none;" aria-hidden="true"></div>
-    <div id="layers" style="display: none;" aria-hidden="true"></div>
+    <div id="arch" class="hidden" aria-hidden="true"></div>
+    <div id="audit" class="hidden" aria-hidden="true"></div>
+    <div id="layers" class="hidden" aria-hidden="true"></div>
     <div id="page-shell">
       <a href="#main-content" class="skip-link">Skip to main content</a>
       <slot />
