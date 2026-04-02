@@ -1,9 +1,7 @@
-const normalizeLangCode = (value) =>
-  typeof value === 'string' && value.trim()
-    ? value.trim().split('-')[0].toLowerCase()
-    : '';
+const normalizeLangCode = value =>
+  typeof value === 'string' && value.trim() ? value.trim().split('-')[0].toLowerCase() : '';
 
-const parseSupportedLangs = (value) => {
+const parseSupportedLangs = value => {
   if (!value) return [];
 
   try {
@@ -17,7 +15,7 @@ const parseSupportedLangs = (value) => {
 
   return value
     .split(',')
-    .map((lang) => normalizeLangCode(lang))
+    .map(lang => normalizeLangCode(lang))
     .filter(Boolean);
 };
 
@@ -59,10 +57,7 @@ const preferred =
 
 const prefLangCode = normalizeLangCode(preferred);
 
-const targetLang =
-  supportedLangs.includes(prefLangCode)
-    ? prefLangCode
-    : defaultLang;
+const targetLang = supportedLangs.includes(prefLangCode) ? prefLangCode : defaultLang;
 
 if (targetLang) {
   window.location.replace(`/${targetLang}/`);
