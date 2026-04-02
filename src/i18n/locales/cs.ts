@@ -1,4 +1,4 @@
-import type { TranslationDictionary } from './en.ts';
+import type { TranslationDictionary } from './en';
 
 const cs: TranslationDictionary = {
   'role.title': 'Softwarová architektka',
