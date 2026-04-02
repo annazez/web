@@ -20,7 +20,9 @@ const entry =
   (await getEntry('workspace', currentLang)) ?? (await getEntry('workspace', defaultLang));
 
 if (!entry) {
-  return Astro.redirect('/404');
+  throw new Error(
+    `Missing required "workspace" content for both "${currentLang}" and fallback "${defaultLang}".`,
+  );
 }
 
 const { title, intro, categories } = entry.data;
