@@ -100,7 +100,6 @@ export function initLayersMode() {
   state.rotateZ = defaults.rotateZ;
   state.scale = defaults.scale;
   applyLayersTransform();
-  pageShell.classList.add('layers-mode-active');
 
   // Expose a way to cleanup or reset if hash changes
   return function cleanup() {
@@ -114,7 +113,7 @@ export function initLayersMode() {
 
     state.isDragging = false;
     state.suppressClick = false;
-    pageShell.classList.remove('layers-mode-active', 'layers-dragging');
+    pageShell.classList.remove('layers-dragging');
     resetLayersTransform();
   };
 }

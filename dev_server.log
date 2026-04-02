@@ -3,17 +3,13 @@
 > astro dev
 
 [vite] connected.
-21:03:31 [types] Generated 1ms
+21:21:31 [types] Generated 1ms
 [vite] connected.
-21:03:32 [content] Syncing content
-21:03:32 [content] Astro config changed
-21:03:32 [content] Clearing content store
-21:03:32 [content] Synced content
-21:03:32 [vite] Re-optimizing dependencies because vite config has changed
- astro  v6.1.1 ready in 2957 ms
-┃ Local    http://localhost:4321/
+21:21:31 [content] Syncing content
+21:21:32 [content] Synced content
+21:21:32 [vite] Re-optimizing dependencies because vite config has changed
+21:21:32 [vite] Port 4321 is in use, trying another one...
+ astro  v6.1.1 ready in 3669 ms
+┃ Local    http://localhost:4322/
 ┃ Network  use --host to expose
-21:03:32 watching for file changes...
-21:04:00 [200] /en/ 52ms
-21:04:01 [vite] ✨ new dependencies optimized: astro/virtual-modules/transitions-router.js, astro/virtual-modules/transitions-types.js, astro/virtual-modules/transitions-events.js, astro/virtual-modules/transitions-swap-functions.js, astro/runtime/client/dev-toolbar/entrypoint.js
-21:04:01 [vite] ✨ optimized dependencies changed. reloading
+21:21:32 watching for file changes...

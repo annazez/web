@@ -425,9 +425,11 @@ html:has(#layers:target) {
 /* Tilt the entire body into an isometric perspective */
 html:has(#layers:target) body {
   background: #09090b !important;
-  overflow: hidden !important;
-  height: 100vh;
-  width: 100vw;
+  overflow-x: hidden !important;
+  overflow-y: auto !important; /* Keep long pages scrollable while avoiding horizontal overflow from 3D scaling */
+  min-height: 100vh;
+  width: 100%;
+  scrollbar-gutter: stable;
 }
 
 html:has(#layers:target) #page-shell {

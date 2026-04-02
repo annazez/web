@@ -109,23 +109,36 @@ const siteUrl = Astro.site ?? Astro.url;
     <script>
       let cleanupLayers: (() => void) | null = null;
 
-      document.addEventListener('astro:page-load', () => {
-        const checkLayers = async () => {
-          if (window.location.hash === '#layers') {
-            if (!cleanupLayers) {
-              const { initLayersMode } = await import('../scripts/layers');
-              cleanupLayers = initLayersMode() || null;
+      const checkLayers = async () => {
+        if (window.location.hash === '#layers') {
+          if (!cleanupLayers) {
+            const { initLayersMode } = await import('../scripts/layers');
+            // Re-check hash after dynamic import to prevent race conditions
+            if (window.location.hash !== '#layers' || cleanupLayers) {
+              return;
             }
-          } else {
-            if (cleanupLayers) {
-              cleanupLayers();
-              cleanupLayers = null;
-            }
+            cleanupLayers = initLayersMode() || null;
           }
-        };
+        } else {
+          if (cleanupLayers) {
+            cleanupLayers();
+            cleanupLayers = null;
+          }
+        }
+      };
 
+      // Ensure the listener is only attached once
+      window.addEventListener('hashchange', checkLayers);
+
+      document.addEventListener('astro:page-load', () => {
+        // Track the current #page-shell instance. If it changes due to
+        // Astro View Transitions while layers are active, force a reset
+        // and re-initialization so listeners bind to the new DOM.
+        if (cleanupLayers && window.location.hash === '#layers') {
+          cleanupLayers();
+          cleanupLayers = null;
+        }
         checkLayers();
-        window.addEventListener('hashchange', checkLayers);
       });
     </script>
   </body>
