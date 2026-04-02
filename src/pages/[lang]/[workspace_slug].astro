@@ -20,7 +20,9 @@ const entry =
   (await getEntry('workspace', currentLang)) ?? (await getEntry('workspace', defaultLang));
 
 if (!entry) {
-  throw new Error('Missing workspace collection entries in src/content/workspace.');
+  throw new Error(
+    `Missing required "workspace" content for both "${currentLang}" and fallback "${defaultLang}".`,
+  );
 }
 
 const { title, intro, categories } = entry.data;
