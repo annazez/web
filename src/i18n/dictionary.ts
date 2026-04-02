@@ -16,10 +16,17 @@ export const dictionary: Record<LanguageCode, TranslationDictionary> = {
   cs,
 };
 
+export const routes = {
+  workspace: {
+    en: 'inventory',
+    cs: 'inventar',
+  } satisfies Record<LanguageCode, string>,
+} as const;
+
 export type { TranslationKey };
 
 export function isLanguageCode(value: string): value is LanguageCode {
-  return value in languages;
+  return Object.prototype.hasOwnProperty.call(languages, value);
 }
 
 export function getValidLanguageCode(value: string | undefined): LanguageCode {

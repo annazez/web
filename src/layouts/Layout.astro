@@ -106,126 +106,40 @@ const siteUrl = Astro.site ?? Astro.url;
       <a href="#main-content" class="skip-link">Skip to main content</a>
       <slot />
     </div>
-    <script is:inline>
-      (() => {
-        const pageShell = document.getElementById('page-shell');
-        if (!pageShell) return;
+    <script>
+      let cleanupLayers: (() => void) | null = null;
 
-        const defaults = {
-          rotateX: 60,
-          rotateZ: -30,
-          scale: 0.8,
-        };
-
-        const state = {
-          ...defaults,
-          isDragging: false,
-          dragStartX: 0,
-          dragStartY: 0,
-          dragStartRotateX: defaults.rotateX,
-          dragStartRotateZ: defaults.rotateZ,
-          suppressClick: false,
-        };
-
-        const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
-        const isLayersActive = () => window.location.hash === '#layers';
-
-        const applyLayersTransform = () => {
-          pageShell.style.setProperty('--layers-rotate-x', `${state.rotateX}deg`);
-          pageShell.style.setProperty('--layers-rotate-z', `${state.rotateZ}deg`);
-          pageShell.style.setProperty('--layers-scale', String(state.scale));
-        };
-
-        const resetLayersTransform = () => {
-          pageShell.style.removeProperty('--layers-rotate-x');
-          pageShell.style.removeProperty('--layers-rotate-z');
-          pageShell.style.removeProperty('--layers-scale');
-        };
-
-        const syncLayersMode = () => {
-          if (isLayersActive()) {
-            state.rotateX = defaults.rotateX;
-            state.rotateZ = defaults.rotateZ;
-            state.scale = defaults.scale;
-            applyLayersTransform();
-            pageShell.classList.add('layers-mode-active');
-            return;
+      const checkLayers = async () => {
+        if (window.location.hash === '#layers') {
+          if (!cleanupLayers) {
+            const { initLayersMode } = await import('../scripts/layers');
+            // Re-check hash after dynamic import to prevent race conditions
+            if (window.location.hash !== '#layers' || cleanupLayers) {
+              return;
+            }
+            cleanupLayers = initLayersMode() || null;
           }
-
-          state.isDragging = false;
-          state.suppressClick = false;
-          pageShell.classList.remove('layers-mode-active', 'layers-dragging');
-          resetLayersTransform();
-        };
-
-        const finishDrag = () => {
-          if (!state.isDragging) return;
-          state.isDragging = false;
-          pageShell.classList.remove('layers-dragging');
-          state.suppressClick = true;
-          window.setTimeout(() => {
-            state.suppressClick = false;
-          }, 0);
-        };
-
-        pageShell.addEventListener('pointerdown', event => {
-          if (!isLayersActive() || event.button !== 0) return;
-
-          state.isDragging = true;
-          state.dragStartX = event.clientX;
-          state.dragStartY = event.clientY;
-          state.dragStartRotateX = state.rotateX;
-          state.dragStartRotateZ = state.rotateZ;
-          pageShell.classList.add('layers-dragging');
-
-          if (pageShell.setPointerCapture) {
-            pageShell.setPointerCapture(event.pointerId);
+        } else {
+          if (cleanupLayers) {
+            cleanupLayers();
+            cleanupLayers = null;
           }
-        });
+        }
+      };
 
-        pageShell.addEventListener('pointermove', event => {
-          if (!state.isDragging || !isLayersActive()) return;
+      // Ensure the listener is only attached once
+      window.addEventListener('hashchange', checkLayers);
 
-          const deltaX = event.clientX - state.dragStartX;
-          const deltaY = event.clientY - state.dragStartY;
-
-          state.rotateZ = state.dragStartRotateZ + deltaX * 0.2;
-          state.rotateX = clamp(state.dragStartRotateX + deltaY * 0.2, 20, 80);
-          applyLayersTransform();
-        });
-
-        pageShell.addEventListener('pointerup', finishDrag);
-        pageShell.addEventListener('pointercancel', finishDrag);
-        pageShell.addEventListener('lostpointercapture', finishDrag);
-
-        pageShell.addEventListener(
-          'wheel',
-          event => {
-            if (!isLayersActive()) return;
-
-            event.preventDefault();
-            const zoomFactor = Math.exp(-event.deltaY * 0.001);
-            state.scale = clamp(state.scale * zoomFactor, 0.45, 1.4);
-            applyLayersTransform();
-          },
-          { passive: false }
-        );
-
-        pageShell.addEventListener(
-          'click',
-          event => {
-            if (!state.suppressClick) return;
-
-            event.preventDefault();
-            event.stopImmediatePropagation();
-          },
-          true
-        );
-
-        window.addEventListener('hashchange', syncLayersMode);
-        syncLayersMode();
-      })();
+      document.addEventListener('astro:page-load', () => {
+        // Track the current #page-shell instance. If it changes due to
+        // Astro View Transitions while layers are active, force a reset
+        // and re-initialization so listeners bind to the new DOM.
+        if (cleanupLayers && window.location.hash === '#layers') {
+          cleanupLayers();
+          cleanupLayers = null;
+        }
+        checkLayers();
+      });
     </script>
   </body>
 </html>

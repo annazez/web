@@ -130,8 +130,12 @@
   }
 
   @media print {
+    @page {
+      margin: 2cm;
+    }
+
     body {
-      font-family: var(--font-sans) !important;
+      font-family: var(--font-mono) !important;
       background: white !important;
       color: black !important;
     }
@@ -149,8 +153,16 @@
 
     nav,
     #theme-toggle,
-    .skip-link {
+    .skip-link,
+    :has(> #carbon-footprint-value) {
       display: none !important;
+    }
+
+    section,
+    article,
+    li {
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     article {
@@ -161,9 +173,9 @@
     }
 
     a::after {
-      content: ' (' attr(href) ')';
+      content: ' [REF: ' attr(href) ']';
       font-size: 0.8em;
-      color: #52525b;
+      color: black;
       margin-left: 0.25rem;
     }
 
@@ -417,28 +429,42 @@ html:has(#audit:target) a:not([href]) {
 /* Exploded Layers 3D Mode (Zero-JS via URL hash) */
 html:has(#layers:target) {
   background: #09090b !important;
-  overflow-x: hidden;
-  overflow-y: auto !important; /* Force scrollbar visibility */
+  overflow: hidden !important; /* Prevent scrollbars from popping in/out due to 3D scaling */
+  height: 100vh;
+  width: 100vw;
 }
 
 /* Tilt the entire body into an isometric perspective */
 html:has(#layers:target) body {
   background: #09090b !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important; /* Keep long pages scrollable while avoiding horizontal overflow from 3D scaling */
+  min-height: 100vh;
+  width: 100%;
+  scrollbar-gutter: stable;
 }
 
 html:has(#layers:target) #page-shell {
   transform: perspective(2500px) rotateX(var(--layers-rotate-x, 60deg))
     rotateZ(var(--layers-rotate-z, -30deg)) scale(var(--layers-scale, 0.8));
   transform-style: preserve-3d;
-  transform-origin: center top;
+  transform-origin: center center;
   transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
   cursor: grab;
   touch-action: none;
   user-select: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   /* Compensate for the height lost to 60deg rotation and 0.8 scale */
-  padding-bottom: 150vh !important;
-  min-height: 200vh !important;
+  padding-bottom: 50vh !important;
+  min-height: 150vh !important;
 }
 
 html:has(#layers:target) #page-shell.layers-dragging {

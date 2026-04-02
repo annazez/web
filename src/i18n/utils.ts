@@ -2,7 +2,7 @@ import { dictionary, defaultLang, type LanguageCode, type TranslationKey } from 
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split('/');
-  if (lang in dictionary) return lang as keyof typeof dictionary;
+  if (isLanguageCode(lang)) return lang;
   return defaultLang;
 }
 
