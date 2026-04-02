@@ -1,6 +1,6 @@
-import en from './locales/en';
-import cs from './locales/cs';
-import type { TranslationDictionary, TranslationKey } from './locales/en';
+import en from './locales/en.ts';
+import cs from './locales/cs.ts';
+import type { TranslationDictionary, TranslationKey } from './locales/en.ts';
 
 export const languages = {
   en: 'EN',
