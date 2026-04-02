@@ -59,12 +59,11 @@ const updateCarbonFootprint = () => {
   setTimeout(() => {
     valueElement.textContent = formatCarbonFootprint(gramsCo2);
     valueElement.style.opacity = '1';
+    performance.clearResourceTimings();
   }, 150);
 };
 
 document.addEventListener('astro:page-load', () => {
-  performance.clearResourceTimings();
-
   const valueElement = document.getElementById('carbon-footprint-value');
   if (valueElement) {
     const loadingText = valueElement.getAttribute('data-loading') || '...';
