@@ -19,6 +19,8 @@ export const dictionary: Record<LanguageCode, TranslationDictionary> = {
   cs,
 };
 
+export const langPrefixRegex = new RegExp(`^/(${Object.keys(languages).join('|')})(?:/|$)`);
+
 export const routes = {
   workspace: {
     en: 'inventory',

@@ -1,0 +1,21 @@
+<<<<<<< SEARCH
+export const languages = {
+  en: 'EN',
+  cs: 'CS',
+} as const;
+
+export type LanguageCode = keyof typeof languages;
+
+export const defaultLang: LanguageCode = 'en';
+=======
+export const languages = {
+  en: 'EN',
+  cs: 'CS',
+} as const;
+
+export type LanguageCode = keyof typeof languages;
+
+export const languageEntries = Object.entries(languages) as [LanguageCode, string][];
+
+export const defaultLang: LanguageCode = 'en';
+>>>>>>> REPLACE
