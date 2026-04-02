@@ -18,6 +18,11 @@ describe('src/i18n/dictionary.ts', () => {
     test('returns false for empty string', () => {
       assert.strictEqual(isLanguageCode(''), false);
     });
+
+    test('returns false for prototype-chain property names', () => {
+      assert.strictEqual(isLanguageCode('__proto__'), false);
+      assert.strictEqual(isLanguageCode('toString'), false);
+    });
   });
 
   describe('getValidLanguageCode', () => {
