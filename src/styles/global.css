@@ -108,7 +108,7 @@
     }
 
     body::before {
-      content: "[ ARCHITECTURAL SPECIFICATION // SYSTEM: ANNA ZEZULKA // RENDER: PRINT ]";
+      content: '[ ARCHITECTURAL SPECIFICATION // SYSTEM: ANNA ZEZULKA // RENDER: PRINT ]';
       display: block;
       margin-bottom: 3rem;
       padding-bottom: 1rem;
@@ -132,14 +132,14 @@
     }
 
     a::after {
-      content: " (" attr(href) ")";
+      content: ' (' attr(href) ')';
       font-size: 0.8em;
       color: #52525b;
       margin-left: 0.25rem;
     }
 
-    a[href^="#"]::after {
-      content: "";
+    a[href^='#']::after {
+      content: '';
     }
   }
 }
@@ -265,7 +265,7 @@ html:has(#audit:target) {
 
 /* Expose hidden screen-reader labels visually */
 html:has(#audit:target) [aria-label]::after {
-  content: "[aria: " attr(aria-label) "]";
+  content: '[aria: ' attr(aria-label) ']';
   position: absolute;
   background: #f43f5e; /* Tailwind rose-500 */
   color: white !important;
@@ -305,10 +305,8 @@ html:has(#layers:target) body {
 }
 
 html:has(#layers:target) #page-shell {
-  transform: perspective(2500px)
-    rotateX(var(--layers-rotate-x, 60deg))
-    rotateZ(var(--layers-rotate-z, -30deg))
-    scale(var(--layers-scale, 0.8));
+  transform: perspective(2500px) rotateX(var(--layers-rotate-x, 60deg))
+    rotateZ(var(--layers-rotate-z, -30deg)) scale(var(--layers-scale, 0.8));
   transform-style: preserve-3d;
   transform-origin: center top;
   transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -327,7 +325,10 @@ html:has(#layers:target) #page-shell.layers-dragging {
 
 html:has(#layers:target) #page-shell * {
   transform-style: preserve-3d;
-  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.5s, outline 0.5s;
+  transition:
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.5s,
+    outline 0.5s;
 }
 
 /* Elevate main semantic blocks */
@@ -350,11 +351,10 @@ html:has(#layers:target) #page-shell p,
 html:has(#layers:target) #page-shell a,
 html:has(#layers:target) #page-shell button {
   transform: translateZ(30px);
-  text-shadow: 0 15px 20px rgba(0,0,0,0.8);
+  text-shadow: 0 15px 20px rgba(0, 0, 0, 0.8);
 }
 
 /* Keep the hidden anchor flat */
 html:has(#layers:target) #layers {
   transform: none;
 }
-

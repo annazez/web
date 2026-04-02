@@ -11,8 +11,10 @@ const cs: TranslationDictionary = {
   'projects.subtitle': 'Výběr prací, které ukazují můj přístup k architektuře a designu.',
   'projects.visit': 'Navštívit',
   'projects.source': 'Zdroj',
-  'projects.telperion.description': 'Webové stránky organizace Telperion, která se věnuje vzdělávání mladých lidí o klimatu a udržitelném žití. Nabízí podporu dvou jazyků a interaktivní komponenty.',
-  'projects.personalWeb.description': 'Moje osobní webové portfolio. Minimalistický design zaměřený na soukromí s vysokým výkonem, bez sledování a čistou architekturou.',
+  'projects.telperion.description':
+    'Webové stránky organizace Telperion, která se věnuje vzdělávání mladých lidí o klimatu a udržitelném žití. Nabízí podporu dvou jazyků a interaktivní komponenty.',
+  'projects.personalWeb.description':
+    'Moje osobní webové portfolio. Minimalistický design zaměřený na soukromí s vysokým výkonem, bez sledování a čistou architekturou.',
   'footer.carbonFootprint': 'Uhlíková stopa:',
   'footer.loading': 'počítám...',
   '404.message': 'Stránka nenalezena',
