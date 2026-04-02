@@ -5,8 +5,7 @@
     }
     .text { 
       fill: #fafafa; /* Tailwind zinc-50 */
-      /* Použijeme Adwaita Sans s fallbackem na systémové sans-serif fonty */
-      font-family: 'Adwaita Sans', system-ui, -apple-system, sans-serif;
+      font-family: 'Segoe UI', 'San Francisco', Roboto, system-ui, sans-serif;
       font-weight: 800; /* Co nejtučnější řez pro dobrou čitelnost v miniatuře */
       font-size: 52px;  /* Mírně zvětšeno oproti monospace */
       letter-spacing: -2px; /* Zjemněné přiblížení znaků */

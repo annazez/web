@@ -2,21 +2,12 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@font-face {
-  font-family: 'Adwaita Sans';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src:
-    local('Adwaita Sans'),
-    url('/fonts/AdwaitaSans-Regular.ttf') format('truetype');
-}
-
 @layer base {
   :root {
-    /* Variable font names with fallback families. */
-    --font-sans: 'Adwaita Sans', 'Cantarell', system-ui, -apple-system, sans-serif;
-    --default-mono-font-family: var(--font-sans);
+    /* Baseline system stacks with no webfont loading. */
+    --font-sans: 'Segoe UI', 'San Francisco', Roboto, system-ui, sans-serif;
+    --font-mono: Consolas, 'SF Mono', Menlo, 'Noto Mono', ui-monospace, monospace;
+    --default-mono-font-family: var(--font-mono);
 
     /* Light mode colors */
     --color-brand: #18181b;
@@ -27,6 +18,27 @@
     --color-text-secondary: #52525b;
     --color-text-muted: #71717a;
     --color-text-strong: #27272a;
+  }
+
+  html.platform-windows {
+    --font-sans: 'Segoe UI', system-ui, sans-serif;
+    --font-mono: Consolas, 'Cascadia Mono', ui-monospace, monospace;
+  }
+
+  html.platform-apple {
+    --font-sans: 'SF Pro Text', 'SF Pro Display', 'San Francisco', -apple-system,
+      BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: 'SF Mono', Menlo, Monaco, ui-monospace, monospace;
+  }
+
+  html.platform-android {
+    --font-sans: Roboto, 'Noto Sans', system-ui, sans-serif;
+    --font-mono: 'Noto Mono', 'Roboto Mono', ui-monospace, monospace;
+  }
+
+  html.platform-linux {
+    --font-sans: 'Adwaita Sans', 'Cantarell', 'Noto Sans', system-ui, sans-serif;
+    --font-mono: 'Adwaita Mono', 'Noto Mono', 'Liberation Mono', ui-monospace, monospace;
   }
 
   html.dark {
