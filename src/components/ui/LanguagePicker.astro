@@ -7,7 +7,8 @@ const currentLang = getLangFromUrl(Astro.url);
 const langEntries = Object.entries(languages) as [LanguageCode, string][];
 
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
-const hasLangPrefix = pathSegments.length > 0 && pathSegments[0] in languages;
+const hasLangPrefix =
+  pathSegments.length > 0 && Object.prototype.hasOwnProperty.call(languages, pathSegments[0]);
 const routeSegments = hasLangPrefix ? pathSegments.slice(1) : pathSegments;
 
 const localizedSlugSets: Array<Record<LanguageCode, string>> = [
