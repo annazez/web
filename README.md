@@ -56,4 +56,3 @@ All commands are run from the root of the project, from a terminal:
 - `docs/AI_WORKFLOW.md`
 - `docs/ARCHITECTURE.md`
 - `docs/OPERATIONS.md`
-
