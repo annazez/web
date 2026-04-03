@@ -1,10 +1,5 @@
 when:
-  - event: cron
-    cron: renovate_bot
-    branch: main
-  - event: manual
-
-skip_clone: true
+  event: [cron, manual]
 
 steps:
   renovate:
@@ -17,5 +12,8 @@ steps:
       RENOVATE_REPOSITORIES: annazez/pages
       RENOVATE_GIT_AUTHOR: 'Renovate Bot <anna@zezulka.me>'
       LOG_LEVEL: info
-    commands:
-      - renovate
+    when:
+      - event: cron
+        cron: renovate_bot
+        branch: main
+      - event: manual
