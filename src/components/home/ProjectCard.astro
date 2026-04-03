@@ -4,13 +4,14 @@ import { Icon } from 'astro-icon/components';
 
 interface Props {
   title: string;
+  description?: string;
   tags: string[];
   repo?: string;
   website?: string;
   image?: string;
 }
 
-const { title, tags, repo, website, image } = Astro.props;
+const { title, description, tags, repo, website, image } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
@@ -24,6 +25,8 @@ const t = useTranslations(lang);
     <div class="flex items-start justify-between">
       <h3 class="home-card-title font-normal">{title}</h3>
     </div>
+
+    {description && <p class="home-subtle-text">{description}</p>}
 
     <div
       class="mt-auto flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"

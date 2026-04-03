@@ -42,17 +42,16 @@ steps:
       - git config --global user.name "Woodpecker CI"
       - git config --global user.email "anna.zezulka@proton.me"
       - |
-        git config --global credential.helper "store --file /tmp/.git-credentials"
-        git credential approve << EOF
-        protocol=https
-        host=codeberg.org
-        username=oauth2
-        password=${CODEBERG_TOKEN}
-        EOF
-        chmod 600 /tmp/.git-credentials
+        if [ -z "${CODEBERG_TOKEN}" ]; then
+          echo "Missing Woodpecker secret: codeberg_token"
+          exit 1
+        fi
+      - |
+        set +x
+        git config --global url."https://annazez:${CODEBERG_TOKEN}@codeberg.org/".insteadOf "https://codeberg.org/"
+        set -x
       - npm ci
       - npm run deploy
-      - rm -f /tmp/.git-credentials
     when:
       - event: push
         branch: main

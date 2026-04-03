@@ -4,6 +4,7 @@ import ProjectCard from './ProjectCard.astro';
 
 interface Project {
   title: string;
+  description: string;
   tags: string[];
   repo?: string;
   website?: string;
@@ -16,12 +17,14 @@ const t = useTranslations(lang);
 const projects: Project[] = [
   {
     title: 'Telperion Web',
+    description: t('projects.telperion.description'),
     tags: ['Astro', 'React', 'Tailwind', 'TypeScript', 'i18n'],
     website: 'https://telperion.cz',
     repo: 'https://github.com/annazez/telperion-web',
   },
   {
     title: 'Personal Web',
+    description: t('projects.personalWeb.description'),
     tags: ['Astro', 'Tailwind', 'SSG', 'Minimal'],
     repo: 'https://codeberg.org/annazez/personal-web',
   },
