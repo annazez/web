@@ -32,26 +32,26 @@ steps:
       - npm run size:check
       - npm run lighthouse:ci
 
-  deploy:
-    image: node:22-alpine
-    environment:
-      CODEBERG_TOKEN:
-        from_secret: codeberg_token
-    commands:
-      - apk add --no-cache git
-      - git config --global user.name "Woodpecker CI"
-      - git config --global user.email "anna.zezulka@proton.me"
-      - |
-        if [ -z "${CODEBERG_TOKEN}" ]; then
-          echo "Missing Woodpecker secret: codeberg_token"
-          exit 1
-        fi
-      - |
-        set +x
-        git config --global url."https://annazez:${CODEBERG_TOKEN}@codeberg.org/".insteadOf "https://codeberg.org/"
-        set -x
-      - npm ci
-      - npm run deploy
-    when:
-      - event: push
-        branch: main
+deploy:
+  image: node:22-alpine
+  environment:
+    CODEBERG_TOKEN:
+      from_secret: codeberg_token
+  commands:
+    - apk add --no-cache git
+    - git config --global user.name "Woodpecker CI"
+    - git config --global user.email "anna.zezulka@proton.me"
+    - |
+      if [ -z "$${CODEBERG_TOKEN}" ]; then
+        echo "Missing Woodpecker secret: codeberg_token"
+        exit 1
+      fi
+    - |
+      set +x
+      git config --global url."https://annazez:$${CODEBERG_TOKEN}@codeberg.org/".insteadOf "https://codeberg.org/"
+      set -x
+    - npm ci
+    - npm run deploy
+  when:
+    - event: push
+      branch: main
