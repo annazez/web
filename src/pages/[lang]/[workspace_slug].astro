@@ -40,7 +40,7 @@ const { title, intro, categories } = entry.data;
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-24 px-6 py-32">
     <header class="flex flex-col gap-4">
-      <h1 class="home-display-title">{title}</h1>
+      <h1 class="home-display-title font-semibold">{title}</h1>
       <p class="home-body-text">{intro}</p>
     </header>
 
@@ -51,18 +51,18 @@ const { title, intro, categories } = entry.data;
             class="flex flex-col gap-4"
             aria-labelledby={`workspace-${section.category.toLowerCase()}`}
           >
-            <h2 id={`workspace-${section.category.toLowerCase()}`} class="home-section-title">
+            <h2
+              id={`workspace-${section.category.toLowerCase()}`}
+              class="home-section-title font-medium"
+            >
               {section.label}
             </h2>
 
             <ul class="flex flex-col gap-4">
               {section.items.map(item => (
-                <li class="rounded-lg border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900">
-                  <p class="home-body-text">
-                    <span class="home-inline-strong">{item.name}</span>
-                    {' - '}
-                    {item.description}
-                  </p>
+                <li class="flex flex-col rounded-lg border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900">
+                  <h3 class="home-card-title font-medium">{item.name}</h3>
+                  <p class="home-body-text mt-2">{item.description}</p>
                   {item.link && (
                     <a
                       href={item.link}

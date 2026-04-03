@@ -46,7 +46,7 @@ function getLocalizedHref(targetLang: LanguageCode): string {
         <>
           <a
             href={getLocalizedHref(code)}
-            data-lang-link="true"
+            aria-current={currentLang === code ? 'page' : undefined}
             class={
               currentLang === code
                 ? 'text-zinc-900 dark:text-zinc-100'
@@ -64,41 +64,3 @@ function getLocalizedHref(targetLang: LanguageCode): string {
   </div>
   <ThemeToggle />
 </nav>
-
-<script>
-  function showLanguageSwitchOverlay() {
-    const overlay = document.createElement('div');
-    overlay.className = 'theme-transition-overlay';
-
-    const nextTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-    overlay.dataset.theme = nextTheme;
-
-    document.body.appendChild(overlay);
-    const animation = overlay.animate(
-      [{ opacity: 0 }, { opacity: 1, offset: 0.5 }, { opacity: 0 }],
-      {
-        duration: 120,
-        easing: 'linear',
-        fill: 'forwards',
-      }
-    );
-
-    animation.addEventListener('finish', () => overlay.remove(), { once: true });
-  }
-
-  document.querySelectorAll<HTMLAnchorElement>('a[data-lang-link="true"]').forEach(link => {
-    link.addEventListener('click', event => {
-      const href = link.getAttribute('href');
-
-      if (!href || link.pathname === window.location.pathname) {
-        return;
-      }
-
-      event.preventDefault();
-      showLanguageSwitchOverlay();
-      window.setTimeout(() => {
-        window.location.href = href;
-      }, 80);
-    });
-  });
-</script>

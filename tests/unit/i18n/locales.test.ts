@@ -8,13 +8,12 @@ describe('locales', () => {
     it('should have all required translation keys', () => {
       assert.ok(en['role.title']);
       assert.ok(en['hero.manifesto']);
-      assert.ok(en['hero.status']);
-      assert.ok(en['hero.layer']);
-      assert.ok(en['hero.layerSuffix']);
+      assert.ok(en['hero.minimalByDesign']);
       assert.ok(en['projects.title']);
       assert.ok(en['projects.visit']);
       assert.ok(en['projects.source']);
       assert.ok(en['seo.home']);
+      assert.ok(en['footer.downloadCv']);
       assert.ok(en['footer.carbonFootprint']);
     });
 

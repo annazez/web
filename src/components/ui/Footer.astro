@@ -45,13 +45,26 @@ const t = useTranslations(lang);
       class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
       ><Icon name="lucide:key-round" class="h-5 w-5" /></a
     >
+
+    <!-- TODO: add CV PDF to /public/cv.pdf and uncomment -->
+    <!--
+    <a
+      href="/cv.pdf"
+      download
+      aria-label={t('footer.downloadCv')}
+      title={t('footer.downloadCv')}
+      class="text-zinc-400 transition-colors hover:text-zinc-900 dark:hover:text-zinc-100"
+      ><Icon name="lucide:file-down" class="h-5 w-5" /></a
+    >
+    -->
   </div>
 
-  <p class="home-micro-copy w-full sm:ml-auto sm:w-auto sm:text-right">
+  <p class="home-micro-copy w-full sm:ml-auto sm:w-auto sm:text-right" data-carbon-footprint>
     <span>{t('footer.carbonFootprint')}</span>
     <span
       id="carbon-footprint-value"
       data-loading={t('footer.loading')}
+      data-timeout-ms="5000"
       style="display:inline-block;min-height:1.25em"
     >
       {t('footer.loading')}</span

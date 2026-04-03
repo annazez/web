@@ -2,9 +2,7 @@ const en = {
   'role.title': 'Software Architect',
   'hero.manifesto':
     'I create architecture that leaves no room for chaos. Systems must be uncompromisingly optimized, secure, and aligned with moral values for the greater good. Now in the era of AI, I am dedicated to building a web that is not only fast and secure but also ethical and sustainable.',
-  'hero.status': 'Currently running only the',
-  'hero.layer': 'core',
-  'hero.layerSuffix': 'layer.',
+  'hero.minimalByDesign': 'Minimal by design.',
   'hero.inventory': 'Inventory',
   'projects.title': 'Projects',
   'projects.subtitle':
@@ -18,6 +16,7 @@ const en = {
   'seo.home': 'Home',
   'seo.workspace': 'Inventory',
   'seo.404': 'Not Found',
+  'footer.downloadCv': 'Download CV',
   'footer.carbonFootprint': 'Carbon footprint:',
   'footer.loading': 'calculating...',
   '404.message': 'Page not found',

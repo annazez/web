@@ -4,9 +4,7 @@ const cs: TranslationDictionary = {
   'role.title': 'Softwarová architektka',
   'hero.manifesto':
     'Vytvářím architekturu, která nezanechává prostor pro chaos. Systémy musí být nekompromisně optimalizované, bezpečné a v souladu s morálními hodnotami pro vyšší společenské dobro. Nyní v éře AI se věnuji budování webu, který není jen rychlý a bezpečný, ale také etický a udržitelný.',
-  'hero.status': 'Zatím běží pouze',
-  'hero.layer': 'základní',
-  'hero.layerSuffix': 'vrstva webu.',
+  'hero.minimalByDesign': 'Navrženo minimalisticky.',
   'hero.inventory': 'Inventář',
   'projects.title': 'Projekty',
   'projects.subtitle': 'Výběr prací, které ukazují můj přístup k architektuře a designu.',
@@ -19,6 +17,7 @@ const cs: TranslationDictionary = {
   'seo.home': 'Domů',
   'seo.workspace': 'Inventář',
   'seo.404': 'Nenalezeno',
+  'footer.downloadCv': 'Stáhnout CV',
   'footer.carbonFootprint': 'Uhlíková stopa:',
   'footer.loading': 'počítám...',
   '404.message': 'Stránka nenalezena',

@@ -205,14 +205,14 @@
 
   .home-card-title {
     color: var(--color-brand);
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.35;
   }
 
   .home-body-text {
     color: var(--color-text-secondary);
-    font-size: 0.9375rem;
+    font-size: 1rem;
     line-height: 1.75;
   }
 
