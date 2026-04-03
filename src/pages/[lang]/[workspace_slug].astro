@@ -1,6 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
-import { Icon } from 'astro-icon/components';
+import BackLink from '../../components/BackLink.astro';
 import Footer from '../../components/ui/Footer.astro';
 import LanguagePicker from '../../components/ui/LanguagePicker.astro';
 import { defaultLang, getValidLanguageCode, routes } from '../../i18n/dictionary';
@@ -29,16 +29,11 @@ const { title, intro, categories } = entry.data;
 ---
 
 <Layout title={t('seo.workspace')} lang={currentLang}>
-  <a
-    href={`/${currentLang}/`}
-    aria-label={t('404.return')}
-    class="absolute top-8 left-8 text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100"
-  >
-    <Icon name="lucide:chevron-left" class="h-5 w-5" />
-  </a>
   <LanguagePicker />
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-24 px-6 py-32">
+    <BackLink href={`/${currentLang}/`} />
+
     <header class="flex flex-col gap-4">
       <h1 class="home-display-title font-semibold">{title}</h1>
       <p class="home-body-text">{intro}</p>

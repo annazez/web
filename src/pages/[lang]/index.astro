@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import LanguagePicker from '../../components/ui/LanguagePicker.astro';
 import Hero from '../../components/home/Hero.astro';
@@ -13,14 +14,20 @@ export function getStaticPaths() {
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
 const t = useTranslations(currentLang);
+const projectArticles = await getCollection('projects', ({ data }) => data.lang === currentLang);
 ---
 
 <Layout title={t('seo.home')} lang={currentLang}>
+  <Fragment slot="head">
+    <link rel="alternate" type="application/rss+xml" href="/en/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" href="/cs/rss.xml" />
+  </Fragment>
+
   <LanguagePicker />
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-32 px-6 py-32">
     <Hero />
-    <ProjectsSection />
+    <ProjectsSection projectArticles={projectArticles} />
     <Footer lang={currentLang} />
   </main>
 </Layout>

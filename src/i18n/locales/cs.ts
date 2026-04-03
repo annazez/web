@@ -10,10 +10,14 @@ const cs: TranslationDictionary = {
   'projects.subtitle': 'Výběr prací, které ukazují můj přístup k architektuře a designu.',
   'projects.visit': 'Navštívit',
   'projects.source': 'Kód',
+  readCaseStudy: 'Číst případovou studii',
   'projects.telperion.description':
     'Webové stránky organizace Telperion, která se věnuje vzdělávání mladých lidí o klimatu a udržitelném žití. Nabízí podporu dvou jazyků a interaktivní komponenty.',
   'projects.personalWeb.description':
     'Moje osobní webové portfolio. Minimalistický design zaměřený na soukromí s vysokým výkonem, bez sledování a čistou architekturou.',
+  back: 'Zpět',
+  feedTitle: 'Anna Zezulka – Projekty',
+  feedDescription: 'Případové studie a zápisky o projektech.',
   'seo.home': 'Domů',
   'seo.workspace': 'Inventář',
   'seo.404': 'Nenalezeno',

@@ -5,19 +5,21 @@ import { Icon } from 'astro-icon/components';
 interface Props {
   title: string;
   description?: string;
+  summary?: string;
+  articleSlug?: string;
   tags: string[];
   repo?: string;
   website?: string;
   image?: string;
 }
 
-const { title, description, tags, repo, website, image } = Astro.props;
+const { title, description, summary, articleSlug, tags, repo, website, image } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
 <article
-  class="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-zinc-50 px-6 py-4 transition-colors hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:shadow-zinc-900/20"
+  class="flex min-w-0 flex-col gap-3 rounded-lg border border-zinc-200 bg-zinc-50 px-6 py-4 transition-colors hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 dark:hover:shadow-zinc-900/20"
 >
   {image && <img src={image} alt={title} class="h-48 w-full rounded-md object-cover" />}
 
@@ -27,6 +29,12 @@ const t = useTranslations(lang);
     </div>
 
     {description && <p class="home-subtle-text">{description}</p>}
+
+    {
+      summary && (
+        <p class="home-micro-copy overflow-hidden text-ellipsis whitespace-nowrap">{summary}</p>
+      )
+    }
 
     <div
       class="mt-auto flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -76,4 +84,17 @@ const t = useTranslations(lang);
       )
     }
   </div>
+
+  {
+    articleSlug && (
+      <a
+        href={`/${lang}/projects/${articleSlug}/`}
+        aria-label={`${t('readCaseStudy')} ${title}`}
+        class="home-action-text mt-1 flex w-full items-center justify-center gap-2 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+      >
+        <Icon name="lucide:file-text" class="h-4 w-4" />
+        {t('readCaseStudy')}
+      </a>
+    )
+  }
 </article>

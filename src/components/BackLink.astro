@@ -1,0 +1,21 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  href: string;
+  label?: string;
+}
+
+const { href, label } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const resolvedLabel = label ?? t('back');
+---
+
+<a
+  href={href}
+  class="home-subtle-text inline-flex items-center gap-1 text-zinc-500 no-underline transition-colors hover:text-zinc-900 hover:underline dark:text-zinc-500 dark:hover:text-zinc-100"
+>
+  <span aria-hidden="true">←</span>
+  <span>{resolvedLabel}</span>
+</a>

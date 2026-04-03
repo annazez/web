@@ -1,8 +1,14 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import ProjectCard from './ProjectCard.astro';
 
+interface Props {
+  projectArticles: CollectionEntry<'projects'>[];
+}
+
 interface Project {
+  slug: string;
   title: string;
   description: string;
   tags: string[];
@@ -11,11 +17,14 @@ interface Project {
   image?: string;
 }
 
+const { projectArticles } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const articleBySlug = new Map(projectArticles.map(article => [article.data.slug, article.data]));
 
 const projects: Project[] = [
   {
+    slug: 'telperion',
     title: 'Telperion Web',
     description: t('projects.telperion.description'),
     tags: ['Astro', 'React', 'Tailwind', 'TypeScript', 'i18n'],
@@ -23,6 +32,7 @@ const projects: Project[] = [
     repo: 'https://github.com/annazez/telperion-web',
   },
   {
+    slug: 'personal-web',
     title: 'Personal Web',
     description: t('projects.personalWeb.description'),
     tags: ['Astro', 'Tailwind', 'SSG', 'Minimal'],
@@ -42,7 +52,23 @@ const projects: Project[] = [
   </header>
 
   <div class="projects-grid">
-    {projects.map(project => <ProjectCard {...project} />)}
+    {
+      projects.map(project => {
+        const article = articleBySlug.get(project.slug);
+
+        return (
+          <ProjectCard
+            title={project.title}
+            description={project.description}
+            articleSlug={article?.slug}
+            tags={article?.tags ?? project.tags}
+            repo={project.repo}
+            website={project.website}
+            image={project.image}
+          />
+        );
+      })
+    }
   </div>
 </section>
 
@@ -51,11 +77,5 @@ const projects: Project[] = [
     display: grid;
     gap: 1.5rem;
     grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 768px) {
-    .projects-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 </style>
