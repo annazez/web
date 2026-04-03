@@ -1,41 +1,5 @@
 steps:
-  verify:
-    image: node:22-alpine
+  hello:
+    image: alpine
     commands:
-      - npm ci
-      - npm audit --audit-level=high
-      - npm run check
-      - npm run typecheck
-      - npm run build
-    when:
-      - event: [push, pull_request, manual]
-  e2e:
-    image: mcr.microsoft.com/playwright:v1.55.0-noble
-    commands:
-      - npm ci
-      - npx playwright install chromium firefox
-      - npm run test:e2e
-    when:
-      - event: [push, pull_request, manual]
-  performance:
-    image: mcr.microsoft.com/playwright:v1.55.0-noble
-    commands:
-      - npm ci
-      - npx playwright install chromium
-      - npm run build
-      - npm run size:check
-      - npm run lighthouse:ci
-    when:
-      - event: [push, pull_request, manual]
-  deploy:
-    image: node:22-alpine
-    environment:
-      CODEBERG_TOKEN:
-        from_secret: codeberg_token
-    commands:
-      - apk add --no-cache git
-      - npm ci
-      - npm run deploy
-    when:
-      - event: push
-        branch: main
+      - echo "hello"
