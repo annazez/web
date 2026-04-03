@@ -1,6 +1,5 @@
 when:
   - event: [push, pull_request]
-
 steps:
   verify:
     image: node:22-alpine
@@ -10,14 +9,12 @@ steps:
       - npm run check
       - npm run typecheck
       - npm run build
-
   e2e:
     image: mcr.microsoft.com/playwright:v1.55.0-noble
     commands:
       - npm ci
       - npx playwright install chromium firefox
       - npm run test:e2e
-
   performance:
     image: mcr.microsoft.com/playwright:v1.55.0-noble
     commands:
@@ -26,7 +23,6 @@ steps:
       - npm run build
       - npm run size:check
       - npm run lighthouse:ci
-
   deploy:
     image: node:22-alpine
     environment:
