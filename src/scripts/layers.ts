@@ -1,3 +1,8 @@
+/**
+ * Initialize the 3D exploded layers mode.
+ * Only called when user explicitly navigates to #layers hash.
+ * All event listeners are registered here and cleanup is returned for disposal.
+ */
 export function initLayersMode() {
   const pageShell = document.getElementById('page-shell');
   if (!pageShell) return;
@@ -84,9 +89,7 @@ export function initLayersMode() {
     event.stopImmediatePropagation();
   };
 
-  // We are storing these so we can remove them if needed, although the #layers mode might persist.
-  // The module is imported when #layers is hit.
-
+  // Register all event listeners
   pageShell.addEventListener('pointerdown', onPointerDown);
   pageShell.addEventListener('pointermove', onPointerMove);
   pageShell.addEventListener('pointerup', finishDrag);
@@ -95,13 +98,10 @@ export function initLayersMode() {
   pageShell.addEventListener('wheel', onWheel, { passive: false });
   pageShell.addEventListener('click', onClick, true);
 
-  // Apply default state immediately since we know we're in #layers mode when this runs
-  state.rotateX = defaults.rotateX;
-  state.rotateZ = defaults.rotateZ;
-  state.scale = defaults.scale;
+  // Apply initial transform
   applyLayersTransform();
 
-  // Expose a way to cleanup or reset if hash changes
+  // Return cleanup function for when mode is exited
   return function cleanup() {
     pageShell.removeEventListener('pointerdown', onPointerDown);
     pageShell.removeEventListener('pointermove', onPointerMove);
