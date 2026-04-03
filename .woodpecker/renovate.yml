@@ -1,8 +1,6 @@
 when:
   event: [cron, manual]
 
-skip_clone: true
-
 steps:
   renovate:
     image: renovate/renovate:43.104.1-full
