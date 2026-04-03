@@ -9,8 +9,10 @@ export const languages = {
 
 export type LanguageCode = keyof typeof languages;
 
-export const supportedLangs = Object.keys(languages) as readonly LanguageCode[];
-export const languageEntries = Object.entries(languages) as readonly [LanguageCode, string][];
+export const supportedLangs: ReadonlyArray<LanguageCode> = Object.keys(languages) as LanguageCode[];
+export const languageEntries: ReadonlyArray<[LanguageCode, string]> = Object.entries(
+  languages
+) as Array<[LanguageCode, string]>;
 
 export const defaultLang: LanguageCode = 'en';
 

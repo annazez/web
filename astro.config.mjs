@@ -6,11 +6,10 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
-
-const site = process.env.SITE_URL || 'https://annazez.codeberg.page';
+import { SITE_URL } from './src/config';
 
 export default defineConfig({
-  site,
+  site: SITE_URL,
 
   build: {
     assets: 'assets',
@@ -31,7 +30,7 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      filter: page => page !== `${site}/`,
+      filter: page => page !== `${SITE_URL}/`,
     }),
     icon(),
   ],

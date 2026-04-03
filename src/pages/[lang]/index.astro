@@ -4,11 +4,11 @@ import LanguagePicker from '../../components/ui/LanguagePicker.astro';
 import Hero from '../../components/home/Hero.astro';
 import ProjectsSection from '../../components/home/ProjectsSection.astro';
 import Footer from '../../components/ui/Footer.astro';
-import { dictionary, getValidLanguageCode } from '../../i18n/dictionary';
+import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
 import { useTranslations } from '../../i18n/utils';
 
 export function getStaticPaths() {
-  return Object.keys(dictionary).map(lang => ({ params: { lang } }));
+  return supportedLangs.map(lang => ({ params: { lang } }));
 }
 
 const currentLang = getValidLanguageCode(Astro.params.lang);

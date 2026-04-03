@@ -49,7 +49,11 @@ const t = useTranslations(lang);
 
   <p class="home-micro-copy w-full sm:ml-auto sm:w-auto sm:text-right">
     <span>{t('footer.carbonFootprint')}</span>
-    <span id="carbon-footprint-value" data-loading={t('footer.loading')}>
+    <span
+      id="carbon-footprint-value"
+      data-loading={t('footer.loading')}
+      style="display:inline-block;min-height:1.25em"
+    >
       {t('footer.loading')}</span
     >
   </p>

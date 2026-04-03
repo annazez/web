@@ -8,6 +8,8 @@ export default {
   bracketSpacing: true,
   trailingComma: 'es5',
   arrowParens: 'avoid',
+  // Order matters: astro parser must be registered before tailwindcss
+  // so that Tailwind class sorting works inside .astro files.
   plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
   overrides: [
     {

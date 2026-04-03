@@ -39,7 +39,7 @@ function getLocalizedHref(targetLang: LanguageCode): string {
 }
 ---
 
-<nav class="absolute top-8 right-8 flex items-center gap-4">
+<nav aria-label="Language" class="absolute top-8 right-8 flex items-center gap-4">
   <div class="home-micro-label flex gap-4">
     {
       languageEntries.map(([code, label], index) => (

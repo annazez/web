@@ -2,55 +2,83 @@ when:
   - event: [push, pull_request]
 
 steps:
-  security-audit:
-    image: node:22-alpine
+  build:
+    image: node:24-alpine
+    volumes:
+      - woodpecker-cache:/cache
+      - woodpecker-dist:/dist
     commands:
       - npm ci
-      - npm audit --audit-level=high
+      - npm run build
+      - rm -rf /cache/node_modules
+      - cp -R node_modules /cache/node_modules
+      - rm -rf /dist/*
+      - cp -R dist/. /dist/
 
   verify:
-    image: node:22-alpine
+    image: node:24-alpine
+    volumes:
+      - woodpecker-cache:/cache
+      - woodpecker-dist:/dist
     commands:
-      - npm ci
+      - rm -rf node_modules
+      - cp -R /cache/node_modules ./node_modules
+      - rm -rf dist
+      - mkdir -p dist
+      - cp -R /dist/. ./dist
+      - npm audit --audit-level=high
       - npm run check
       - npm run typecheck
-      - npm run build
 
   e2e:
     image: mcr.microsoft.com/playwright:v1.55.0-noble
+    volumes:
+      - woodpecker-cache:/cache
+      - woodpecker-dist:/dist
     commands:
-      - npm ci
-      - npm run test:e2e:install
+      - rm -rf node_modules
+      - cp -R /cache/node_modules ./node_modules
+      - rm -rf dist
+      - mkdir -p dist
+      - cp -R /dist/. ./dist
+      - npx playwright install chromium firefox
       - npm run test:e2e
 
   performance:
     image: mcr.microsoft.com/playwright:v1.55.0-noble
+    volumes:
+      - woodpecker-cache:/cache
+      - woodpecker-dist:/dist
     commands:
-      - npm ci
-      - npm run test:e2e:install
-      - npm run build
+      - rm -rf node_modules
+      - cp -R /cache/node_modules ./node_modules
+      - rm -rf dist
+      - mkdir -p dist
+      - cp -R /dist/. ./dist
+      - npx playwright install chromium firefox
       - npm run size:check
       - npm run lighthouse:ci
 
   deploy:
-    image: node:22-alpine
+    image: node:24-alpine
     environment:
       CODEBERG_TOKEN:
         from_secret: codeberg_token
+    volumes:
+      - woodpecker-cache:/cache
+      - woodpecker-dist:/dist
     commands:
       - apk add --no-cache git
-      - git config --global user.name "Woodpecker CI"
-      - git config --global user.email "anna.zezulka@proton.me"
       - |
         if [ -z "$${CODEBERG_TOKEN}" ]; then
           echo "Missing Woodpecker secret: codeberg_token"
           exit 1
         fi
-      - |
-        set +x
-        git config --global url."https://annazez:$${CODEBERG_TOKEN}@codeberg.org/".insteadOf "https://codeberg.org/"
-        set -x
-      - npm ci
+      - rm -rf node_modules
+      - cp -R /cache/node_modules ./node_modules
+      - rm -rf dist
+      - mkdir -p dist
+      - cp -R /dist/. ./dist
       - npm run deploy
     when:
       - event: push
