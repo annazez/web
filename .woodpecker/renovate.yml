@@ -1,6 +1,9 @@
+when:
+  - event: [cron, manual]
+
 steps:
   renovate:
-    image: renovate/renovate:43
+    image: renovate/renovate:43.104.1
     environment:
       RENOVATE_PLATFORM: gitea
       RENOVATE_ENDPOINT: https://codeberg.org/api/v1
@@ -12,4 +15,6 @@ steps:
     when:
       - event: cron
         cron: renovate_bot
+        branch: main
+      - event: manual
         branch: main
