@@ -44,28 +44,6 @@ const siteUrl = Astro.site ?? Astro.url;
     <ClientRouter />
     <script is:inline>
       const root = document.documentElement;
-      const themeWindow = window;
-
-      const platform = (() => {
-        const ua = navigator.userAgent.toLowerCase();
-        const platformName = (navigator.userAgentData?.platform ?? '').toLowerCase();
-        const fingerprint = `${platformName} ${ua}`;
-
-        if (fingerprint.includes('android')) return 'android';
-        if (
-          fingerprint.includes('iphone') ||
-          fingerprint.includes('ipad') ||
-          fingerprint.includes('ipod')
-        ) {
-          return 'apple';
-        }
-        if (fingerprint.includes('mac')) return 'apple';
-        if (fingerprint.includes('win')) return 'windows';
-        if (fingerprint.includes('linux')) return 'linux';
-        return 'other';
-      })();
-
-      root.classList.add(`platform-${platform}`);
 
       const getPreferredTheme = () => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -89,11 +67,20 @@ const siteUrl = Astro.site ?? Astro.url;
       };
 
       applyPreferredTheme();
+      window.__applyPreferredTheme = applyPreferredTheme;
+    </script>
+    <script>
+      const _window = window as Window & {
+        __themeAfterSwapBound?: boolean;
+        __applyPreferredTheme?: () => void;
+      };
 
       // Astro view transitions can swap DOM state; re-apply persisted theme right after swap.
-      if (!themeWindow.__themeAfterSwapBound) {
-        document.addEventListener('astro:after-swap', applyPreferredTheme);
-        themeWindow.__themeAfterSwapBound = true;
+      if (!_window.__themeAfterSwapBound) {
+        document.addEventListener('astro:after-swap', () => {
+          if (_window.__applyPreferredTheme) _window.__applyPreferredTheme();
+        });
+        _window.__themeAfterSwapBound = true;
       }
     </script>
     <title>{pageTitle}</title>

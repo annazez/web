@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import { SITE_URL } from '../../config';
 import { useTranslations } from '../../i18n/utils';
-import { getValidLanguageCode, supportedLangs, type LanguageCode } from '../../i18n/dictionary';
+import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
 
 export function getStaticPaths() {
   return supportedLangs.map(lang => ({ params: { lang } }));

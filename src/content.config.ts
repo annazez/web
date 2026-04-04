@@ -1,6 +1,9 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'zod';
+import { languages } from './i18n/dictionary';
+
+const langKeys = Object.keys(languages) as [string, ...string[]];
 
 const workspaceItemSchema = z
   .object({
@@ -22,7 +25,7 @@ const workspace = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/workspace' }),
   schema: z
     .object({
-      lang: z.enum(['en', 'cs']),
+      lang: z.enum(langKeys),
       title: z.string().min(1),
       intro: z.string().min(1),
       categories: z.array(workspaceCategorySchema).min(1),
@@ -45,7 +48,7 @@ const projects = defineCollection({
     .object({
       title: z.string().min(1),
       slug: z.string().min(1),
-      lang: z.enum(['en', 'cs']),
+      lang: z.enum(langKeys),
       summary: z.string().min(1),
       publishedAt: z.date(),
       tags: z.array(z.string().min(1)).min(1),
