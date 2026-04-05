@@ -28,7 +28,7 @@ describe('locales', () => {
 
     it('should have consistent project descriptions', () => {
       assert.ok(en['projects.telperion.description']);
-      assert.ok(en['projects.personalWeb.description']);
+      assert.ok(en['projects.mentalHealth.description']);
     });
   });
 
