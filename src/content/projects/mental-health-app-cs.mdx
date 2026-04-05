@@ -21,9 +21,9 @@ Aplikace je vyvíjena ve spolupráci s **Doc. Kotyrbou** a je navržena pro inte
 
 Architektura se dělí do čtyř primárních funkčních domén, každá s vlastními datovými modely, požadavky na soukromí a interakčními vzory:
 
-**Sledování nálady (metoda RULER)** - Strukturované emocionální sebehodnocení pomocí vědecky podložené metody RULER (Recognise, Understand, Label, Express, Regulate). Modul zobrazuje longitudinální vzorce nálady a slouží jako primární zdroj dat pro personalizační engine.
+**Sledování nálady (metoda RULER)** - Strukturované emocionální sebehodnocení pomocí vědecky podložené metody RULER (Recognise, Understand, Label, Express, Regulate). Modul sleduje náladu v čase a zjištěné trendy předává personalizaci.
 
-**Digitální deník** - Soukromý deník s end-to-end šifrováním a analýzou sentimentu jako neobsesivní opt-in vrstvou. Výzvy jsou dynamicky přizpůsobovány na základě aktuálního emocionálního stavu uživatele a diagnostické výchozí linie.
+**Digitální deník** - Soukromý deník s end-to-end šifrováním a analýzou sentimentu jako neobsesivní opt-in vrstvou. Výzvy se přizpůsobují aktuálnímu stavu uživatele a jeho výchozímu diagnostickému profilu.
 
 **Monitorování spánku** - Pasivní sběr dat přes senzory zařízení a volitelná integrace nositelných technologií. Modul koreluje metriky kvality spánku se záznamy nálady a odhaluje využitelné vzorce bez patologizace normálních výkyvů.
 
@@ -49,7 +49,7 @@ Architektura se dělí do čtyř primárních funkčních domén, každá s vlas
 
 Úpravy doporučení řízené AI jsou prováděny transparentně; uživatelé mohou nahlédnout do důvodu zobrazení konkrétního doporučení. Engine nediagnostikuje; kontextualizuje. Klinická interpretace zůstává doménou kvalifikovaných odborníků v rámci integrační vrstvy NeuroCare.
 
-**Důsledky:** Výrazně komplexnější taxonomie obsahu a logika doporučení oproti standardnímu systému založenému na pravidlech. Vyžaduje průběžný klinický poradní vztah pro validaci prahových skóre a protokolů odpovědí. Kompromisem je systém poskytující skutečně personalizovanou podporu, nikoli pouze personalizaci jako marketingovou funkci.
+**Důsledky:** Komplexnější struktura obsahu a logika doporučení oproti standardnímu systému založenému na pravidlech. Vyžaduje průběžný klinický poradní vztah pro validaci prahových skóre a protokolů odpovědí. Kompromisem je systém poskytující skutečně personalizovanou podporu, nikoli pouze personalizaci jako marketingovou funkci.
 
 ## Aktuální stav
 

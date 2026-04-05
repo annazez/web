@@ -20,7 +20,7 @@ Telperion is an NGO dedicated to climate education. Their existing digital prese
 
 This was not a frontend reskin. The engagement covered the full delivery stack: static site generation, native i18n routing, integrated contact and application form handling, automated transactional email via a serverless function layer, and a newsletter integration for ongoing audience engagement. The result is a self-contained, independently operated ecosystem that requires no runtime server, no database, and no paid third-party CMS.
 
-The NGO now has complete ownership. A contributor with basic HTML literacy can update content without touching infrastructure. A future developer inherits a fully documented, dependency-minimal codebase with a clear architectural rationale.
+The NGO now has complete ownership. Content editors update pages by editing plain Markdown files in a Git repository - no code, no CMS subscription, no vendor lock-in. A future developer inherits a well-documented, dependency-minimal codebase with a clear rationale for every significant decision.
 
 ## Architectural Decision Records
 
@@ -38,9 +38,9 @@ The NGO now has complete ownership. A contributor with basic HTML literacy can u
 
 **Context:** Telperion operates across a bilingual (Czech and English) audience, including users with visual impairments who depend on screen readers. Accessibility could not be an afterthought bolted on at the end; it had to be load-bearing.
 
-**Decision:** Astro's built-in i18n routing for language separation. Strict WCAG 2.1 AA compliance validated at every build via automated Lighthouse and axe-core checks integrated into the CI/CD pipeline. No PR merges if contrast ratios, ARIA labelling, or heading structure are violated.
+**Decision:** Astro's built-in i18n routing for language separation. WCAG 2.1 AA compliance is validated automatically on every build via Lighthouse and axe-core. The pipeline blocks any code-level PR that introduces contrast failures, broken ARIA labelling, or heading structure regressions - this applies to developer changes, not to the day-to-day content edits that non-technical staff make through Markdown.
 
-**Consequences:** The language-aware URL structure (`/en/`, `/cs/`) is handled at the framework level with no client-side routing overhead. Accessibility regressions are caught before they reach production, meaning the project's commitment to inclusive design is structurally enforced, not aspirational.
+**Consequences:** The language-aware URL structure (`/en/`, `/cs/`) is resolved at the framework level with no client-side routing overhead. Structural accessibility is protected at the point where it's most likely to break - architectural changes - without adding friction to routine content updates.
 
 ## The Outcome
 

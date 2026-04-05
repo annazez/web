@@ -20,7 +20,7 @@ Telperion je nezisková organizace věnující se klimatickému vzdělávání. 
 
 Nešlo o přebarvení frontendu. Spolupráce pokrývala kompletní dodavatelský stack: statické generování stránek, nativní i18n routing, integrované zpracování kontaktních a přihlašovacích formulářů, automatizovaný transakční e-mail přes serverless funkce a napojení na newsletter pro průběžné oslovování příznivců. Výsledkem je soběstačný, samostatně provozovaný ekosystém bez runtime serveru, bez databáze a bez placených CMS nástrojů třetích stran.
 
-Organizace nyní má plné vlastnictví. Přispěvatel se základní znalostí HTML může aktualizovat obsah bez zásahu do infrastruktury. Budoucí vývojář přebírá plně zdokumentovanou kódovou základnu s minimem závislostí a jasným architektonickým odůvodněním.
+Organizace nyní má plné vlastnictví. Redaktoři obsahu upravují stránky přes jednoduché Markdown soubory v Git repozitáři - bez kódu, bez CMS předplatného, bez závislosti na externím dodavateli. Budoucí vývojář přebírá dobře zdokumentovanou kódovou základnu s minimem závislostí a jasným odůvodněním každého podstatného rozhodnutí.
 
 ## Záznamy architektonických rozhodnutí
 
@@ -38,9 +38,9 @@ Organizace nyní má plné vlastnictví. Přispěvatel se základní znalostí H
 
 **Kontext:** Telperion oslovuje dvojjazyčné publikum (čeština a angličtina) včetně uživatelů se zrakovým postižením závislých na čtečkách obrazovky. Přístupnost nemohla být přidána dodatečně; musela být strukturálně zabudována.
 
-**Rozhodnutí:** Vestavěný i18n routing Asta pro oddělení jazyků. Přísné dodržování WCAG 2.1 AA ověřované automatizovanými kontrolami Lighthouse a axe-core integrovanými do CI/CD pipeline. Merge PR je blokován při porušení kontrastního poměru, ARIA označení nebo struktury nadpisů.
+**Rozhodnutí:** Vestavěný i18n routing Asta pro oddělení jazyků. Soulad s WCAG 2.1 AA je automaticky ověřován při každém buildu přes Lighthouse a axe-core. Pipeline blokuje merge jakéhokoli kódu, který zavede chyby v kontrastním poměru, ARIA označení nebo struktuře nadpisů - to se týká vývojářských změn, ne každodenních úprav obsahu, které netechničtí pracovníci dělají přes Markdown.
 
-**Důsledky:** Jazykově rozlišená URL struktura (`/cs/`, `/en/`) je řešena na úrovni frameworku bez overhead klientského routingu. Regrese v přístupnosti jsou zachyceny před nasazením do produkce, čímž je závazek k inkluzivnímu designu strukturálně vynucen, nikoli pouze deklarován.
+**Důsledky:** Jazykově rozlišená URL struktura (`/cs/`, `/en/`) je řešena na úrovni frameworku bez overhead klientského routingu. Strukturální přístupnost je hlídána tam, kde je největší riziko regrese - při architektonických změnách - aniž by to přidávalo třenice při běžných aktualizacích obsahu.
 
 ## Výsledek
 

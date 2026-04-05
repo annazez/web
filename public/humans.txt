@@ -10,14 +10,13 @@ Language: English, Czech
 /* ARCHITECTURE */
 Pattern: Jamstack / Static Site Generation (SSG)
 Rationale: Pre-rendered HTML served from a CDN edge. No runtime server, no database,
-           no attack surface. Pages load instantly because there is no backend to wait for.
+           minimal runtime attack surface. Pages load instantly because there is no backend to wait for.
 Routing: Native Astro i18n routing (/en/, /cs/) with zero client-side JS overhead.
          Language separation is a framework-level concern, not a runtime one.
 
 /* PRIVACY */
 Tracking: None. Zero analytics, zero third-party scripts, zero cookies.
 Data collected: None. No forms store data on this domain.
-Philosophy: A portfolio that profiles its visitors is a contradiction in terms.
 
 /* SUSTAINABILITY */
 Asset delivery: Images are served in modern formats (WebP/AVIF) and sized precisely
