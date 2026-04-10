@@ -76,4 +76,10 @@ test('useTranslations', async t => {
     const translate = useTranslations(defaultLang);
     assert.strictEqual(translate('seo.home'), dictionary[defaultLang]['seo.home']);
   });
+
+  await t.test('should gracefully fallback to default language for unsupported language codes', () => {
+    // @ts-expect-error - testing runtime behavior for invalid input
+    const translate = useTranslations('fr');
+    assert.strictEqual(translate('seo.home'), dictionary[defaultLang]['seo.home']);
+  });
 });

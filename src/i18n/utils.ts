@@ -12,7 +12,8 @@ export function getLangFromUrl(url: URL): LanguageCode {
 }
 
 export function useTranslations(lang: LanguageCode) {
+  const langDictionary = dictionary[lang] ?? dictionary[defaultLang];
   return function t(key: TranslationKey) {
-    return dictionary[lang][key] ?? dictionary[defaultLang][key];
+    return langDictionary[key] ?? dictionary[defaultLang][key];
   };
 }
