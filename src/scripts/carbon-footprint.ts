@@ -34,27 +34,24 @@ const calculateCarbonValue = (): number | null => {
   return totalSize * 4.0e-7;
 };
 
-const renderCarbonFootprint = async (valueElement: HTMLElement): Promise<void> => {
+const renderCarbonFootprint = (valueElement: HTMLElement): Promise<void> => {
   const gramsCo2 = calculateCarbonValue();
-  if (gramsCo2 === null) throw new Error('Carbon footprint unavailable');
+  if (gramsCo2 === null) return Promise.reject(new Error('Carbon footprint unavailable'));
 
   valueElement.style.transition = 'opacity 0.3s ease';
 
-  // To prevent multiple rapid calls attaching accumulating event listeners that never fire or fire incorrectly,
-  // we remove the specific transitionend logic that depended on `style.opacity === '0'`.
-  // We instead just set `once: true` and only process the propertyName === 'opacity'.
-  const handleTransitionEnd = (event: TransitionEvent) => {
-    if (event.propertyName === 'opacity') {
+  return new Promise<void>((resolve) => {
+    const handleTransitionEnd = (event: TransitionEvent) => {
+      if (event.propertyName !== 'opacity') return;
+      valueElement.removeEventListener('transitionend', handleTransitionEnd);
       valueElement.textContent = formatCarbonFootprint(gramsCo2);
       valueElement.style.opacity = '1';
-    }
-  };
+      resolve();
+    };
 
-  // Attach listener with { once: true } to prevent listener leaks on concurrent calls.
-  valueElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
-
-  // Trigger layout and transition
-  valueElement.style.opacity = '0';
+    valueElement.addEventListener('transitionend', handleTransitionEnd);
+    valueElement.style.opacity = '0';
+  });
 };
 
 const initCarbonFootprint = (valueElement: HTMLElement): void => {
