@@ -24,6 +24,10 @@ steps:
       - npm run build
       - npm run size:check
       - npm run lighthouse:ci
+  extract-lighthouse:
+    image: node:22-alpine
+    commands:
+      - node --experimental-strip-types scripts/extract-lighthouse.ts
   deploy:
     image: node:22.22-alpine3.23
     environment:

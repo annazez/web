@@ -3,6 +3,6 @@
   "compilerOptions": {
     "types": ["astro/client", "node"]
   },
-  "include": [".astro/types.d.ts", "src/**/*", "tests/**/*"],
+  "include": [".astro/types.d.ts", "src/**/*", "tests/**/*", "scripts/**/*"],
   "exclude": ["dist"]
 }

@@ -1,0 +1,82 @@
+---
+import lighthouseData from '../data/lighthouse.json';
+import type { LighthouseData } from '../types/lighthouse';
+
+const data = lighthouseData as LighthouseData;
+const hasData = Boolean(data.generatedAt);
+
+const measuredAt = data.generatedAt ? new Date(data.generatedAt) : null;
+const measuredAtLabel =
+  measuredAt && !Number.isNaN(measuredAt.getTime())
+    ? measuredAt.toLocaleString('cs-CZ')
+    : data.generatedAt;
+
+const scores = [
+  { key: 'performance', label: 'Performance', value: data.performance },
+  { key: 'accessibility', label: 'Accessibility', value: data.accessibility },
+  { key: 'best-practices', label: 'Best practices', value: data.bestPractices },
+  { key: 'seo', label: 'SEO', value: data.seo },
+] as const;
+
+const metrics = [
+  { key: 'lcp', label: 'LCP', value: data.lcp },
+  { key: 'tbt', label: 'TBT', value: data.tbt },
+  { key: 'cls', label: 'CLS', value: data.cls },
+  { key: 'fcp', label: 'FCP', value: data.fcp },
+  { key: 'ttfb', label: 'TTFB', value: data.ttfb },
+] as const;
+
+const scoreClassName = (score: number | null): string => {
+  if (score === null) {
+    return 'bg-stone-100 text-stone-700 ring-stone-200';
+  }
+
+  if (score >= 90) {
+    return 'bg-emerald-100 text-emerald-800 ring-emerald-200';
+  }
+
+  if (score >= 50) {
+    return 'bg-amber-100 text-amber-800 ring-amber-200';
+  }
+
+  return 'bg-rose-100 text-rose-800 ring-rose-200';
+};
+---
+
+{
+  hasData && (
+    <section class="space-y-5" aria-label="Lighthouse results">
+      <header class="space-y-1">
+        <h2 class="text-lg font-semibold text-(--color-text)">Lighthouse CI</h2>
+        <p class="text-sm text-(--color-text-muted)">
+          Mereno:
+          <time datetime={data.generatedAt!}>{measuredAtLabel}</time>
+        </p>
+      </header>
+
+      <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        {scores.map(score => (
+          <div class="rounded-xl border border-(--color-border) bg-(--color-bg-surface) p-3">
+            <p class="text-xs font-medium tracking-wide text-(--color-text-muted) uppercase">
+              {score.label}
+            </p>
+            <p
+              class={`mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset ${scoreClassName(score.value)}`}
+            >
+              {score.value ?? 'N/A'}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <dl class="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+        {metrics.map(metric => (
+          <div class="flex items-center justify-between gap-3 border-b border-(--color-border) py-1.5">
+            <dt class="text-sm font-medium text-(--color-text)">{metric.label}</dt>
+            <dd class="text-sm text-(--color-text-muted)">{metric.value ?? 'N/A'}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )
+}
