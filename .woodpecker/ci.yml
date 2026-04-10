@@ -11,13 +11,13 @@ steps:
       - npm run typecheck
       - npm run build
   e2e:
-    image: mcr.microsoft.com/playwright:v1.55.0-noble
+    image: mcr.microsoft.com/playwright:v1.59.1-noble
     commands:
       - npm ci
       - npx playwright install chromium firefox
       - npm run test:e2e
   performance:
-    image: mcr.microsoft.com/playwright:v1.55.0-noble
+    image: mcr.microsoft.com/playwright:v1.59.1-noble
     commands:
       - npm ci
       - npx playwright install chromium
