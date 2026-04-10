@@ -112,60 +112,76 @@ const projects: Project[] = [
 
 <script>
   class ProjectCarousel extends HTMLElement {
-    private _cleanup?: () => void;
+    #track: Element | null = null;
+    #prevBtn: HTMLButtonElement | null = null;
+    #nextBtn: HTMLButtonElement | null = null;
+    #dots: NodeListOf<Element> | null = null;
+    #cleanup?: () => void;
 
     connectedCallback() {
-      const track = this.querySelector('.projects-track');
-      const prevBtn = this.querySelector('.prev') as HTMLButtonElement | null;
-      const nextBtn = this.querySelector('.next') as HTMLButtonElement | null;
-      const dots = this.querySelectorAll('.dot');
+      this.#track = this.querySelector('.projects-track');
+      this.#prevBtn = this.querySelector('.prev') as HTMLButtonElement | null;
+      this.#nextBtn = this.querySelector('.next') as HTMLButtonElement | null;
+      this.#dots = this.querySelectorAll('.dot');
 
-      if (!track || !prevBtn || !nextBtn || !dots.length) return;
+      if (!this.#track || !this.#prevBtn || !this.#nextBtn || !this.#dots.length) return;
 
-      const updateState = () => {
-        const scrollLeft = track.scrollLeft;
-        const width = track.clientWidth;
-        if (width === 0) return;
-        const index = Math.round(scrollLeft / width);
+      this.#bindControls();
 
-        prevBtn.disabled = index === 0;
-        nextBtn.disabled = index === dots.length - 1;
+      setTimeout(() => this.#updateState(), 50);
 
-        dots.forEach((dot, i) => {
-          if (i === index) {
-            dot.setAttribute('data-active', 'true');
-          } else {
-            dot.removeAttribute('data-active');
-          }
-        });
-      };
-
-      track.addEventListener('scroll', () => {
-        requestAnimationFrame(updateState);
-      });
-
-      prevBtn.addEventListener('click', () => {
-        track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
-      });
-
-      nextBtn.addEventListener('click', () => {
-        track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
-      });
-
-      dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-          track.scrollTo({ left: track.clientWidth * i, behavior: 'smooth' });
-        });
-      });
-
-      setTimeout(() => updateState(), 50);
-      window.addEventListener('resize', updateState);
-
-      this._cleanup = () => window.removeEventListener('resize', updateState);
+      const onResize = () => this.#updateState();
+      window.addEventListener('resize', onResize);
+      this.#cleanup = () => window.removeEventListener('resize', onResize);
     }
 
     disconnectedCallback() {
-      if (this._cleanup) this._cleanup();
+      if (this.#cleanup) this.#cleanup();
+    }
+
+    #updateState = () => {
+      if (!this.#track || !this.#prevBtn || !this.#nextBtn || !this.#dots) return;
+
+      const scrollLeft = this.#track.scrollLeft;
+      const width = this.#track.clientWidth;
+      if (width === 0) return;
+      const index = Math.round(scrollLeft / width);
+
+      this.#prevBtn.disabled = index === 0;
+      this.#nextBtn.disabled = index === this.#dots.length - 1;
+
+      this.#dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.setAttribute('data-active', 'true');
+        } else {
+          dot.removeAttribute('data-active');
+        }
+      });
+    };
+
+    #bindControls() {
+      if (!this.#track || !this.#prevBtn || !this.#nextBtn || !this.#dots) return;
+
+      this.#track.addEventListener('scroll', () => {
+        requestAnimationFrame(this.#updateState);
+      });
+
+      this.#prevBtn.addEventListener('click', () => {
+        if (!this.#track) return;
+        this.#track.scrollBy({ left: -this.#track.clientWidth, behavior: 'smooth' });
+      });
+
+      this.#nextBtn.addEventListener('click', () => {
+        if (!this.#track) return;
+        this.#track.scrollBy({ left: this.#track.clientWidth, behavior: 'smooth' });
+      });
+
+      this.#dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          if (!this.#track) return;
+          this.#track.scrollTo({ left: this.#track.clientWidth * i, behavior: 'smooth' });
+        });
+      });
     }
   }
 
