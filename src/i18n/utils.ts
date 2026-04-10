@@ -2,6 +2,7 @@ import {
   dictionary,
   defaultLang,
   langPrefixRegex,
+  getValidLanguageCode,
   type LanguageCode,
   type TranslationKey,
 } from './dictionary';
@@ -12,7 +13,8 @@ export function getLangFromUrl(url: URL): LanguageCode {
 }
 
 export function useTranslations(lang: LanguageCode) {
-  const langDictionary = dictionary[lang] ?? dictionary[defaultLang];
+  const validLang = getValidLanguageCode(lang);
+  const langDictionary = dictionary[validLang];
   return function t(key: TranslationKey) {
     return langDictionary[key] ?? dictionary[defaultLang][key];
   };
