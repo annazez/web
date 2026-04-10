@@ -43,6 +43,8 @@ All commands are run from the root of the project, from a terminal:
 - CI is configured via `.woodpecker.yml`.
 - Deployment keeps your existing flow and runs an automated variant of `npm run deploy`.
 - Required secret in Woodpecker: `codeberg_token`.
+- Running `npm ci` installs the repo hooks, including a `pre-commit` formatter that auto-runs Prettier before code is pushed.
+- Playwright E2E coverage includes Chromium, Firefox, and WebKit; CI runs on Ubuntu, so local Fedora hosts may need extra Playwright system dependencies for browser execution.
 
 ## PGP Key
 

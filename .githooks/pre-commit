@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+echo "pre-commit: running Prettier..."
+npm run --silent format
+
+git add -A
+
+echo "pre-commit: formatting changes staged."

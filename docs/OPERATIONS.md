@@ -14,6 +14,8 @@ npm run dev
 # Open http://localhost:4321
 ```
 
+`npm ci` also configures the repo Git hooks, so formatting runs automatically in `pre-commit` before you push.
+
 ---
 
 ## Development Workflow
@@ -215,6 +217,8 @@ npm run test:e2e -- --reporter=list
 # - Route changed
 # - Content changed
 ```
+
+Note: Playwright coverage is expected to run in Ubuntu-based CI. On Fedora or other unsupported Linux hosts, browser binaries may install but still require extra system dependencies before WebKit can launch.
 
 ### Performance Regression
 

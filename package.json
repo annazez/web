@@ -23,9 +23,10 @@
     "test:unit": "node --experimental-strip-types --experimental-test-module-mocks --import ./scripts/test-setup.mjs --test 'tests/unit/**/*.test.ts'",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
-    "test:e2e:install": "playwright install chromium",
+    "test:e2e:install": "playwright install chromium firefox webkit",
     "size:check": "node ./scripts/check-bundle-size.mjs",
     "lighthouse:ci": "CHROME_PATH=\"$(node ./scripts/chrome-path.mjs)\" lhci autorun --config=./lighthouserc.json",
+    "postinstall": "npm run hooks:install",
     "hooks:install": "git config core.hooksPath .githooks",
     "clean": "rm -rf dist node_modules/.vite .astro",
     "deploy": "npm run build && sh scripts/deploy.sh"
