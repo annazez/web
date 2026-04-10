@@ -115,20 +115,40 @@ const projects: Project[] = [
     #track: HTMLElement | null = null;
     #prevBtn: HTMLButtonElement | null = null;
     #nextBtn: HTMLButtonElement | null = null;
-    #dots!: NodeListOf<HTMLButtonElement>;
+    #dots: NodeListOf<HTMLButtonElement> | null = null;
     #cleanup?: () => void;
+    #isBound = false;
+
+    #handleScroll = () => {
+      requestAnimationFrame(this.#updateState);
+    };
+
+    #handlePrevClick = () => {
+      if (!this.#track) return;
+      this.#track.scrollBy({ left: -this.#track.clientWidth, behavior: 'smooth' });
+    };
+
+    #handleNextClick = () => {
+      if (!this.#track) return;
+      this.#track.scrollBy({ left: this.#track.clientWidth, behavior: 'smooth' });
+    };
+
+    #handleDotClick = (event: Event) => {
+      if (!this.#track) return;
+      const dot = event.currentTarget as HTMLButtonElement;
+      const i = parseInt(dot.getAttribute('data-index') || '0', 10);
+      this.#track.scrollTo({ left: this.#track.clientWidth * i, behavior: 'smooth' });
+    };
 
     connectedCallback() {
-      this.#cleanup?.();
-
-      this.#track = this.querySelector<HTMLElement>('.projects-track');
-      this.#prevBtn = this.querySelector<HTMLButtonElement>('.prev');
-      this.#nextBtn = this.querySelector<HTMLButtonElement>('.next');
-      this.#dots = this.querySelectorAll<HTMLButtonElement>('.dot');
+      this.#track = this.querySelector('.projects-track');
+      this.#prevBtn = this.querySelector('.prev') as HTMLButtonElement | null;
+      this.#nextBtn = this.querySelector('.next') as HTMLButtonElement | null;
+      this.#dots = this.querySelectorAll('.dot');
 
       if (!this.#track || !this.#prevBtn || !this.#nextBtn || !this.#dots.length) return;
 
-      const cleanupControls = this.#bindControls();
+      this.#bindControls();
 
       setTimeout(() => this.#updateState(), 50);
 
@@ -136,17 +156,16 @@ const projects: Project[] = [
       window.addEventListener('resize', onResize);
       this.#cleanup = () => {
         window.removeEventListener('resize', onResize);
-        cleanupControls();
+        this.#unbindControls();
       };
     }
 
     disconnectedCallback() {
-      this.#cleanup?.();
-      this.#cleanup = undefined;
+      if (this.#cleanup) this.#cleanup();
     }
 
     #updateState = () => {
-      if (!this.#track || !this.#prevBtn || !this.#nextBtn) return;
+      if (!this.#track || !this.#prevBtn || !this.#nextBtn || !this.#dots) return;
 
       const scrollLeft = this.#track.scrollLeft;
       const width = this.#track.clientWidth;
@@ -165,31 +184,33 @@ const projects: Project[] = [
       });
     };
 
-    #bindControls(): () => void {
-      const track = this.#track!;
-      const prevBtn = this.#prevBtn!;
-      const nextBtn = this.#nextBtn!;
+    #bindControls() {
+      if (this.#isBound || !this.#track || !this.#prevBtn || !this.#nextBtn || !this.#dots) return;
 
-      const onScroll = () => requestAnimationFrame(this.#updateState);
-      const onPrev = () => track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
-      const onNext = () => track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+      this.#track.addEventListener('scroll', this.#handleScroll);
+      this.#prevBtn.addEventListener('click', this.#handlePrevClick);
+      this.#nextBtn.addEventListener('click', this.#handleNextClick);
 
-      track.addEventListener('scroll', onScroll);
-      prevBtn.addEventListener('click', onPrev);
-      nextBtn.addEventListener('click', onNext);
-
-      const dotCleanups = Array.from(this.#dots).map((dot, i) => {
-        const onClick = () => track.scrollTo({ left: track.clientWidth * i, behavior: 'smooth' });
-        dot.addEventListener('click', onClick);
-        return () => dot.removeEventListener('click', onClick);
+      this.#dots.forEach((dot, i) => {
+        dot.setAttribute('data-index', i.toString());
+        dot.addEventListener('click', this.#handleDotClick);
       });
 
-      return () => {
-        track.removeEventListener('scroll', onScroll);
-        prevBtn.removeEventListener('click', onPrev);
-        nextBtn.removeEventListener('click', onNext);
-        dotCleanups.forEach(fn => fn());
-      };
+      this.#isBound = true;
+    }
+
+    #unbindControls() {
+      if (!this.#isBound) return;
+
+      this.#track?.removeEventListener('scroll', this.#handleScroll);
+      this.#prevBtn?.removeEventListener('click', this.#handlePrevClick);
+      this.#nextBtn?.removeEventListener('click', this.#handleNextClick);
+
+      this.#dots?.forEach(dot => {
+        dot.removeEventListener('click', this.#handleDotClick);
+      });
+
+      this.#isBound = false;
     }
   }
 
