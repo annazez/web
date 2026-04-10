@@ -1,5 +1,5 @@
-import en from './locales/en';
-import cs from './locales/cs';
+import en from './locales/en.ts';
+import cs from './locales/cs.ts';
 import type { TranslationDictionary, TranslationKey } from './locales/en';
 
 export const languages = {
@@ -33,6 +33,18 @@ export const routes = {
     cs: 'o-mne',
   } satisfies Record<LanguageCode, string>,
 } as const;
+
+export const localizedSlugSets: ReadonlyArray<Record<LanguageCode, string>> =
+  Object.values(routes);
+
+export const routeLookup: ReadonlyMap<string, Record<LanguageCode, string>> = new Map(
+  localizedSlugSets.flatMap(slugSet =>
+    (Object.entries(slugSet) as Array<[LanguageCode, string]>).map(([lang, slug]) => [
+      `${lang}:${slug}`,
+      slugSet,
+    ])
+  )
+);
 
 export type { TranslationKey };
 

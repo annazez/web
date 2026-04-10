@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl } from '../../i18n/utils';
-import { languages, routes, languageEntries, type LanguageCode } from '../../i18n/dictionary';
+import { languages, routeLookup, languageEntries, type LanguageCode } from '../../i18n/dictionary';
 import ThemeToggle from './ThemeToggle.astro';
 
 const currentLang = getLangFromUrl(Astro.url);
@@ -10,20 +10,13 @@ const hasLangPrefix =
   pathSegments.length > 0 && Object.prototype.hasOwnProperty.call(languages, pathSegments[0]);
 const routeSegments = hasLangPrefix ? pathSegments.slice(1) : pathSegments;
 
-const localizedSlugSets: Array<Record<LanguageCode, string>> = [routes.workspace];
-
 function mapLocalizedSegment(
   segment: string,
   fromLang: LanguageCode,
   toLang: LanguageCode
 ): string {
-  for (const slugSet of localizedSlugSets) {
-    if (segment === slugSet[fromLang]) {
-      return slugSet[toLang];
-    }
-  }
-
-  return segment;
+  const slugSet = routeLookup.get(`${fromLang}:${segment}`);
+  return slugSet ? slugSet[toLang] : segment;
 }
 
 function getLocalizedHref(targetLang: LanguageCode): string {

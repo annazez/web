@@ -7,6 +7,7 @@ import {
   langPrefixRegex,
   getValidLanguageCode,
   routes,
+  routeLookup,
 } from '../../../src/i18n/dictionary.ts';
 
 describe('dictionary', () => {
@@ -91,6 +92,25 @@ describe('dictionary', () => {
       assert.ok(routes.workspace);
       assert.strictEqual(routes.workspace.en, 'inventory');
       assert.strictEqual(routes.workspace.cs, 'inventar');
+    });
+  });
+
+  describe('routeLookup', () => {
+    it('should contain all localized segments with language prefix', () => {
+      assert.strictEqual(routeLookup.get('en:inventory'), routes.workspace);
+      assert.strictEqual(routeLookup.get('cs:inventar'), routes.workspace);
+      assert.strictEqual(routeLookup.get('en:about'), routes.about);
+      assert.strictEqual(routeLookup.get('cs:o-mne'), routes.about);
+    });
+
+    it('should not match segment from different language', () => {
+      assert.strictEqual(routeLookup.get('cs:inventory'), undefined);
+      assert.strictEqual(routeLookup.get('en:inventar'), undefined);
+    });
+
+    it('should return undefined for unknown segments', () => {
+      assert.strictEqual(routeLookup.get('en:unknown'), undefined);
+      assert.strictEqual(routeLookup.get('unknown'), undefined);
     });
   });
 });
