@@ -34,23 +34,22 @@ const calculateCarbonValue = (): number | null => {
   return totalSize * 4.0e-7;
 };
 
-const renderCarbonFootprint = (valueElement: HTMLElement): Promise<void> => {
+const renderCarbonFootprint = async (valueElement: HTMLElement): Promise<void> => {
   const gramsCo2 = calculateCarbonValue();
-  if (gramsCo2 === null) return Promise.reject(new Error('Carbon footprint unavailable'));
+  if (gramsCo2 === null) throw new Error('Carbon footprint unavailable');
 
   valueElement.style.transition = 'opacity 0.3s ease';
 
-  return new Promise<void>((resolve) => {
-    const handleTransitionEnd = (event: TransitionEvent) => {
-      if (event.propertyName !== 'opacity') return;
+  const handleTransitionEnd = (event: TransitionEvent) => {
+    if (event.propertyName === 'opacity') {
       valueElement.textContent = formatCarbonFootprint(gramsCo2);
       valueElement.style.opacity = '1';
-      resolve();
-    };
+      valueElement.removeEventListener('transitionend', handleTransitionEnd);
+    }
+  };
 
-    valueElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
-    valueElement.style.opacity = '0';
-  });
+  valueElement.addEventListener('transitionend', handleTransitionEnd);
+  valueElement.style.opacity = '0';
 };
 
 const initCarbonFootprint = (valueElement: HTMLElement): void => {
