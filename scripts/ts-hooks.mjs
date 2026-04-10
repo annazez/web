@@ -4,6 +4,13 @@
  * to be resolved correctly when running tests with `node --experimental-strip-types`.
  */
 export async function resolve(specifier, context, nextResolve) {
+  if (specifier === 'astro:content') {
+    return {
+      url: `file://${process.cwd()}/tests/unit/__mocks__/astro-content.mjs`,
+      shortCircuit: true,
+    };
+  }
+
   if (specifier.startsWith('node:') || specifier.startsWith('http')) {
     return nextResolve(specifier, context);
   }

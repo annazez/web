@@ -1,0 +1,32 @@
+--- rss.xml.test.ts
++++ rss.xml.test.ts
+@@ -70,8 +71,8 @@
+   await t.test('GET should return RSS feed with sorted items for valid language', async () => {
+     const mockContext = {
+       params: { lang: 'en' },
+       site: new URL('https://custom-site.com/')
+-    } as any;
++    } as unknown as APIContext;
+
+     const response = await GET(mockContext);
+
+@@ -107,7 +108,7 @@
+   await t.test('GET should fall back to default language for invalid language code', async () => {
+     const mockContext = {
+       params: { lang: 'invalid-lang' },
+       site: new URL('https://custom-site.com/')
+-    } as any;
++    } as unknown as APIContext;
+
+     await GET(mockContext);
+--- /dev/null
++++ /dev/null
+@@ -127,7 +128,7 @@
+   await t.test('GET should use SITE_URL fallback when context.site is missing', async () => {
+     const mockContext = {
+       params: { lang: 'en' },
+       // site is intentionally omitted
+-    } as any;
++    } as unknown as APIContext;
+
+     await GET(mockContext);
