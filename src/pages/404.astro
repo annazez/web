@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { defaultLang } from '../i18n/dictionary';
 import { useTranslations } from '../i18n/utils';
 import { Icon } from 'astro-icon/components';
+import { languageEntries } from '../i18n/dictionary';
 
 const t = useTranslations(defaultLang);
 ---
@@ -14,19 +15,25 @@ const t = useTranslations(defaultLang);
   >
     <h1 class="home-display-title">404</h1>
 
-    <p class="home-micro-label mt-4">System Node Not Found</p>
+    <p class="home-micro-label mt-4">{t('404.title')}</p>
 
     <p class="home-body-text mt-6">
-      The architecture you are looking for has been moved or doesn't exist in this dimension.
+      {t('404.message')}
     </p>
 
+    <p class="home-body-text mt-6">{t('404.languagePrompt')}</p>
+
     <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
-      <a
-        href="/en/"
-        class="home-action-text rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"
-      >
-        English
-      </a>
+      {
+        languageEntries.map(([code, label]) => (
+          <a
+            href={`/${code}/`}
+            class="home-action-text rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"
+          >
+            {label}
+          </a>
+        ))
+      }
 
       <a
         href={`/${defaultLang}/`}

@@ -9,6 +9,7 @@ interface Props {
 
 const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
+const lastUpdatedDateTime = new Date().toISOString();
 const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-GB', {
   year: 'numeric',
   month: 'long',
@@ -18,7 +19,7 @@ const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-
 <footer
   class="flex w-full flex-wrap items-center gap-x-6 gap-y-3 border-t border-(--color-border) pt-8"
 >
-  <div class="flex items-center gap-6">
+  <nav aria-label={t('footer.navigation')} class="flex items-center gap-6">
     <a
       href={`/${lang}/${routes.workspace[lang]}`}
       aria-label={t('hero.inventory')}
@@ -30,22 +31,22 @@ const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-
       href="https://codeberg.org/annazez/pages"
       target="_blank"
       rel="me noopener noreferrer"
-      aria-label="Source code on Codeberg"
-      title="Source code on Codeberg"
+      aria-label={t('footer.sourceCode')}
+      title={t('footer.sourceCode')}
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
       ><Icon name="lucide:code-2" class="h-5 w-5" /></a
     >
     <a
       href="/humans.txt"
-      aria-label="Humans.txt"
-      title="Humans.txt"
+      aria-label={t('footer.humansTxt')}
+      title={t('footer.humansTxt')}
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
       ><Icon name="lucide:file-text" class="h-5 w-5" /></a
     >
     <a
       href="/pgp/public-key.asc"
-      aria-label="PGP public key"
-      title="PGP public key"
+      aria-label={t('footer.pgpPublicKey')}
+      title={t('footer.pgpPublicKey')}
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
       ><Icon name="lucide:key-round" class="h-5 w-5" /></a
     >
@@ -58,20 +59,18 @@ const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
       ><Icon name="lucide:file-down" class="h-5 w-5" /></a
     >
-  </div>
+  </nav>
 
   <div
     class="home-micro-copy flex w-full flex-col gap-1 sm:ml-auto sm:w-auto sm:items-end sm:text-right"
   >
-    <p class="home-body-text">{t('footer.lastUpdated')} {lastUpdated}</p>
+    <p class="home-body-text">
+      {t('footer.lastUpdated')}
+      <time datetime={lastUpdatedDateTime}>{lastUpdated}</time>
+    </p>
     <p data-carbon-footprint>
       <span>{t('footer.carbonFootprint')}</span>
-      <span
-        id="carbon-footprint-value"
-        data-loading={t('footer.loading')}
-        data-timeout-ms="5000"
-        style="display:inline-block;min-height:1.25em"
-      >
+      <span id="carbon-footprint-value" data-loading={t('footer.loading')} data-timeout-ms="5000">
         {t('footer.loading')}</span
       >
     </p>

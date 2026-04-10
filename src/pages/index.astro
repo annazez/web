@@ -27,7 +27,7 @@ const canonicalEn = new URL(`/${defaultLang}/`, Astro.site ?? Astro.url).toStrin
     </script>
 
     <noscript>
-      <p class="home-body-text">Choose language:</p>
+      <p class="home-body-text">{t('index.chooseLanguage')}</p>
       <p class="home-body-text">
         {
           languageEntries.map(([code, label], index) => (

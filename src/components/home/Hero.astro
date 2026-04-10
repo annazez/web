@@ -2,17 +2,18 @@
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const siteName = t('site.name');
 ---
 
 <div class="flex flex-col gap-8">
   <header class="flex flex-col gap-6 sm:flex-row sm:items-center">
     <img
       src="/images/avatar.jpg"
-      alt="Anna Zezulka"
+      alt={siteName}
       class="size-24 shrink-0 rounded-full border border-(--color-border) object-cover sm:size-32"
     />
     <div class="flex flex-col gap-2 sm:gap-4">
-      <h1 class="home-display-title">Anna Zezulka</h1>
+      <h1 class="home-display-title">{siteName}</h1>
       <p class="home-body-text">
         {t('role.title')}
       </p>

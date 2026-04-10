@@ -1,9 +1,10 @@
 ---
-import { getLangFromUrl } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { languages, routeLookup, languageEntries, type LanguageCode } from '../../i18n/dictionary';
 import ThemeToggle from './ThemeToggle.astro';
 
 const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const hasLangPrefix =
@@ -32,7 +33,7 @@ function getLocalizedHref(targetLang: LanguageCode): string {
 }
 ---
 
-<nav aria-label="Language" class="absolute top-8 right-8 flex items-center gap-4">
+<nav aria-label={t('ui.languageNavigation')} class="absolute top-8 right-8 flex items-center gap-4">
   <div class="home-micro-label flex gap-4">
     {
       languageEntries.map(([code, label], index) => (

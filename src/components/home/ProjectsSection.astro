@@ -12,7 +12,6 @@ interface Project {
   slug: string;
   title: string;
   description: string;
-  tags: string[];
   repo?: string;
   website?: string;
 }
@@ -29,7 +28,6 @@ const projects: Project[] = [
     slug: 'telperion',
     title: 'Telperion',
     description: t('projects.telperion.description'),
-    tags: ['Astro', 'i18n', 'SSG', 'WCAG', 'Jamstack'],
     website: 'https://telperion.cz',
     repo: 'https://github.com/annazez/telperion-web',
   },
@@ -37,7 +35,6 @@ const projects: Project[] = [
     slug: 'mental-health-app',
     title: 'Mental Health App',
     description: t('projects.mentalHealth.description'),
-    tags: ['Architecture', 'Mobile', 'Healthcare', 'WIP'],
   },
 ];
 ---
@@ -72,7 +69,7 @@ const projects: Project[] = [
                   articleSlug={
                     project.slug === 'telperion' ? (article?.slug ?? project.slug) : undefined
                   }
-                  tags={article?.tags ?? project.tags}
+                  tags={article?.tags ?? []}
                   repo={project.repo}
                   website={project.website}
                 />
@@ -86,7 +83,7 @@ const projects: Project[] = [
     <div class="mt-2 flex items-center justify-between px-2">
       <button
         class="nav-btn prev p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) disabled:opacity-30 disabled:hover:text-(--color-text-muted)"
-        aria-label="Previous project"
+        aria-label={t('projects.carousel.previous')}
       >
         <Icon name="lucide:arrow-left" class="size-5 sm:size-6" />
       </button>
@@ -94,7 +91,7 @@ const projects: Project[] = [
         {
           projects.map((_, i) => (
             <button
-              aria-label={`Go to slide ${i + 1}`}
+              aria-label={`${t('projects.carousel.slide')} ${i + 1}`}
               class="dot size-2.5 rounded-full bg-(--color-border) transition-colors data-[active=true]:bg-(--color-brand)"
             />
           ))
@@ -102,7 +99,7 @@ const projects: Project[] = [
       </div>
       <button
         class="nav-btn next p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) disabled:opacity-30 disabled:hover:text-(--color-text-muted)"
-        aria-label="Next project"
+        aria-label={t('projects.carousel.next')}
       >
         <Icon name="lucide:arrow-right" class="size-5 sm:size-6" />
       </button>

@@ -1,27 +1,27 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import { langPrefixRegex, supportedLangs } from '../i18n/dictionary';
+import { langPrefixRegex, supportedLangs, type LanguageCode } from '../i18n/dictionary';
+import { useTranslations } from '../i18n/utils';
 
 interface Props {
   title?: string;
   description?: string;
-  lang?: string;
+  lang?: LanguageCode;
   noIndex?: boolean;
 }
 
-const { title, description = 'Anna Zezulka', lang = 'en', noIndex = false } = Astro.props;
-const siteName = 'Anna Zezulka';
+const { title, description, lang = 'en', noIndex = false } = Astro.props;
+const t = useTranslations(lang);
+const siteName = t('site.name');
+const pageDescription = description ?? siteName;
 
 const normalizedTitle = title?.trim();
-const isAbsoluteRoot = Astro.url.pathname === '/';
 const pageTitle = normalizedTitle
   ? normalizedTitle.includes(siteName)
     ? normalizedTitle
     : `${normalizedTitle} | ${siteName}`
-  : isAbsoluteRoot
-    ? siteName
-    : siteName;
+  : siteName;
 
 const pathname = Astro.url.pathname;
 // langPrefixRegex matches either `/en/` or `/en` (at string end)
@@ -84,9 +84,9 @@ const siteUrl = Astro.site ?? Astro.url;
       }
     </script>
     <title>{pageTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
     <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/og-image.jpg" />
     {noIndex && <meta name="robots" content="noindex" />}
@@ -100,12 +100,12 @@ const siteUrl = Astro.site ?? Astro.url;
     }
     <link rel="alternate" hreflang="x-default" href={siteUrl} />
   </head>
-  <body>
-    <div id="arch" style="display: none;" aria-hidden="true"></div>
-    <div id="audit" style="display: none;" aria-hidden="true"></div>
-    <div id="layers" style="display: none;" aria-hidden="true"></div>
+  <body data-print-banner={t('print.banner')}>
+    <div id="arch" hidden aria-hidden="true"></div>
+    <div id="audit" hidden aria-hidden="true"></div>
+    <div id="layers" hidden aria-hidden="true"></div>
     <div id="page-shell">
-      <a href="#main-content" class="skip-link">Skip to main content</a>
+      <a href="#main-content" class="skip-link">{t('layout.skipToMain')}</a>
       <slot />
     </div>
     <script>

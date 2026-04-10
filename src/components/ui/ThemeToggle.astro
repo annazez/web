@@ -1,10 +1,14 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <button
   id="theme-toggle"
-  aria-label="Toggle dark mode"
+  aria-label={t('ui.themeToggle')}
   class="rounded-lg p-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
 >
   <Icon name="lucide:sun" class="h-5 w-5" id="sun-icon" />

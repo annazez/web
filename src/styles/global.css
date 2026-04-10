@@ -123,7 +123,7 @@
     }
 
     body::before {
-      content: '[ ARCHITECTURAL SPECIFICATION // SYSTEM: ANNA ZEZULKA // RENDER: PRINT ]';
+      content: attr(data-print-banner);
       display: block;
       margin-bottom: 3rem;
       padding-bottom: 1rem;
@@ -253,6 +253,11 @@
 
   .home-social-links a:hover {
     color: var(--color-brand);
+  }
+
+  #carbon-footprint-value {
+    display: inline-block;
+    min-height: 1.25em;
   }
 
   .home-tag-text {

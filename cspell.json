@@ -1,8 +1,0 @@
-{
-  "version": "0.2",
-  "language": "en,cs",
-  "import": ["./node_modules/@cspell/dict-cs-cz/cspell-ext.json"],
-  "dictionaries": ["cs-cz"],
-  "ignorePaths": ["dist", "node_modules", ".astro"],
-  "words": ["Fediverse", "fontsource", "lucide", "networkidle", "telperion", "Telperion"]
-}
