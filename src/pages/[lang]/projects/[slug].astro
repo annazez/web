@@ -4,7 +4,7 @@ import BackLink from '../../../components/BackLink.astro';
 import Footer from '../../../components/ui/Footer.astro';
 import LanguagePicker from '../../../components/ui/LanguagePicker.astro';
 import Layout from '../../../layouts/Layout.astro';
-import { getValidLanguageCode, supportedLangs, type LanguageCode } from '../../../i18n/dictionary';
+import { getValidLanguageCode, isLanguageCode, type LanguageCode } from '../../../i18n/dictionary';
 
 export async function getStaticPaths() {
   const paths: Array<{ params: { lang: LanguageCode; slug: string } }> = [];
@@ -12,8 +12,8 @@ export async function getStaticPaths() {
   const allProjects = await getCollection('projects');
 
   for (const project of allProjects) {
-    if (supportedLangs.includes(project.data.lang as LanguageCode)) {
-      paths.push({ params: { lang: project.data.lang as LanguageCode, slug: project.data.slug } });
+    if (isLanguageCode(project.data.lang)) {
+      paths.push({ params: { lang: project.data.lang, slug: project.data.slug } });
     }
   }
 

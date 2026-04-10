@@ -47,6 +47,10 @@ export const routeLookup: ReadonlyMap<string, Record<LanguageCode, string>> = ne
 
 export type { TranslationKey };
 
+export function isLanguageCode(value: unknown): value is LanguageCode {
+  return typeof value === 'string' && Object.prototype.hasOwnProperty.call(languages, value);
+}
+
 export function getValidLanguageCode(value: string | undefined): LanguageCode {
   return value === 'en' || value === 'cs' ? value : defaultLang;
 }
