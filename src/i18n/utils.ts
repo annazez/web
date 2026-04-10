@@ -16,6 +16,11 @@ export function useTranslations(lang: LanguageCode) {
   const validLang = getValidLanguageCode(lang);
   const langDictionary = dictionary[validLang];
   return function t(key: TranslationKey) {
-    return langDictionary[key] ?? dictionary[defaultLang][key];
+    const value = Object.prototype.hasOwnProperty.call(langDictionary, key)
+      ? langDictionary[key]
+      : undefined;
+    return value ?? (Object.prototype.hasOwnProperty.call(dictionary[defaultLang], key)
+      ? dictionary[defaultLang][key]
+      : undefined);
   };
 }
