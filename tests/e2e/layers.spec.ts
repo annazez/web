@@ -52,7 +52,7 @@ test.describe('3D Exploded Layers Mode', () => {
     await expect(pageShell).toHaveCSS('--layers-scale', '0.8');
 
     // Dispatch a wheel event using evaluate because page.mouse.wheel doesn't consistently trigger the DOM wheel event how we expect here
-    await pageShell.evaluate((el) => {
+    await pageShell.evaluate(el => {
       const wheelEvent = new WheelEvent('wheel', {
         deltaY: -500,
         bubbles: true,
@@ -67,7 +67,7 @@ test.describe('3D Exploded Layers Mode', () => {
     // Just verifying it changes from default
     await expect(pageShell).not.toHaveCSS('--layers-scale', '0.8');
 
-    const newScale = await pageShell.evaluate((el) => el.style.getPropertyValue('--layers-scale'));
+    const newScale = await pageShell.evaluate(el => el.style.getPropertyValue('--layers-scale'));
     expect(parseFloat(newScale)).toBeGreaterThan(0.8);
   });
 
@@ -81,7 +81,9 @@ test.describe('3D Exploded Layers Mode', () => {
 
     // Exit mode by changing hash to trigger the hashchange event (which triggers cleanup)
     // Avoid page.goto('/en/') as it causes a full page reload and bypasses testing the cleanup function.
-    await page.evaluate(() => { window.location.hash = ''; });
+    await page.evaluate(() => {
+      window.location.hash = '';
+    });
 
     // Ensure CSS variables are removed
     await expect(pageShell).toHaveCSS('--layers-scale', '');
