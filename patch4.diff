@@ -1,0 +1,81 @@
+--- tests/unit/pages/[lang]/rss.xml.test.ts
++++ tests/unit/pages/[lang]/rss.xml.test.ts
+@@ -69,8 +69,8 @@
+   await t.test('GET should return RSS feed with sorted items for valid language', async () => {
+     const mockContext = {
+       params: { lang: 'en' },
+       site: new URL('https://custom-site.com/')
+-    } as unknown as APIContext;
++    } as unknown as any;
+
+     const response = await GET(mockContext);
+
+@@ -80,24 +80,24 @@
+
+     assert.strictEqual(rssArgs.length, 1);
+-    const options = rssArgs[0];
++    const options = rssArgs[0] as any;
+
+     // Check main feed metadata
+     assert.strictEqual(options.title, dictionary.en.feedTitle);
+     assert.strictEqual(options.description, dictionary.en.feedDescription);
+-    assert.strictEqual(options.site, mockContext.site);
++    assert.strictEqual(options.site, (mockContext as any).site);
+
+     // Check items sorting and shape (Project A is newer than Project B)
+     assert.strictEqual(options.items.length, 2);
+
+     assert.strictEqual(options.items[0].title, 'Project A');
+     assert.strictEqual(options.items[0].description, 'Summary A');
+     assert.strictEqual(options.items[0].pubDate.toISOString(), '2024-02-01T00:00:00.000Z');
+     assert.strictEqual(options.items[0].link, 'https://custom-site.com/en/projects/project-a/');
+
+     assert.strictEqual(options.items[1].title, 'Project B');
+     assert.strictEqual(options.items[1].description, 'Summary B');
+     assert.strictEqual(options.items[1].pubDate.toISOString(), '2024-01-01T00:00:00.000Z');
+     assert.strictEqual(options.items[1].link, 'https://custom-site.com/en/projects/project-b/');
+
+     // Check if the Response returned is the mock one
+@@ -107,7 +107,7 @@
+   await t.test('GET should fall back to default language for invalid language code', async () => {
+     const mockContext = {
+       params: { lang: 'invalid-lang' },
+       site: new URL('https://custom-site.com/')
+-    } as unknown as APIContext;
++    } as unknown as any;
+
+     await GET(mockContext);
+
+@@ -118,12 +118,12 @@
+
+     // In our filter, we check if the language is correct.
+     // We pass a dummy project with defaultLang to see if filter accepts it
+-    assert.ok(filter({ data: { lang: defaultLang } }));
+-    assert.ok(!filter({ data: { lang: 'invalid-lang' } }));
++    assert.ok((filter as any)({ data: { lang: defaultLang } }));
++    assert.ok(!(filter as any)({ data: { lang: 'invalid-lang' } }));
+
+     // Verify translations used are the fallback ones
+-    assert.strictEqual(rssArgs[0].title, dictionary[defaultLang].feedTitle);
++    assert.strictEqual((rssArgs[0] as any).title, dictionary[defaultLang].feedTitle);
+   });
+
+   await t.test('GET should use SITE_URL fallback when context.site is missing', async () => {
+     const mockContext = {
+       params: { lang: 'en' },
+       // site is intentionally omitted
+-    } as unknown as APIContext;
++    } as unknown as any;
+
+     await GET(mockContext);
+
+     assert.strictEqual(rssArgs.length, 1);
+-    assert.strictEqual(rssArgs[0].site, SITE_URL);
++    assert.strictEqual((rssArgs[0] as any).site, SITE_URL);
+
+     // Verify the links were generated using the fallback SITE_URL
+     const expectedLinkUrl = new URL(`/en/projects/project-a/`, SITE_URL).toString();
+-    assert.strictEqual(rssArgs[0].items[0].link, expectedLinkUrl);
++    assert.strictEqual((rssArgs[0] as any).items[0].link, expectedLinkUrl);
+   });
+ });
