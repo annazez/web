@@ -1,5 +1,4 @@
 const CALCULATION_DELAY_MS = 500;
-const RENDER_DELAY_MS = 150;
 const DEFAULT_TIMEOUT_MS = 5000;
 
 const getSize = (entry: PerformanceEntry | null): number => {
@@ -39,12 +38,23 @@ const renderCarbonFootprint = async (valueElement: HTMLElement): Promise<void> =
   const gramsCo2 = calculateCarbonValue();
   if (gramsCo2 === null) throw new Error('Carbon footprint unavailable');
 
-  valueElement.style.opacity = '0';
   valueElement.style.transition = 'opacity 0.3s ease';
 
-  await new Promise(resolve => setTimeout(resolve, RENDER_DELAY_MS));
-  valueElement.textContent = formatCarbonFootprint(gramsCo2);
-  valueElement.style.opacity = '1';
+  // To prevent multiple rapid calls attaching accumulating event listeners that never fire or fire incorrectly,
+  // we remove the specific transitionend logic that depended on `style.opacity === '0'`.
+  // We instead just set `once: true` and only process the propertyName === 'opacity'.
+  const handleTransitionEnd = (event: TransitionEvent) => {
+    if (event.propertyName === 'opacity') {
+      valueElement.textContent = formatCarbonFootprint(gramsCo2);
+      valueElement.style.opacity = '1';
+    }
+  };
+
+  // Attach listener with { once: true } to prevent listener leaks on concurrent calls.
+  valueElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
+
+  // Trigger layout and transition
+  valueElement.style.opacity = '0';
 };
 
 const initCarbonFootprint = (valueElement: HTMLElement): void => {
