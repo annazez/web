@@ -34,8 +34,7 @@ export const routes = {
   } satisfies Record<LanguageCode, string>,
 } as const;
 
-export const localizedSlugSets: ReadonlyArray<Record<LanguageCode, string>> =
-  Object.values(routes);
+export const localizedSlugSets: ReadonlyArray<Record<LanguageCode, string>> = Object.values(routes);
 
 export const routeLookup: ReadonlyMap<string, Record<LanguageCode, string>> = new Map(
   localizedSlugSets.flatMap(slugSet =>
