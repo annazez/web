@@ -17,8 +17,17 @@ export function getStaticPaths() {
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
 const t = useTranslations(currentLang);
-const entry =
-  (await getEntry('workspace', currentLang)) ?? (await getEntry('workspace', defaultLang));
+
+let entry;
+if (currentLang === defaultLang) {
+  entry = await getEntry('workspace', currentLang);
+} else {
+  const [currentEntry, fallbackEntry] = await Promise.all([
+    getEntry('workspace', currentLang),
+    getEntry('workspace', defaultLang),
+  ]);
+  entry = currentEntry ?? fallbackEntry;
+}
 
 if (!entry) {
   throw new Error(
