@@ -16,7 +16,7 @@ test('can switch language from EN to CS', async ({ page }) => {
 test('404 page has recovery links', async ({ page }) => {
   await page.goto('/missing-page');
   await expect(page.getByRole('heading', { level: 1, name: '404' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'EN' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'EN', exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: /Domu|Domů|Home/i })).toBeVisible();
 });
 
