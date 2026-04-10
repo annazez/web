@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
+import { toSafeExternalUrl } from '../../security/external-links';
 
 interface Props {
   title: string;
@@ -15,6 +16,8 @@ interface Props {
 const { title, description, summary, articleSlug, tags, repo, website } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const safeWebsite = toSafeExternalUrl(website);
+const safeRepo = toSafeExternalUrl(repo);
 ---
 
 <article
@@ -47,16 +50,16 @@ const t = useTranslations(lang);
   </div>
 
   {
-    (website || repo) && (
+    (safeWebsite || safeRepo) && (
       <div
         class:list={[
           'mt-auto grid gap-2 border-t border-(--color-border) pt-3',
-          website && repo ? 'grid-cols-2' : 'grid-cols-1',
+          safeWebsite && safeRepo ? 'grid-cols-2' : 'grid-cols-1',
         ]}
       >
-        {website && (
+        {safeWebsite && (
           <a
-            href={website}
+            href={safeWebsite}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${t('projects.visit')} ${title}`}
@@ -66,9 +69,9 @@ const t = useTranslations(lang);
             {t('projects.visit')}
           </a>
         )}
-        {repo && (
+        {safeRepo && (
           <a
-            href={repo}
+            href={safeRepo}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${t('projects.source')} ${title}`}
