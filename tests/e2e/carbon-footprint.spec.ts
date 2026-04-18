@@ -18,7 +18,7 @@ test('carbon footprint hides when unavailable', async ({ page }) => {
     // only when it is encoding the body's innerHTML, preserving normal behavior elsewhere.
     const OriginalTextEncoder = globalThis.TextEncoder;
     globalThis.TextEncoder = class TextEncoderMock extends OriginalTextEncoder {
-      encode(input?: string) {
+      encode(_input?: string) {
         // We know that in this test, any call to encode() during calculation should result in 0 size.
         // This is safer than exact string matching which might vary between browsers.
         return new Uint8Array(0);

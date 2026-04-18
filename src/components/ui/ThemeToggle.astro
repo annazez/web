@@ -105,7 +105,7 @@ const summaryClass = `${summaryBaseClass} ${
       margin-top 220ms ease;
   }
 
-  details.rolldown-menu[open] > ul {
+  details.rolldown-menu:global([open]) > ul {
     max-height: 12rem;
     margin-top: 0.5rem;
     opacity: 1;
@@ -115,7 +115,7 @@ const summaryClass = `${summaryBaseClass} ${
   }
 
   @media (min-width: 40rem) {
-    details.rolldown-menu[open] > ul {
+    details.rolldown-menu:global([open]) > ul {
       margin-top: 0;
     }
   }
