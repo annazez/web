@@ -7,17 +7,13 @@ import Layout from '../../../layouts/Layout.astro';
 import { getValidLanguageCode, supportedLangs, type LanguageCode } from '../../../i18n/dictionary';
 
 export async function getStaticPaths() {
-  const paths: Array<{ params: { lang: LanguageCode; slug: string } }> = [];
+  const projects = await getCollection('projects', ({ data }) =>
+    supportedLangs.includes(data.lang as LanguageCode)
+  );
 
-  const allProjects = await getCollection('projects');
-
-  for (const project of allProjects) {
-    if (supportedLangs.includes(project.data.lang as LanguageCode)) {
-      paths.push({ params: { lang: project.data.lang as LanguageCode, slug: project.data.slug } });
-    }
-  }
-
-  return paths;
+  return projects.map(project => ({
+    params: { lang: project.data.lang as LanguageCode, slug: project.data.slug },
+  }));
 }
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
