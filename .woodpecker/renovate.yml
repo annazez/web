@@ -3,7 +3,7 @@ when:
 
 steps:
   renovate:
-    image: renovate/renovate:43.104.2-full
+    image: renovate/renovate:43.141.5-full
     environment:
       RENOVATE_PLATFORM: forgejo
       RENOVATE_ENDPOINT: https://codeberg.org/api/v1
