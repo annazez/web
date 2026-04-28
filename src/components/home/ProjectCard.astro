@@ -11,9 +11,19 @@ interface Props {
   tags: string[];
   repo?: string;
   website?: string;
+  as?: 'h2' | 'h3';
 }
 
-const { title, description, summary, articleSlug, tags, repo, website } = Astro.props;
+const {
+  title,
+  description,
+  summary,
+  articleSlug,
+  tags,
+  repo,
+  website,
+  as: Heading = 'h3',
+} = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const safeWebsite = toSafeExternalUrl(website);
@@ -23,7 +33,9 @@ const safeRepo = toSafeExternalUrl(repo);
 <article class="flex h-full min-w-0 flex-col gap-5">
   <div class="flex flex-1 flex-col gap-2">
     <div class="flex items-start justify-between">
-      <h3 class="text-[1.625rem] leading-[1.15] font-medium tracking-[-0.02em]">{title}</h3>
+      <Heading class="text-[1.625rem] leading-[1.15] font-medium tracking-[-0.02em]">
+        {title}
+      </Heading>
     </div>
 
     {description && <p class="home-body-text">{description}</p>}
@@ -34,7 +46,7 @@ const safeRepo = toSafeExternalUrl(repo);
       class="mt-auto flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {
-        tags.map(tag => (
+        tags.map((tag: string) => (
           <span class="home-tag-text inline-block rounded-full bg-(--color-bg-surface-elevated) px-3 py-1 font-medium whitespace-nowrap">
             {tag}
           </span>

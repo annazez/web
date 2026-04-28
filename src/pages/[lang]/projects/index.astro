@@ -43,6 +43,7 @@ const projectArticles = await getCollection('projects', ({ data }) => data.lang 
             tags={article.data.tags}
             website={article.data.website}
             repo={article.data.repo}
+            as="h2"
           />
         ))
       }

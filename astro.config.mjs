@@ -18,11 +18,14 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      assetsInlineLimit: 0,
+    },
     server: {
       headers: {
         'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
         'Content-Security-Policy':
-          "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'sha256-3SEKDv3sFH97ZKnC+vAKSes3RjKxxvGDZQ1fYOFGRtU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';",
+          "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'sha256-kIQjJAKYjhVzFPCH2QseSWU3I7iOjwX7SOh2zVjAeF4='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';",
         'X-Frame-Options': 'SAMEORIGIN',
         'X-Content-Type-Options': 'nosniff',
         'Permissions-Policy':
@@ -34,7 +37,7 @@ export default defineConfig({
       headers: {
         'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
         'Content-Security-Policy':
-          "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'sha256-3SEKDv3sFH97ZKnC+vAKSes3RjKxxvGDZQ1fYOFGRtU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';",
+          "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'sha256-kIQjJAKYjhVzFPCH2QseSWU3I7iOjwX7SOh2zVjAeF4='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';",
         'X-Frame-Options': 'SAMEORIGIN',
         'X-Content-Type-Options': 'nosniff',
         'Permissions-Policy':
