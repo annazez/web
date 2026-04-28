@@ -18,6 +18,8 @@ repo: https://github.com/annazez/telperion-web
 ---
 
 import BeforeAfterSlider from '../../components/case-study/BeforeAfterSlider.astro';
+import oldTelperionWeb from '../../assets/images/old_telperion_web.webp';
+import newTelperionWeb from '../../assets/images/new_telperion_web.png';
 
 ## Problém
 
@@ -26,14 +28,15 @@ Telperion je nezisková organizace věnující se klimatickému vzdělávání. 
 ## Před a po
 
 <BeforeAfterSlider
-  beforeSrc="/images/old_telperion_web.webp"
-  afterSrc="/images/new_telperion_web.png"
+  beforeSrc={oldTelperionWeb}
+  afterSrc={newTelperionWeb}
   beforeAlt="Původní web Telperionu s rozbitou vizuální hierarchií a nekonzistentním rozložením."
   afterAlt="Nový web Telperionu s jasnou strukturou, lepší čitelností a moderním vizuálním systémem."
   beforeLabel="Před"
   afterLabel="Po"
   sliderLabel="Posunutím porovnáte starý a nový web Telperionu"
   caption="Posuňte jezdec a porovnejte původní podobu webu Telperion s novým řešením."
+  loading="eager"
 />
 
 ## Architektura

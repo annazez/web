@@ -1,7 +1,10 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
-  beforeSrc: string;
-  afterSrc: string;
+  beforeSrc: ImageMetadata | string;
+  afterSrc: ImageMetadata | string;
   beforeAlt: string;
   afterAlt: string;
   beforeLabel?: string;
@@ -9,6 +12,7 @@ interface Props {
   sliderLabel?: string;
   caption?: string;
   initialPosition?: number;
+  loading?: 'lazy' | 'eager';
 }
 
 const {
@@ -21,9 +25,12 @@ const {
   sliderLabel = 'Compare before and after website versions',
   caption,
   initialPosition = 50,
+  loading = 'lazy',
 } = Astro.props;
 
 const clampedInitial = Math.max(0, Math.min(100, initialPosition));
+const isBeforeExternal = typeof beforeSrc === 'string';
+const isAfterExternal = typeof afterSrc === 'string';
 ---
 
 <figure class="before-after" data-before-after>
@@ -32,22 +39,44 @@ const clampedInitial = Math.max(0, Math.min(100, initialPosition));
     data-before-after-viewport
     style={`--before-after-position: ${clampedInitial}%`}
   >
-    <img
-      class="before-after__image"
-      src={beforeSrc}
-      alt={beforeAlt}
-      loading="lazy"
-      decoding="async"
-    />
+    {
+      isBeforeExternal ? (
+        <img
+          class="before-after__image"
+          src={beforeSrc as string}
+          alt={beforeAlt}
+          loading={loading}
+          decoding="async"
+        />
+      ) : (
+        <Image
+          class="before-after__image"
+          src={beforeSrc as ImageMetadata}
+          alt={beforeAlt}
+          loading={loading}
+        />
+      )
+    }
 
     <div class="before-after__after-layer" aria-hidden="true">
-      <img
-        class="before-after__image"
-        src={afterSrc}
-        alt={afterAlt}
-        loading="lazy"
-        decoding="async"
-      />
+      {
+        isAfterExternal ? (
+          <img
+            class="before-after__image"
+            src={afterSrc as string}
+            alt={afterAlt}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <Image
+            class="before-after__image"
+            src={afterSrc as ImageMetadata}
+            alt={afterAlt}
+            loading="lazy"
+          />
+        )
+      }
     </div>
 
     <div class="before-after__divider" data-before-after-divider></div>

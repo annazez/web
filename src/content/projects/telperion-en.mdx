@@ -18,6 +18,8 @@ repo: https://github.com/annazez/telperion-web
 ---
 
 import BeforeAfterSlider from '../../components/case-study/BeforeAfterSlider.astro';
+import oldTelperionWeb from '../../assets/images/old_telperion_web.webp';
+import newTelperionWeb from '../../assets/images/new_telperion_web.png';
 
 ## The Problem
 
@@ -26,14 +28,15 @@ Telperion is an NGO dedicated to climate education. Their existing digital prese
 ## Before and After
 
 <BeforeAfterSlider
-  beforeSrc="/images/old_telperion_web.webp"
-  afterSrc="/images/new_telperion_web.png"
+  beforeSrc={oldTelperionWeb}
+  afterSrc={newTelperionWeb}
   beforeAlt="Legacy Telperion website with broken visual hierarchy and inconsistent layout."
   afterAlt="Redesigned Telperion website with clear structure, improved readability, and modern visual system."
   beforeLabel="Before"
   afterLabel="After"
   sliderLabel="Drag to compare the old and new Telperion website"
   caption="Move the slider to compare the original Telperion website with the redesigned version."
+  loading="eager"
 />
 
 ## The Architecture

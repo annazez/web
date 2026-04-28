@@ -81,13 +81,33 @@ const isTechnicalPath = (path: string | null): boolean => {
   return false;
 };
 
+const normalizeSitemapUrl = (url: string): string => {
+  if (!url.startsWith('http')) {
+    return url;
+  }
+
+  try {
+    const parsed = new URL(url);
+    // If the sitemap contains absolute URLs pointing to the production site,
+    // we rewrite them to the current origin to avoid CORS issues during
+    // local development or Lighthouse CI audits.
+    if (parsed.origin !== window.location.origin) {
+      return `${window.location.origin}${parsed.pathname}${parsed.search}${parsed.hash}`;
+    }
+  } catch {
+    // Fallback to original URL
+  }
+  return url;
+};
+
 const fetchXml = async (url: string): Promise<string> => {
-  const response = await fetch(url, {
+  const normalizedUrl = normalizeSitemapUrl(url);
+  const response = await fetch(normalizedUrl, {
     headers: { Accept: 'application/xml,text/xml' },
   });
 
   if (!response.ok) {
-    throw new Error(`Unable to fetch sitemap: ${url}`);
+    throw new Error(`Unable to fetch sitemap: ${normalizedUrl}`);
   }
 
   return response.text();

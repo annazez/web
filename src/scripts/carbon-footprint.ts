@@ -76,7 +76,8 @@ const initCarbonFootprint = (valueElement: HTMLElement): void => {
         valueElement.parentElement?.style.setProperty('display', 'none');
       })
       .finally(() => {
-        performance.clearResourceTimings();
+        // We avoid clearing resource timings to ensure that subsequent
+        // monitoring tools (like Lighthouse) can still access them.
       });
   }, CALCULATION_DELAY_MS);
 
