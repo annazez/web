@@ -115,17 +115,39 @@ Expires: [ISO 8601 date]
 | `public/pgp/public-key.asc` | Armored public key            |
 | `~/.gnupg/` (local)         | Private key (NEVER committed) |
 
+**Fingerprint**: `20CE F7B1 FB8B 21BF E64D  5AE0 91E9 CF41 C256 1839`
+
+### Keyoxide Identity Verification
+
+The site links to a [Keyoxide](https://keyoxide.org) profile that cryptographically verifies
+ownership of external accounts (GitHub, Codeberg, etc.) using OpenPGP notation packets
+embedded in the public key.
+
+- **Profile URL**: `https://keyoxide.org/20CEF7B1FB8B21BFE64D5AE091E9CF41C2561839`
+- **Homepage link**: Shield-check icon in the Hero section social links
+- **How it works**: Keyoxide reads `proof@ariadne.id` notation packets from the published
+  key and cross-references them with platform-specific proof statements (e.g. a Codeberg
+  repository or GitHub gist). The site itself performs no verification — it only links out.
+
 ### Rotation Procedure
 
 ```bash
 # 1. Export new key
 gpg --armor --export > public/pgp/public-key.asc
 
-# 2. Update security.txt expiry
+# 2. Re-add Keyoxide notation packets for each platform proof
+#    See: https://docs.keyoxide.org/getting-started/creating-profile/
+gpg --edit-key <fingerprint>
+# notation> proof@ariadne.id=https://codeberg.org/annazez/keyoxide-proof
+# notation> proof@ariadne.id=https://gist.github.com/annazez/<gist-id>
+
+# 3. Update security.txt expiry
 # Edit public/.well-known/security.txt
 
-# 3. Commit and deploy
-git add public/
+# 4. Update fingerprint in src/data/identity.ts if changed
+
+# 5. Commit and deploy
+git add public/ src/data/identity.ts
 git commit -m "Rotate PGP key"
 git push
 ```

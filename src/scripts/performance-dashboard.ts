@@ -183,19 +183,15 @@ export function initPerformanceDashboard(): void {
       continue;
     }
 
-    const i18nElement = dashboard.querySelector('[data-i18n]');
+    const i18nElement = dashboard.querySelector('script[type="application/json"][data-i18n]');
     const i18nConfig: I18nConfig = i18nElement
-      ? JSON.parse(i18nElement.getAttribute('data-i18n') || '{}')
+      ? JSON.parse(i18nElement.textContent || '{}')
       : { na: 'N/A', noSnapshot: 'No snapshot', locale: 'en-GB' };
 
-    const rawResults = dashboard.getAttribute('data-results') ?? '{}';
-    let resultsByPath: Record<string, LighthousePageResult> = {};
-
-    try {
-      resultsByPath = JSON.parse(rawResults);
-    } catch {
-      resultsByPath = {};
-    }
+    const resultsElement = dashboard.querySelector('script[type="application/json"][data-results]');
+    const resultsByPath: Record<string, LighthousePageResult> = resultsElement
+      ? JSON.parse(resultsElement.textContent || '{}')
+      : {};
 
     const resultEntries = Object.values(resultsByPath).filter(
       (entry): entry is LighthousePageResult => entry !== null && typeof entry.path === 'string'

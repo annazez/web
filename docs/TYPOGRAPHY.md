@@ -119,18 +119,27 @@ The site uses a single heading logic everywhere: native `h1`-`h6` tags, styled b
 
 ### Surface Template
 
-Use this shell for site-wide floating panels, cards, and dashboards:
+The site uses a shared `<Surface>` component to implement floating panels, cards, and dashboards. This ensures consistent border radii, backgrounds, and shadows across all features.
 
-| Purpose       | Utility set                                                                    |
+**Implementation**:
+
+```astro
+<Surface as="section" class="flex flex-col gap-4">
+  <slot />
+</Surface>
+```
+
+| Purpose       | Attribute / Utility                                                            |
 | ------------- | ------------------------------------------------------------------------------ |
+| Component     | `src/components/ui/Surface.astro`                                              |
 | Outer shell   | `rounded-2xl border border-(--color-border) bg-(--color-bg-surface) shadow-sm` |
 | Inner spacing | `px-4 py-5 sm:px-5`                                                            |
-| Content flow  | `flex h-full min-w-0 flex-col gap-5`                                           |
-| Clipping      | `overflow-hidden` when needed                                                  |
+| Clipping      | `overflow-hidden`                                                              |
 
 **Rules**:
 
-- Use the same shell on homepage panels, project cards, and status blocks.
+- **Always** use the `<Surface>` component instead of inlining its classes.
+- Use the `as` prop to specify the semantic element (`section`, `article`, `li`, etc.).
 - Do not add custom shadows or alternate border radii for new feature surfaces.
 - Keep background and border tokens consistent so light and dark modes match.
 
@@ -299,12 +308,10 @@ Any new surface-like component **must** reuse the shared shell attributes from t
   <p class="home-body-text">Section description goes here.</p>
 
   <ul class="flex flex-col gap-4">
-    <li
-      class="rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
-    >
+    <Surface as="li">
       <h3>Card Title</h3>
       <p class="home-body-text mt-2">Card description.</p>
-    </li>
+    </Surface>
   </ul>
 </section>
 ```

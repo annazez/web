@@ -1,11 +1,28 @@
-const ALLOWED_EXTERNAL_HOSTS = new Set([
-  'github.com',
-  'codeberg.org',
+import { identity } from '../data/identity';
+
+const ADDITIONAL_ALLOWED_HOSTS = [
   'telperion.cz',
-  'www.linkedin.com',
-  'signal.me',
   'wellbeing.zezulka.me',
-  'orcid.org',
+  // /uses page tool links
+  'fedoraproject.org',
+  'code.visualstudio.com',
+  'neovim.io',
+  'ghostty.org',
+  'fishshell.com',
+  'starship.rs',
+  'www.mozilla.org',
+  'nodejs.org',
+  'astro.build',
+  'podman.io',
+  'caddyserver.com',
+  'woodpecker-ci.org',
+];
+
+const ALLOWED_EXTERNAL_HOSTS = new Set([
+  ...Object.values(identity)
+    .filter(val => typeof val === 'string' && val.startsWith('http'))
+    .map(u => new URL(u).hostname),
+  ...ADDITIONAL_ALLOWED_HOSTS,
 ]);
 
 export function toSafeExternalUrl(value: string | undefined): string | undefined {

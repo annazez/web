@@ -1,0 +1,14 @@
+---
+id: telperion-01
+project: Telperion
+title: 'Statické generování přes Astro'
+lang: cs
+context: 'Organizace potřebovala vynikající výkon, velmi nízkou uhlíkovou stopu a provozní náklady blížící se nule. Dynamicky renderovaný server by přinesl provozní zátěž, kterou by klient dlouhodobě neudržel.'
+decision: 'Astro jako SSG framework s nulovým klientským JavaScriptem v základu.'
+consequences: 'Načítání pod jednu sekundu i na pomalém připojení. Žádná serverová plocha pro útok - celý výstup je složka předrenderovaného HTML, CSS a optimalizovaných assetů. Hosting na statickém CDN eliminuje správu serveru. Architektonická volba přímo rezonuje s hodnotami organizace v oblasti udržitelnosti.'
+tags:
+  - SSG
+  - Výkon
+  - Udržitelnost
+decidedAt: 2026-04-03
+---

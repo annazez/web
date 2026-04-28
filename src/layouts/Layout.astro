@@ -3,6 +3,8 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { langPrefixRegex, supportedLangs, type LanguageCode } from '../i18n/dictionary';
 import { useTranslations, localeForOg } from '../i18n/utils';
+import { SITE_CSP, THEME_BOOTSTRAP_SCRIPT } from '../data/csp';
+import CommandPalette from '../components/ui/CommandPalette.astro';
 
 interface Props {
   title?: string;
@@ -39,10 +41,7 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'sha256-kIQjJAKYjhVzFPCH2QseSWU3I7iOjwX7SOh2zVjAeF4='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
-    />
+    <meta http-equiv="Content-Security-Policy" content={SITE_CSP} />
     <meta name="referrer" content="no-referrer" />
     <!--
       The following headers are missing from meta tags because they must be set at the HTTP level:
@@ -55,50 +54,20 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
     -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <ClientRouter />
-    <script is:inline>
-      /**
-       * THEME BOOTSTRAP:
-       * This script must run synchronously before paint to prevent FOUC.
-       * CSP: If this script is modified, the SHA-256 hash in Content-Security-Policy must be updated.
-       */
-      const root = document.documentElement;
-
-      const getPreferredTheme = () => {
-        const storedTheme =
-          typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
-        if (storedTheme === 'dark' || storedTheme === 'light') {
-          return storedTheme;
-        }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      };
-
-      const applyPreferredTheme = () => {
-        const theme = getPreferredTheme();
-        if (theme === 'dark') {
-          root.classList.add('dark');
-          root.style.colorScheme = 'dark';
-        } else {
-          root.classList.remove('dark');
-          root.style.colorScheme = 'light';
-        }
-      };
-
-      applyPreferredTheme();
-      window.__applyPreferredTheme = applyPreferredTheme;
-    </script>
+    <script is:inline set:html={THEME_BOOTSTRAP_SCRIPT} />
     <script>
+      import { bindOnce } from '../scripts/bind-once';
+
       const _window = window as Window & {
-        __themeAfterSwapBound?: boolean;
         __applyPreferredTheme?: () => void;
       };
 
       // Astro view transitions can swap DOM state; re-apply persisted theme right after swap.
-      if (!_window.__themeAfterSwapBound) {
+      bindOnce('theme-after-swap', () => {
         document.addEventListener('astro:after-swap', () => {
           if (_window.__applyPreferredTheme) _window.__applyPreferredTheme();
         });
-        _window.__themeAfterSwapBound = true;
-      }
+      });
     </script>
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
@@ -143,6 +112,10 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
       <a href="#main-content" class="skip-link">{t('layout.skipToMain')}</a>
       <slot />
     </div>
+    <CommandPalette />
+    <script>
+      import '../scripts/command-palette';
+    </script>
     <script>
       let cleanupLayers: (() => void) | null = null;
 

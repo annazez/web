@@ -1,0 +1,14 @@
+---
+id: mental-health-app-01
+project: Mental Health App
+title: 'Soukromí dat a klinická transparentnost'
+lang: cs
+context: 'Aplikace zpracovává citlivé zdravotní údaje Kategorie I dle GDPR. Uživatelé sdílející intimní detaily o svém duševním stavu musí mít naprostou jistotu ohledně toho, jak jsou jejich data používána, uchovávána a - klíčově - nikdy prodávána. Důvěra není UX funkcí; je samotným produktem.'
+decision: 'Architektura privacy-by-design s maximálním lokálním zpracováním dat. Explicitní, granulované toky souhlasu pro veškerá data opouštějící zařízení. Jasný anonymizační pipeline pro případné přispívání k výzkumu, s opt-in mechanikou a srozumitelným vysvětlením způsobu využití dat. Žádné dark patterns. Žádné výchozí sdílení dat. Anonymizační vrstva odděluje PII od klinických dat v bodě příjmu, před jakoukoli agregací.'
+consequences: 'Omezená flexibilita pro cloudové personalizační funkce v reálném čase v raných verzích. Vyšší počáteční investice do local-first datové vrstvy. Výrazná dlouhodobá výhoda v důvěře uživatelů, regulatorní shodě a vhodnosti pro integraci do certifikovaných klinických systémů.'
+tags:
+  - Soukromí
+  - GDPR
+  - Zdravotnictví
+decidedAt: 2026-04-04
+---

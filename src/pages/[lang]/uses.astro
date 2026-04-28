@@ -1,0 +1,139 @@
+---
+/**
+ * /uses page — IndieWeb tradition (see uses.tech).
+ *
+ * Lists hardware, software, and tools used daily.
+ * Purely static — zero client JS.
+ */
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import Footer from '../../components/ui/Footer.astro';
+import LanguagePicker from '../../components/ui/LanguagePicker.astro';
+import Surface from '../../components/ui/Surface.astro';
+import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
+import { useTranslations } from '../../i18n/utils';
+import { toSafeExternalUrl } from '../../security/external-links';
+import uses from '../../data/uses';
+import type { TranslationKey } from '../../i18n/locales/en';
+
+export function getStaticPaths() {
+  return supportedLangs.map(lang => ({ params: { lang } }));
+}
+
+const currentLang = getValidLanguageCode(Astro.params.lang);
+const t = useTranslations(currentLang);
+---
+
+<Layout title={t('seo.uses')} description={t('uses.subtitle')} lang={currentLang}>
+  <LanguagePicker />
+
+  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
+    <BackLink href={`/${currentLang}/`} />
+
+    <section class="flex flex-col gap-4">
+      <h1>{t('uses.title')}</h1>
+      <p class="home-body-text">{t('uses.subtitle')}</p>
+    </section>
+
+    {
+      uses.map(category => {
+        const categoryLabel = t(category.categoryKey as TranslationKey);
+        return (
+          <Surface as="section" id={`uses-${category.categoryKey.split('.').pop()}`}>
+            <h2>{categoryLabel}</h2>
+            <ul class="uses-list" role="list">
+              {category.items.map(item => {
+                const safeUrl = toSafeExternalUrl(item.url);
+                return (
+                  <li>
+                    <h3>
+                      {safeUrl ? (
+                        <a
+                          href={safeUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="uses-link"
+                        >
+                          {item.name}
+                          <span aria-hidden="true" class="uses-link-arrow">
+                            ↗
+                          </span>
+                        </a>
+                      ) : (
+                        item.name
+                      )}
+                    </h3>
+                    {item.note && <p class="home-subtle-text">{item.note}</p>}
+                  </li>
+                );
+              })}
+            </ul>
+          </Surface>
+        );
+      })
+    }
+
+    <Footer lang={currentLang} />
+  </main>
+</Layout>
+
+<style>
+  section h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .uses-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .uses-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .uses-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .uses-list h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .uses-link {
+    color: var(--color-brand);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .uses-link:hover {
+    color: var(--color-accent);
+  }
+
+  .uses-link-arrow {
+    display: inline-block;
+    margin-left: 0.2rem;
+    font-size: 0.8em;
+    opacity: 0.5;
+    transition: opacity 150ms ease;
+  }
+
+  .uses-link:hover .uses-link-arrow {
+    opacity: 1;
+  }
+
+  /* Tighten the note text under each item */
+  .uses-list :global(.home-subtle-text) {
+    margin: 0;
+  }
+</style>

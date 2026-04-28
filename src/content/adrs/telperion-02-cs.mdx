@@ -1,0 +1,14 @@
+---
+id: telperion-02
+project: Telperion
+title: 'Nativní i18n routing a WCAG compliance vynucená v CI'
+lang: cs
+context: 'Telperion oslovuje dvojjazyčné publikum (čeština a angličtina) včetně uživatelů se zrakovým postižením závislých na čtečkách obrazovky. Přístupnost nemohla být přidána dodatečně; musela být strukturálně zabudována.'
+decision: 'Vestavěný i18n routing Asta pro oddělení jazyků. Soulad s WCAG 2.1 AA je automaticky ověřován při každém buildu přes Lighthouse a axe-core. Pipeline blokuje merge jakéhokoli kódu, který zavede chyby v kontrastním poměru, ARIA označení nebo struktuře nadpisů - to se týká vývojářských změn, ne každodenních úprav obsahu, které netechničtí pracovníci dělají přes Markdown.'
+consequences: 'Jazykově rozlišená URL struktura (`/cs/`, `/en/`) je řešena na úrovni frameworku bez overhead klientského routingu. Strukturální přístupnost je hlídána tam, kde je největší riziko regrese - při architektonických změnách - aniž by to přidávalo třenice při běžných aktualizacích obsahu.'
+tags:
+  - i18n
+  - Přístupnost
+  - CI
+decidedAt: 2026-04-03
+---

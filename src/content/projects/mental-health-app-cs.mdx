@@ -34,25 +34,13 @@ Architektura se dělí do čtyř primárních funkčních domén, každá s vlas
 
 ## Záznamy architektonických rozhodnutí
 
-### ADR-01: Soukromí dat a klinická transparentnost
+import Adr from '../../components/case-study/Adr.astro';
 
-**Kontext:** Aplikace zpracovává citlivé zdravotní údaje Kategorie I dle GDPR. Uživatelé sdílející intimní detaily o svém duševním stavu musí mít naprostou jistotu ohledně toho, jak jsou jejich data používána, uchovávána a - klíčově - nikdy prodávána. Důvěra není UX funkcí; je samotným produktem.
-
-**Rozhodnutí:** Architektura privacy-by-design s maximálním lokálním zpracováním dat. Explicitní, granulované toky souhlasu pro veškerá data opouštějící zařízení. Jasný anonymizační pipeline pro případné přispívání k výzkumu, s opt-in mechanikou a srozumitelným vysvětlením způsobu využití dat. Žádné dark patterns. Žádné výchozí sdílení dat. Anonymizační vrstva odděluje PII od klinických dat v bodě příjmu, před jakoukoli agregací.
-
-**Důsledky:** Omezená flexibilita pro cloudové personalizační funkce v reálném čase v raných verzích. Vyšší počáteční investice do local-first datové vrstvy. Výrazná dlouhodobá výhoda v důvěře uživatelů, regulatorní shodě a vhodnosti pro integraci do certifikovaných klinických systémů.
+<Adr id="mental-health-app-01" />
 
 ---
 
-### ADR-02: Klinicky podložený personalizační engine
-
-**Kontext:** Generické wellness aplikace nabízejí generické rady. Tato aplikace musí dodávat kontextově přiměřený obsah uživatelům v různých psychologických stavech - od zvládání mírného stresu po aktivní epizody nálady. Jednotná odpověď je v této oblasti aktivně škodlivá.
-
-**Rozhodnutí:** Personalizační engine je inicializován třemi validovanými klinickými nástroji: **WHO-5** (celková pohoda), **GAD-7** (závažnost úzkosti) a **PHQ-9** (screening deprese). Tyto dotazníky jsou administrovány periodicky a v kontextově vhodných momentech (nikoli jako rušivé popupy). Výsledné skóre tvoří dynamický model stavu uživatele, který řídí doporučení obsahu, obtížnost cvičení, tón výzev v deníku a frekvenci notifikací.
-
-Úpravy doporučení řízené AI jsou prováděny transparentně; uživatelé mohou nahlédnout do důvodu zobrazení konkrétního doporučení. Engine nediagnostikuje; kontextualizuje. Klinická interpretace zůstává doménou kvalifikovaných odborníků v rámci integrační vrstvy.
-
-**Důsledky:** Komplexnější struktura obsahu a logika doporučení oproti standardnímu systému založenému na pravidlech. Vyžaduje průběžný klinický poradní vztah pro validaci prahových skóre a protokolů odpovědí. Kompromisem je systém poskytující skutečně personalizovanou podporu, nikoli pouze personalizaci jako marketingovou funkci.
+<Adr id="mental-health-app-02" />
 
 ## Aktuální stav
 

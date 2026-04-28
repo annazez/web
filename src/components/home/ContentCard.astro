@@ -1,4 +1,7 @@
 ---
+import { toSafeExternalUrl } from '../../security/external-links';
+import Surface from '../ui/Surface.astro';
+
 interface Props {
   title: string;
   description: string;
@@ -7,22 +10,33 @@ interface Props {
 }
 
 const { title, description, link, linkHref } = Astro.props;
-const href = linkHref || link;
+let href = linkHref || link;
+let displayLink = link;
+
+if (href?.startsWith('http://') || href?.startsWith('https://')) {
+  const safeUrl = toSafeExternalUrl(href);
+  if (safeUrl) {
+    href = safeUrl;
+  } else {
+    displayLink = undefined;
+  }
+}
+
 const isExternal = href && !href.startsWith('mailto:') && !href.startsWith('/');
 ---
 
-<li class="flex flex-col rounded-lg border border-(--color-border) bg-(--color-bg-surface) p-4">
+<Surface as="li" class="flex flex-col">
   <h3>{title}</h3>
   <p class="home-body-text mt-2">{description}</p>
   {
-    link && (
+    displayLink && (
       <a
         href={href}
         class="home-micro-label mt-3 inline-block transition-colors hover:text-(--color-brand)"
         {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       >
-        {link}
+        {displayLink}
       </a>
     )
   }
-</li>
+</Surface>

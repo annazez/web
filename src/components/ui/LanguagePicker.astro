@@ -1,7 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
-import { getCollection } from 'astro:content';
 import {
   languages,
   languageEntries,
@@ -9,27 +8,13 @@ import {
   type LanguageCode,
 } from '../../i18n/dictionary';
 import ThemeToggle from './ThemeToggle.astro';
+import { getAllProjectSlugSets } from '../../lib/projects';
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 
-const allProjects = await getCollection('projects');
-
 // Source dynamic slug pairs from projects collection.
-// Grouping by slug field as it currently identifies the same project across languages.
-const projectSlugSets = Object.values(
-  allProjects.reduce(
-    (acc, project) => {
-      const { slug, lang } = project.data;
-      if (!acc[slug]) {
-        acc[slug] = { en: slug, cs: slug };
-      }
-      acc[slug][lang as LanguageCode] = slug;
-      return acc;
-    },
-    {} as Record<string, Record<LanguageCode, string>>
-  )
-);
+const projectSlugSets = await getAllProjectSlugSets();
 
 const routeLookup = buildRouteLookup(projectSlugSets);
 
@@ -199,9 +184,7 @@ function getLocalizedHref(targetLang: LanguageCode): string {
 </style>
 
 <script>
-  const controlsWindow = window as Window & {
-    __mobileControlsPageLoadBound?: boolean;
-  };
+  import { bindOnce } from '../../scripts/bind-once';
 
   function initMobileControls() {
     const menu = document.getElementById('mobile-controls-menu') as HTMLDivElement | null;
@@ -245,8 +228,7 @@ function getLocalizedHref(targetLang: LanguageCode): string {
   }
 
   initMobileControls();
-  if (!controlsWindow.__mobileControlsPageLoadBound) {
+  bindOnce('mobile-controls-page-load', () => {
     document.addEventListener('astro:page-load', initMobileControls);
-    controlsWindow.__mobileControlsPageLoadBound = true;
-  }
+  });
 </script>

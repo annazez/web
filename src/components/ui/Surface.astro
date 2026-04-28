@@ -1,0 +1,23 @@
+---
+/**
+ * Surface Component
+ *
+ * Implements the canonical "Surface Template" defined in the design system.
+ * Used for cards, dashboard blocks, and content sections that require a
+ * consistent shell with border, background, and rounded corners.
+ */
+export interface Props {
+  as?: string;
+  class?: string;
+  id?: string;
+}
+
+const { as: Tag = 'div', class: className, ...rest } = Astro.props;
+---
+
+<Tag
+  {...rest}
+  class={`overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5 ${className ?? ''}`}
+>
+  <slot />
+</Tag>

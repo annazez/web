@@ -26,6 +26,8 @@ export const langPrefixRegex = new RegExp(`^\\/(${supportedLangs.join('|')})(?:\
 export const staticSlugSets: ReadonlyArray<Record<LanguageCode, string>> = [
   { en: 'projects', cs: 'projects' },
   { en: 'quality', cs: 'quality' },
+  { en: 'uses', cs: 'uses' },
+  { en: 'architecture-decisions', cs: 'architecture-decisions' },
 ];
 
 export function buildRouteLookup(

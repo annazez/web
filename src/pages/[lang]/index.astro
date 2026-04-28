@@ -1,5 +1,4 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import LanguagePicker from '../../components/ui/LanguagePicker.astro';
 import Hero from '../../components/home/Hero.astro';
@@ -8,6 +7,7 @@ import ContactSection from '../../components/home/ContactSection.astro';
 import Footer from '../../components/ui/Footer.astro';
 import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
 import { useTranslations } from '../../i18n/utils';
+import { getFeaturedProjects } from '../../lib/projects';
 
 export function getStaticPaths() {
   return supportedLangs.map(lang => ({ params: { lang } }));
@@ -15,7 +15,7 @@ export function getStaticPaths() {
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
 const t = useTranslations(currentLang);
-const projectArticles = await getCollection('projects', ({ data }) => data.lang === currentLang);
+const projectArticles = await getFeaturedProjects(currentLang);
 ---
 
 <Layout title={t('seo.home')} lang={currentLang}>

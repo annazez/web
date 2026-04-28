@@ -1,0 +1,200 @@
+---
+/**
+ * Command Palette Component
+ *
+ * A keyboard-driven modal (<dialog>) that surfaces the site's hidden structural
+ * modes (#arch, #audit, #layers) and common shortcuts. Opened with the ? key.
+ *
+ * Follows the Surface Template design language. All text uses semantic design
+ * system classes (home-body-text, home-micro-label) — no arbitrary utilities.
+ */
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const printShortcut = '⌘/Ctrl P';
+---
+
+<dialog
+  id="command-palette"
+  aria-label={t('palette.title')}
+  data-palette-open-hint={t('palette.openHint')}
+>
+  <div class="command-palette-inner">
+    <h2>{t('palette.title')}</h2>
+    <ul class="command-palette-list" role="list">
+      <li>
+        <kbd>A</kbd>
+        <span class="home-body-text">{t('palette.archMode')}</span>
+        <span class="home-micro-label">#arch</span>
+      </li>
+      <li>
+        <kbd>U</kbd>
+        <span class="home-body-text">{t('palette.auditMode')}</span>
+        <span class="home-micro-label">#audit</span>
+      </li>
+      <li>
+        <kbd>L</kbd>
+        <span class="home-body-text">{t('palette.layersMode')}</span>
+        <span class="home-micro-label">#layers</span>
+      </li>
+      <li>
+        <kbd>{printShortcut}</kbd>
+        <span class="home-body-text">{t('palette.printMode')}</span>
+        <span class="home-micro-label">print</span>
+      </li>
+      <li>
+        <kbd>H</kbd>
+        <span class="home-body-text">{t('palette.home')}</span>
+      </li>
+      <li>
+        <kbd>Esc</kbd>
+        <span class="home-body-text">{t('palette.close')}</span>
+      </li>
+    </ul>
+    <p class="home-micro-label command-palette-hint">{t('palette.openHint')}</p>
+  </div>
+</dialog>
+
+<style>
+  dialog#command-palette {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    max-width: 26rem;
+    width: calc(100% - 2rem);
+    margin: auto;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    background: var(--color-bg-surface);
+    color: var(--color-brand);
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.18),
+      0 0 0 1px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.97);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      overlay 180ms ease allow-discrete,
+      display 180ms ease allow-discrete;
+  }
+
+  dialog#command-palette:global([open]) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  @starting-style {
+    dialog#command-palette:global([open]) {
+      opacity: 0;
+      transform: translateY(0.5rem) scale(0.97);
+    }
+  }
+
+  dialog#command-palette::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition:
+      opacity 180ms ease,
+      overlay 180ms ease allow-discrete,
+      display 180ms ease allow-discrete;
+  }
+
+  dialog#command-palette:global([open])::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    dialog#command-palette:global([open])::backdrop {
+      opacity: 0;
+    }
+  }
+
+  /* Disable animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    dialog#command-palette,
+    dialog#command-palette::backdrop {
+      transition: none;
+    }
+  }
+
+  .command-palette-inner {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .command-palette-inner h2 {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .command-palette-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .command-palette-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.5rem;
+    transition: background 120ms ease;
+  }
+
+  .command-palette-list li:hover {
+    background: var(--color-bg-surface-elevated);
+  }
+
+  .command-palette-list kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 1.5rem;
+    padding: 0 0.4rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.35rem;
+    background: var(--color-bg-surface-elevated);
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    flex-shrink: 0;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  .command-palette-list .home-body-text {
+    flex: 1;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .command-palette-list .home-micro-label {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .command-palette-hint {
+    margin: 1rem 0 0;
+    text-align: center;
+  }
+
+  /* Hide from print */
+  @media print {
+    dialog#command-palette {
+      display: none !important;
+    }
+  }
+</style>

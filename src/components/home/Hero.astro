@@ -14,6 +14,7 @@ const linkedinUrl = toSafeExternalUrl(identity.linkedin);
 const orcidUrl = toSafeExternalUrl(identity.orcid);
 const githubUrl = toSafeExternalUrl(identity.github);
 const codebergUrl = toSafeExternalUrl(identity.codeberg);
+const keyoxideUrl = toSafeExternalUrl(identity.keyoxide);
 ---
 
 <div class="flex flex-col gap-8">
@@ -68,6 +69,19 @@ const codebergUrl = toSafeExternalUrl(identity.codeberg);
               aria-label="Codeberg"
             >
               <Icon name="simple-icons:codeberg" class="size-5" />
+            </a>
+          )
+        }
+        {
+          keyoxideUrl && (
+            <a
+              href={keyoxideUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('home.social.keyoxide')}
+              title={t('home.social.keyoxide')}
+            >
+              <Icon name="lucide:shield-check" class="size-5" />
             </a>
           )
         }

@@ -122,13 +122,11 @@ const summaryClass = `${summaryBaseClass} ${
 </style>
 
 <script>
+  import { bindOnce } from '../../scripts/bind-once';
+
   type ThemeMode = 'light' | 'dark' | 'system';
 
   const THEME_STORAGE_KEY = 'theme';
-  const themeWindow = window as Window & {
-    __themePageLoadBound?: boolean;
-    __themeSyncBound?: boolean;
-  };
   const prefersDarkMedia = window.matchMedia('(prefers-color-scheme: dark)');
 
   function getStoredThemeMode(): ThemeMode {
@@ -248,13 +246,12 @@ const summaryClass = `${summaryBaseClass} ${
   }
 
   initThemeUI();
-  if (!themeWindow.__themePageLoadBound) {
+  bindOnce('theme-page-load', () => {
     document.addEventListener('astro:page-load', initThemeUI);
-    themeWindow.__themePageLoadBound = true;
-  }
+  });
 
   // Listen for system theme changes
-  if (!themeWindow.__themeSyncBound) {
+  bindOnce('theme-sync', () => {
     prefersDarkMedia.addEventListener('change', () => {
       if (getStoredThemeMode() !== 'system') {
         return;
@@ -270,7 +267,5 @@ const summaryClass = `${summaryBaseClass} ${
 
       setThemeMode(getStoredThemeMode(), { persist: false, animate: false });
     });
-
-    themeWindow.__themeSyncBound = true;
-  }
+  });
 </script>

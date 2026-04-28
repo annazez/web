@@ -8,6 +8,7 @@ import placeholderData from '../data/lighthouse.localhost.json';
 import lighthouseData from '../data/lighthouse.json';
 import type { LighthouseData, ScoreKey, MetricKey } from '../types/lighthouse';
 import { getLangFromUrl, useTranslations, localeFor } from '../i18n/utils';
+import Surface from './ui/Surface.astro';
 
 const isLocalhost = Astro.url.hostname === 'localhost' || Astro.url.hostname === '127.0.0.1';
 const data = (isLocalhost ? placeholderData : lighthouseData) as LighthouseData;
@@ -53,13 +54,13 @@ const formatTimestamp = (value: string | null): string => {
 };
 
 const resultsByPath = Object.fromEntries(pages.map(page => [page.path, page]));
-const serializedResultsByPath = JSON.stringify(resultsByPath).replace(/</g, '\\u003c');
+const resultsByPathData = JSON.stringify(resultsByPath);
 
 const i18nData = JSON.stringify({
   na: t('quality.na'),
   noSnapshot: t('quality.noSnapshot'),
   locale,
-}).replace(/</g, '\\u003c');
+});
 
 const scoreClassName = (score: number | null): string => {
   if (score === null) {
@@ -80,12 +81,9 @@ const scoreClassName = (score: number | null): string => {
 
 {
   (
-    <section
-      class="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
-      data-lighthouse-dashboard
-      data-results={serializedResultsByPath}
-    >
-      <template data-i18n={i18nData} />
+    <Surface as="section" data-lighthouse-dashboard>
+      <script type="application/json" data-results set:html={resultsByPathData} />
+      <script type="application/json" data-i18n set:html={i18nData} />
       <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h2>Lighthouse CI</h2>
@@ -184,6 +182,6 @@ const scoreClassName = (score: number | null): string => {
       </div>
 
       {!hasData && <p class="mt-6 text-sm text-(--color-text-muted)">{t('quality.noResults')}</p>}
-    </section>
+    </Surface>
   )
 }

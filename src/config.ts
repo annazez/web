@@ -1,6 +1,8 @@
-const RAW_SITE_URL = import.meta.env.SITE_URL;
+const RAW_SITE_URL = typeof import.meta.env !== 'undefined' ? import.meta.env.SITE_URL : undefined;
 
-if (!RAW_SITE_URL && import.meta.env.PROD) {
+const PROD = typeof import.meta.env !== 'undefined' ? import.meta.env.PROD : false;
+
+if (!RAW_SITE_URL && PROD) {
   // eslint-disable-next-line no-console
   console.warn(
     'WARNING: SITE_URL environment variable is not set. Falling back to https://zezulka.me.'

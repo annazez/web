@@ -1,7 +1,7 @@
 import type { TranslationDictionary } from './en';
 
 const cs: TranslationDictionary = {
-  'role.title': 'Juniorní full-stack webová vývojářka',
+  'role.title': 'Full-stack webová vývojářka & Studentka psychologie',
   'hero.manifesto':
     'Navrhuji systémy, které jsou rychlé, přístupné a postavené tak, aby fungovaly nezávisle na mně.',
   'home.contactLabel': 'Kontakt',
@@ -10,6 +10,7 @@ const cs: TranslationDictionary = {
   'home.contactCta': 'Napište mi',
   'home.social.linkedin': 'LinkedIn',
   'home.social.signal': 'Signal',
+  'home.social.keyoxide': 'Ověřit identitu',
   'site.name': 'Anna Zezulka',
   'footer.lastUpdated': 'Naposledy aktualizováno:',
   'footer.navigation': 'Odkazy v patičce',
@@ -71,6 +72,34 @@ const cs: TranslationDictionary = {
   'quality.metrics.fcp': 'First Contentful Paint',
   'quality.metrics.ttfb': 'Time to First Byte',
   'quality.filterLabel': 'Filtrovat podle stránky',
+  'palette.title': 'Příkazová paleta',
+  'palette.archMode': 'Architektura X-Ray',
+  'palette.auditMode': 'Audit přístupnosti',
+  'palette.layersMode': 'Rozložené vrstvy',
+  'palette.printMode': 'Režim tisku',
+  'palette.home': 'Zpět domů',
+  'palette.close': 'Zavřít',
+  'palette.openHint': 'Stiskněte ? pro otevření',
+  'uses.title': 'Používám',
+  'uses.subtitle': 'Hardware, software a nástroje, které denně používám pro vývoj a self-hosting.',
+  'seo.uses': 'Používám',
+  'footer.uses': 'Používám',
+  'uses.cat.hardware': 'Hardware',
+  'uses.cat.os': 'Operační systém',
+  'uses.cat.editor': 'Editor',
+  'uses.cat.terminal': 'Terminál',
+  'uses.cat.browser': 'Prohlížeč',
+  'uses.cat.languages': 'Jazyky a runtimy',
+  'uses.cat.infra': 'Self-hosting a infrastruktura',
+  'adrs.title': 'Architektonická rozhodnutí',
+  'adrs.subtitle':
+    'Klíčová architektonická rozhodnutí napříč projekty, dokumentovaná pro transparentnost a technický přezkum.',
+  'adrs.context': 'Kontext',
+  'adrs.decision': 'Rozhodnutí',
+  'adrs.consequences': 'Důsledky',
+  'adrs.filter': 'Filtr',
+  'seo.adrs': 'Architektonická rozhodnutí',
+  'footer.adrs': 'Architektonická rozhodnutí',
 };
 
 export default cs;

@@ -3,6 +3,9 @@ dist/
 # generated types
 .astro/
 src/data/site-modified.json
+src/data/csp.ts
+public/humans.txt
+public/_headers
 
 # dependencies
 node_modules/
@@ -37,3 +40,7 @@ test-results/
 # OS
 .DS_Store
 Thumbs.db
+
+# patch artifacts
+*.orig
+*.rej

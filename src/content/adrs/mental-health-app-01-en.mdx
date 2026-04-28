@@ -1,0 +1,14 @@
+---
+id: mental-health-app-01
+project: Mental Health App
+title: 'Data Privacy and Clinical Transparency'
+lang: en
+context: 'The application handles Category I sensitive health data under GDPR. Users sharing intimate details about their mental state must have absolute confidence in how that data is used, stored, and - critically - never sold. Trust is not a UX feature; it is the product.'
+decision: 'A privacy-by-design architecture with full local data processing where possible. Explicit, granular consent flows for any data that leaves the device. A clear anonymisation pipeline for any research data contribution, with opt-in mechanics and a plain-language data usage explanation. No dark patterns. No default data sharing. The anonymisation layer separates PII from clinical data at the point of ingestion, before any aggregation occurs.'
+consequences: 'Reduced flexibility for real-time cloud-based personalisation features in early versions. Higher initial engineering investment in the local-first data layer. Significant long-term advantage in user trust, regulatory compliance, and suitability for integration into certified clinical systems.'
+tags:
+  - Privacy
+  - GDPR
+  - Healthcare
+decidedAt: 2026-04-04
+---

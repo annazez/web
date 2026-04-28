@@ -4,34 +4,24 @@
  * This component self-wraps its "card chrome" (background, border, shadow).
  * This ensures visual consistency across the site and simplifies page layouts.
  */
-import type { CollectionEntry } from 'astro:content';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
 import ProjectCard from './ProjectCard.astro';
+import Surface from '../ui/Surface.astro';
+import type { ProjectEntry } from '../../lib/projects';
 
 interface Props {
-  projectArticles: CollectionEntry<'projects'>[];
+  projectArticles: ProjectEntry[];
 }
 
-const { projectArticles } = Astro.props;
+const { projectArticles: featuredProjects } = Astro.props as Props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const projectsHref = `/${lang}/projects/`;
 const moreLabel = t('projects.more');
-
-const featuredProjects = projectArticles
-  .filter(article => article.data.featured)
-  .sort((a, b) => {
-    const orderA = a.data.order ?? Infinity;
-    const orderB = b.data.order ?? Infinity;
-    if (orderA !== orderB) return orderA - orderB;
-    return b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
-  });
 ---
 
-<section
-  class="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
->
+<Surface as="section">
   <project-carousel class="flex flex-col gap-4">
     <header class="flex flex-col gap-3 border-b border-(--color-border) pb-4">
       <div class="flex items-center justify-between gap-4">
@@ -94,6 +84,6 @@ const featuredProjects = projectArticles
       </div>
     </div>
   </project-carousel>
-</section>
+</Surface>
 
 <script src="../../scripts/project-carousel.ts"></script>

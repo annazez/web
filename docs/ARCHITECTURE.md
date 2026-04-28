@@ -24,7 +24,7 @@ The user-facing navigation should feel SPA-like, but the implementation stays SS
 
 | File                                 | Responsibility                     |
 | ------------------------------------ | ---------------------------------- |
-| `src/layouts/Layout.underscore`      | SEO metadata, CSP, shell structure |
+| `src/layouts/Layout.astro`           | SEO metadata, CSP, shell structure |
 | `src/pages/index.astro`              | Locale detection and redirect      |
 | `src/pages/[lang]/index.astro`       | Localized homepage                 |
 | `src/pages/en/projects/[slug].astro` | Project detail pages               |

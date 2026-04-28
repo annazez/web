@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 /* eslint-disable no-console */
@@ -9,10 +9,13 @@ import { join } from 'node:path';
  *
  * This script finds the most recent git commit date across all content-driving files
  * (MDX projects and i18n locales) and writes it to a JSON file for the Footer to consume.
+ * It also populates the public/humans.txt file from a template.
  */
 
 const DATA_DIR = join(process.cwd(), 'src/data');
 const OUTPUT_FILE = join(DATA_DIR, 'site-modified.json');
+const HUMANS_TEMPLATE = join(DATA_DIR, 'humans.txt.template');
+const HUMANS_OUTPUT = join(process.cwd(), 'public/humans.txt');
 
 function getLastModified() {
   try {
@@ -36,12 +39,19 @@ function getLastModified() {
 }
 
 const lastModified = getLastModified();
+const dateOnly = lastModified.split('T')[0];
 
 try {
   mkdirSync(DATA_DIR, { recursive: true });
   writeFileSync(OUTPUT_FILE, JSON.stringify({ lastModified }, null, 2));
   console.log(`Last modified date: ${lastModified}`);
+
+  // Generate humans.txt
+  const template = readFileSync(HUMANS_TEMPLATE, 'utf8');
+  const humansContent = template.replace('{{LAST_UPDATED}}', dateOnly);
+  writeFileSync(HUMANS_OUTPUT, humansContent);
+  console.log(`Generated public/humans.txt with date: ${dateOnly}`);
 } catch (error) {
-  console.error('Error writing last modified file:', error);
+  console.error('Error writing output files:', error);
   process.exit(1);
 }

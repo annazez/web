@@ -44,23 +44,13 @@ The NGO now has complete ownership. Content editors update pages by editing plai
 
 ## Architectural Decision Records
 
-### ADR-01: Static Site Generation via Astro
+import Adr from '../../components/case-study/Adr.astro';
 
-**Context:** The NGO required exceptional performance, an extremely low carbon footprint, and a hosting cost that trends toward zero. A dynamic server-rendered site would introduce operational overhead the client could not sustainably absorb.
-
-**Decision:** Astro as the SSG framework with zero client-side JavaScript by default.
-
-**Consequences:** Sub-second load times on constrained connections. No backend attack surface - the entire output is a folder of pre-rendered HTML, CSS, and optimised assets. Hosting on a static CDN eliminates server management entirely. The architectural choice directly maps to the NGO's own values around sustainability.
+<Adr id="telperion-01" />
 
 ---
 
-### ADR-02: Native i18n Routing and CI-Enforced WCAG Compliance
-
-**Context:** Telperion operates across a bilingual (Czech and English) audience, including users with visual impairments who depend on screen readers. Accessibility could not be an afterthought bolted on at the end; it had to be load-bearing.
-
-**Decision:** Astro's built-in i18n routing for language separation. WCAG 2.1 AA compliance is validated automatically on every build via Lighthouse and axe-core. The pipeline blocks any code-level PR that introduces contrast failures, broken ARIA labelling, or heading structure regressions - this applies to developer changes, not to the day-to-day content edits that non-technical staff make through Markdown.
-
-**Consequences:** The language-aware URL structure (`/en/`, `/cs/`) is resolved at the framework level with no client-side routing overhead. Structural accessibility is protected at the point where it's most likely to break - architectural changes - without adding friction to routine content updates.
+<Adr id="telperion-02" />
 
 ## The Outcome
 

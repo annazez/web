@@ -65,11 +65,30 @@ test('useTranslations', async t => {
     }
   );
 
-  await t.test('should return undefined if key is missing in both dictionaries', () => {
+  await t.test(
+    'should return the key itself if missing in both dictionaries (production-like)',
+    () => {
+      const translate = useTranslations('cs');
+      const missingKey = 'non.existent.key' as TranslationKey;
+
+      assert.strictEqual(translate(missingKey), missingKey);
+    }
+  );
+
+  await t.test('should throw Error in development if key is missing', () => {
     const translate = useTranslations('cs');
     const missingKey = 'non.existent.key' as TranslationKey;
 
-    assert.strictEqual(translate(missingKey), undefined);
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'development';
+
+    try {
+      assert.throws(() => translate(missingKey), {
+        message: `Missing translation key: ${missingKey}`,
+      });
+    } finally {
+      process.env.NODE_ENV = originalNodeEnv;
+    }
   });
 
   await t.test('should work correctly for the default language itself', () => {

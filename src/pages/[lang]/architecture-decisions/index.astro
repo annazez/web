@@ -1,0 +1,179 @@
+---
+/**
+ * Architecture Decisions Index
+ *
+ * Unified, filterable list of all ADRs across projects.
+ * Filtering uses zero-JS :has()/:target CSS pattern.
+ */
+import Layout from '../../../layouts/Layout.astro';
+import BackLink from '../../../components/BackLink.astro';
+import Footer from '../../../components/ui/Footer.astro';
+import LanguagePicker from '../../../components/ui/LanguagePicker.astro';
+import Surface from '../../../components/ui/Surface.astro';
+import { getValidLanguageCode, supportedLangs } from '../../../i18n/dictionary';
+import { useTranslations } from '../../../i18n/utils';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return supportedLangs.map(lang => ({ params: { lang } }));
+}
+
+const currentLang = getValidLanguageCode(Astro.params.lang);
+const t = useTranslations(currentLang);
+
+// Fetch all ADRs for the current language
+const allAdrs = await getCollection('adrs', ({ data }) => data.lang === currentLang);
+
+// Group by project
+const grouped = new Map<string, typeof allAdrs>();
+for (const adr of allAdrs) {
+  const project = adr.data.project;
+  if (!grouped.has(project)) {
+    grouped.set(project, []);
+  }
+  grouped.get(project)!.push(adr);
+}
+
+// Sort ADRs within each project by id
+for (const [, adrs] of grouped) {
+  adrs.sort((a, b) => a.data.id.localeCompare(b.data.id));
+}
+
+// Collect all unique tags for filter chips
+const allTags = [...new Set(allAdrs.flatMap(a => a.data.tags))].sort();
+
+// Generate tag-filter CSS rules dynamically from the actual tags.
+// Using <style is:inline> so Astro does not scope or tree-shake these
+// :has()/:target selectors that only activate at runtime.
+const tagFilterCss = allTags
+  .map(tag => {
+    const slug = tag.toLowerCase().replace(/\s+/g, '-');
+    return `html:has(#tag-${slug}:target) .adr-card:not([data-tags~='${slug}']) { display: none; }`;
+  })
+  .join('\n');
+---
+
+<Layout title={t('seo.adrs')} description={t('adrs.subtitle')} lang={currentLang}>
+  <LanguagePicker />
+
+  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
+    <BackLink href={`/${currentLang}/`} />
+
+    <section class="flex flex-col gap-4">
+      <h1>{t('adrs.title')}</h1>
+      <p class="home-body-text">{t('adrs.subtitle')}</p>
+    </section>
+
+    {/* Zero-JS filter chips using :target */}
+    <nav class="adr-filters flex flex-wrap gap-2" aria-label={t('adrs.filter')}>
+      <a
+        href={`/${currentLang}/architecture-decisions/`}
+        class="home-micro-label adr-chip"
+        data-filter="all"
+      >
+        {t('adrs.filter')}: All
+      </a>
+      {
+        allTags.map(tag => (
+          <a
+            href={`#tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
+            class="home-micro-label adr-chip"
+            id={`tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
+          >
+            {tag}
+          </a>
+        ))
+      }
+    </nav>
+
+    {
+      [...grouped.entries()].map(([project, adrs]) => (
+        <section class="flex flex-col gap-4">
+          <h2>{project}</h2>
+          {adrs.map(adr => (
+            <Surface
+              as="article"
+              class="adr-card"
+              data-tags={adr.data.tags.map(t => t.toLowerCase().replace(/\s+/g, '-')).join(' ')}
+            >
+              <h3>
+                {adr.data.id.toUpperCase()}: {adr.data.title}
+              </h3>
+
+              <div class="adr-section">
+                <h4 class="home-micro-label">{t('adrs.context')}</h4>
+                <p class="home-body-text">{adr.data.context}</p>
+              </div>
+
+              <div class="adr-section">
+                <h4 class="home-micro-label">{t('adrs.decision')}</h4>
+                <p class="home-body-text">{adr.data.decision}</p>
+              </div>
+
+              <div class="adr-section">
+                <h4 class="home-micro-label">{t('adrs.consequences')}</h4>
+                <p class="home-body-text">{adr.data.consequences}</p>
+              </div>
+
+              <div class="flex flex-wrap gap-2 pt-2">
+                {adr.data.tags.map(tag => (
+                  <span class="home-tag-text inline-block rounded-full bg-(--color-bg-surface-elevated) px-2 py-1">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </Surface>
+          ))}
+        </section>
+      ))
+    }
+
+    <Footer lang={currentLang} />
+  </main>
+</Layout>
+
+{/* Dynamic tag-filter CSS — generated at build time from actual tags */}
+<style is:inline set:html={tagFilterCss}></style>
+
+<style>
+  .adr-chip {
+    display: inline-block;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    text-decoration: none;
+    transition:
+      background 120ms ease,
+      color 120ms ease;
+  }
+
+  .adr-chip:hover {
+    background: var(--color-bg-surface-elevated);
+    color: var(--color-brand);
+  }
+
+  /* Active filter chip styling via :target */
+  .adr-chip:target {
+    background: var(--color-brand);
+    color: var(--color-bg);
+    border-color: var(--color-brand);
+  }
+
+  .adr-section {
+    margin-top: 0.75rem;
+  }
+
+  .adr-section h4 {
+    margin-bottom: 0.25rem;
+  }
+
+  .adr-section p {
+    margin: 0;
+  }
+
+  :global(article) h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+</style>

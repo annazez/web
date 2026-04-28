@@ -18,7 +18,20 @@ export function useTranslations(lang: LanguageCode) {
   const fallbackDictionary = dictionary[defaultLang];
 
   return function t(key: TranslationKey): string {
-    return langDictionary[key] ?? fallbackDictionary[key];
+    const value = langDictionary[key] ?? fallbackDictionary[key];
+    if (value !== undefined) {
+      return value;
+    }
+
+    const isDev =
+      (typeof import.meta.env !== 'undefined' ? import.meta.env.DEV : false) ||
+      (typeof process !== 'undefined' && process.env.NODE_ENV === 'development');
+
+    if (isDev) {
+      throw new Error(`Missing translation key: ${key}`);
+    }
+
+    return key;
   };
 }
 
