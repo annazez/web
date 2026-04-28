@@ -1,0 +1,35 @@
+/* TEAM */
+Architect & Developer: Anna Zezulka
+Contact: via https://zezulka.dev/en/
+
+
+/* SITE */
+Last update: 2026-04-05
+Language: English, Czech
+
+/* ARCHITECTURE */
+Pattern: Jamstack / Static Site Generation (SSG)
+Rationale: Pre-rendered HTML served from a CDN edge. No runtime server, no database,
+           minimal runtime attack surface. Pages load instantly because there is no backend to wait for.
+Routing: Native Astro i18n routing (/en/, /cs/) with zero client-side JS overhead.
+         Language separation is a framework-level concern, not a runtime one.
+
+/* PRIVACY */
+Tracking: None. Zero analytics, zero third-party scripts, zero cookies.
+Data collected: None. No forms store data on this domain.
+
+/* SUSTAINABILITY */
+Asset delivery: Images are served in modern formats (WebP/AVIF) and sized precisely
+                for their display context. No image is larger than it needs to be.
+JavaScript: Shipped only where strictly necessary. The default is HTML and CSS.
+Carbon footprint: Minimal by design. Static files served from a CDN generate a
+                  fraction of the emissions of a dynamically rendered equivalent.
+Hosting: Codeberg Pages (EU-based, open source infrastructure).
+
+/* TOOLS */
+Framework: Astro
+Styling: Tailwind CSS v4
+Build: Static Site Generation, no adapter
+CI/CD: Woodpecker CI (self-hosted, open source)
+Hosting: Codeberg Pages
+Accessibility: WCAG 2.1 AA, validated via Lighthouse and axe-core in CI

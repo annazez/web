@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"><meta name="referrer" content="no-referrer"><!--
+      The following headers are missing from meta tags because they must be set at the HTTP level:
+      - Strict-Transport-Security
+      - X-Frame-Options
+      - X-Content-Type-Options
+      - Permissions-Policy
+
+      They are configured in astro.config.mjs for dev/preview and in public/_headers for supported hosts.
+    --><meta http-equiv="X-Content-Type-Options" content="nosniff"><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/assets/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><script>
+      const root = document.documentElement;
+
+      const getPreferredTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      };
+
+      const applyPreferredTheme = () => {
+        const theme = getPreferredTheme();
+        if (theme === 'dark') {
+          root.classList.add('dark');
+          root.style.colorScheme = 'dark';
+        } else {
+          root.classList.remove('dark');
+          root.style.colorScheme = 'light';
+        }
+      };
+
+      applyPreferredTheme();
+      window.__applyPreferredTheme = applyPreferredTheme;
+    </script><script type="module">const e=window;e.__themeAfterSwapBound||(document.addEventListener("astro:after-swap",()=>{e.__applyPreferredTheme&&e.__applyPreferredTheme()}),e.__themeAfterSwapBound=!0);</script><title>Not Found | Anna Zezulka</title><meta name="description" content="Anna Zezulka"><meta property="og:title" content="Not Found | Anna Zezulka"><meta property="og:description" content="Anna Zezulka"><meta property="og:type" content="website"><meta property="og:image" content="/og-image.jpg"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" hreflang="en" href="https://annazez.codeberg.page/en/404/"><link rel="alternate" hreflang="cs" href="https://annazez.codeberg.page/cs/404/"><link rel="alternate" hreflang="x-default" href="https://annazez.codeberg.page/"><link rel="stylesheet" href="/assets/Layout.DFxwPwZM.css"></head> <body data-print-banner="[ ARCHITECTURAL SPECIFICATION // SYSTEM: ANNA ZEZULKA // RENDER: PRINT ]"> <div id="arch" hidden aria-hidden="true"></div> <div id="audit" hidden aria-hidden="true"></div> <div id="layers" hidden aria-hidden="true"></div> <div id="page-shell"> <a href="#main-content" class="skip-link">Skip to main content</a>  <main id="main-content" class="mx-auto flex max-w-2xl flex-col items-center justify-center px-6 py-32 text-center"> <h1>404</h1> <p class="home-micro-label mt-4">System Node Not Found</p> <p class="home-body-text mt-6"> The architecture you are looking for has been moved or doesn&#39;t exist in this dimension. </p> <p class="home-body-text mt-6">Choose a language:</p> <div class="mt-10 flex flex-wrap items-center justify-center gap-3"> <a href="/en/" class="home-action-text rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"> EN </a><a href="/cs/" class="home-action-text rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"> CS </a> <a href="/en/" class="home-action-text flex items-center gap-2 rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"> <svg width="1em" height="1em" class="size-4" data-icon="lucide:arrow-left">   <symbol id="ai:lucide:arrow-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 19l-7-7l7-7m7 7H5"/></symbol><use href="#ai:lucide:arrow-left"></use>  </svg> <span>Home</span> </a> </div> </main>  </div> <script type="module" src="/assets/Layout.astro_astro_type_script_index_1_lang.D0F5J14j.js"></script> </body> </html>
