@@ -2,16 +2,17 @@
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import { langPrefixRegex, supportedLangs, type LanguageCode } from '../i18n/dictionary';
-import { useTranslations } from '../i18n/utils';
+import { useTranslations, localeForOg } from '../i18n/utils';
 
 interface Props {
   title?: string;
   description?: string;
   lang?: LanguageCode;
   noIndex?: boolean;
+  ogImage?: string;
 }
 
-const { title, description, lang = 'en', noIndex = false } = Astro.props;
+const { title, description, lang = 'en', noIndex = false, ogImage } = Astro.props;
 const t = useTranslations(lang);
 const siteName = t('site.name');
 const pageDescription = description ?? siteName;
@@ -24,12 +25,13 @@ const pageTitle = normalizedTitle
   : siteName;
 
 const pathname = Astro.url.pathname;
+const siteUrl = Astro.site ?? Astro.url;
 // langPrefixRegex matches either `/en/` or `/en` (at string end)
-// To cleanly remove the language prefix from the path, we can strip the matching prefix
-// and ensure it starts with a slash.
 const match = langPrefixRegex.exec(pathname);
 const pathWithoutLang = match ? pathname.slice(match[0].length).replace(/^\/?/, '/') : pathname;
-const siteUrl = Astro.site ?? Astro.url;
+
+const canonicalUrl = new URL(pathname, siteUrl).toString();
+const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
 ---
 
 <!doctype html>
@@ -39,7 +41,7 @@ const siteUrl = Astro.site ?? Astro.url;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'sha256-3SEKDv3sFH97ZKnC+vAKSes3RjKxxvGDZQ1fYOFGRtU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self';"
     />
     <meta name="referrer" content="no-referrer" />
     <!--
@@ -54,16 +56,21 @@ const siteUrl = Astro.site ?? Astro.url;
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <ClientRouter />
     <script is:inline>
+      /**
+       * THEME BOOTSTRAP:
+       * This script must run synchronously before paint to prevent FOUC.
+       * CSP: If this script is modified, the SHA-256 hash in Content-Security-Policy must be updated.
+       * Hash: sha256-3SEKDv3sFH97ZKnC+vAKSes3RjKxxvGDZQ1fYOFGRtU=
+       */
       const root = document.documentElement;
 
       const getPreferredTheme = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
+        const storedTheme =
+          typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
+        if (storedTheme === 'dark' || storedTheme === 'light') {
+          return storedTheme;
         }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
-        }
-        return 'light';
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       };
 
       const applyPreferredTheme = () => {
@@ -96,10 +103,28 @@ const siteUrl = Astro.site ?? Astro.url;
     </script>
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
+
+    {/* Canonical */}
+    <link rel="canonical" href={canonicalUrl} />
+
+    {/* OpenGraph */}
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={localeForOg(lang)} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:image:alt" content={t('og.imageAlt')} />
+    {/* TODO: Verify actual dimensions of og-image.jpg once created. Defaulting to 1200x630. */}
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={absoluteOgImage} />
     {noIndex && <meta name="robots" content="noindex" />}
     <slot name="head" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

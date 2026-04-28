@@ -18,3 +18,6 @@ export interface LighthouseData {
   generatedAt: string | null;
   pages: LighthousePageResult[];
 }
+
+export type ScoreKey = 'performance' | 'accessibility' | 'bestPractices' | 'seo';
+export type MetricKey = 'lcp' | 'tbt' | 'cls' | 'fcp' | 'ttfb';

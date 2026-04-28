@@ -11,9 +11,7 @@ const href = linkHref || link;
 const isExternal = href && !href.startsWith('mailto:') && !href.startsWith('/');
 ---
 
-<li
-  class="flex flex-col rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900"
->
+<li class="flex flex-col rounded-lg border border-(--color-border) bg-(--color-bg-surface) p-4">
   <h3>{title}</h3>
   <p class="home-body-text mt-2">{description}</p>
   {

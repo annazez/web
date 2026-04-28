@@ -1,4 +1,9 @@
 ---
+/**
+ * SECTION CONVENTION:
+ * This component self-wraps its "card chrome" (background, border, shadow).
+ * This ensures visual consistency across the site and simplifies page layouts.
+ */
 import type { CollectionEntry } from 'astro:content';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
@@ -8,37 +13,20 @@ interface Props {
   projectArticles: CollectionEntry<'projects'>[];
 }
 
-interface Project {
-  slug: string;
-  title: string;
-  description: string;
-  repo?: string;
-  website?: string;
-}
-
 const { projectArticles } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const projectsHref = `/${lang}/projects/`;
 const moreLabel = t('projects.more');
-const articleBySlug = new Map(projectArticles.map(article => [article.data.slug, article.data]));
 
-const projects: Project[] = [
-  {
-    slug: 'telperion',
-    title: 'Telperion',
-    description: t('projects.telperion.description'),
-    website: 'https://telperion.cz',
-    repo: 'https://github.com/annazez/telperion-web',
-  },
-  {
-    slug: 'mental-health-app',
-    title: 'Mental Health App',
-    description: t('projects.mentalHealth.description'),
-    website: 'https://wellbeing.zezulka.me',
-    repo: 'https://github.com/wellbeing-app',
-  },
-];
+const featuredProjects = projectArticles
+  .filter(article => article.data.featured)
+  .sort((a, b) => {
+    const orderA = a.data.order ?? Infinity;
+    const orderB = b.data.order ?? Infinity;
+    if (orderA !== orderB) return orderA - orderB;
+    return b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
+  });
 ---
 
 <section
@@ -63,18 +51,16 @@ const projects: Project[] = [
         class="projects-track flex w-full snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {
-          projects.map(project => {
-            const article = articleBySlug.get(project.slug);
-
+          featuredProjects.map(project => {
             return (
               <div class="w-full flex-none shrink-0 snap-center">
                 <ProjectCard
-                  title={article?.title ?? project.title}
-                  description={project.description}
-                  articleSlug={article?.slug ?? project.slug}
-                  tags={article?.tags ?? []}
-                  repo={project.repo}
-                  website={project.website}
+                  title={project.data.title}
+                  description={project.data.homeDescription || project.data.summary}
+                  articleSlug={project.data.slug}
+                  tags={project.data.tags}
+                  repo={project.data.repo}
+                  website={project.data.website}
                 />
               </div>
             );
@@ -91,7 +77,7 @@ const projects: Project[] = [
         </button>
         <div class="dots flex flex-1 justify-center gap-3" aria-hidden="true">
           {
-            projects.map(() => (
+            featuredProjects.map(() => (
               <button
                 tabindex="-1"
                 class="dot size-2.5 rounded-full bg-(--color-border) transition-colors data-[active=true]:bg-(--color-brand)"

@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { defaultLang, supportedLangs, languageEntries } from '../i18n/dictionary';
+import { defaultLang, languageEntries } from '../i18n/dictionary';
 import { useTranslations } from '../i18n/utils';
 
 const t = useTranslations(defaultLang);
@@ -14,7 +14,9 @@ const canonicalEn = new URL(`/${defaultLang}/`, Astro.site ?? Astro.url).toStrin
   </Fragment>
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-4 px-6 py-16">
-    <script is:inline define:vars={{ supportedLangs, defaultLang }}>
+    <script>
+      import { defaultLang, supportedLangs, type LanguageCode } from '../i18n/dictionary';
+
       const preferred =
         Array.isArray(navigator.languages) && navigator.languages.length
           ? navigator.languages[0]
@@ -22,7 +24,9 @@ const canonicalEn = new URL(`/${defaultLang}/`, Astro.site ?? Astro.url).toStrin
 
       const prefLangCode = preferred.split('-')[0].toLowerCase();
 
-      const targetLang = supportedLangs.includes(prefLangCode) ? prefLangCode : defaultLang;
+      const targetLang = supportedLangs.includes(prefLangCode as LanguageCode)
+        ? prefLangCode
+        : defaultLang;
       window.location.replace(`/${targetLang}/`);
     </script>
 

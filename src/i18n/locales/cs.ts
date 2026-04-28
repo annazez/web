@@ -27,10 +27,6 @@ const cs: TranslationDictionary = {
   'projects.carousel.next': 'Další projekt',
   'projects.carousel.slide': 'Přejít na snímek',
   readCaseStudy: 'Číst případovou studii',
-  'projects.telperion.description':
-    'Web neziskovky byl rozbitý a dělal jejich klimatické vzdělávání neviditelným. Navrhla jsem a dodala kompletní Jamstack ekosystém: dvojjazyčný i18n routing, automatizované e-mailové toky, WCAG přístupnost ověřovanou v CI a plně statický výstup bez potřeby serveru. Organizace nyní vlastní nezávislou, výkonnou přítomnost postavenou tak, aby vydržela.',
-  'projects.mentalHealth.description':
-    'Návrh architektury multidisciplinární wellbeing platformy pro český trh. Zahrnuje sledování nálady (metoda RULER), digitální deník, monitorování spánku a modul krizové intervence - s klinicky podloženou personalizací přes dotazníky WHO-5, GAD-7 a PHQ-9. Aktuálně ve fázi návrhu architektury.',
   back: 'Zpět',
   feedTitle: 'Anna Zezulka – Projekty',
   feedDescription: 'Případové studie a zápisky o projektech.',
@@ -56,6 +52,25 @@ const cs: TranslationDictionary = {
   'footer.carbonFootprint': 'Uhlíková stopa:',
   'footer.loading': 'počítám...',
   '404.return': 'Domů',
+  'og.imageAlt': 'Anna Zezulka - Osobní web a portfolio',
+  'quality.performance': 'Výkon',
+  'quality.accessibility': 'Přístupnost',
+  'quality.bestPractices': 'Doporučené postupy',
+  'quality.seo': 'SEO',
+  'quality.path': 'Cesta',
+  'quality.url': 'URL',
+  'quality.measured': 'Měřeno',
+  'quality.runs': 'Počet měření',
+  'quality.noSnapshot': 'Zatím není k dispozici žádný snímek.',
+  'quality.noResults':
+    'Zatím nejsou k dispozici žádné výsledky Lighthouse. Dashboard naplníte spuštěním Lighthouse CI.',
+  'quality.na': 'N/A',
+  'quality.metrics.lcp': 'Largest Contentful Paint',
+  'quality.metrics.tbt': 'Total Blocking Time',
+  'quality.metrics.cls': 'Cumulative Layout Shift',
+  'quality.metrics.fcp': 'First Contentful Paint',
+  'quality.metrics.ttfb': 'Time to First Byte',
+  'quality.filterLabel': 'Filtrovat podle stránky',
 };
 
 export default cs;

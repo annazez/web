@@ -3,9 +3,17 @@ import { Image } from 'astro:assets';
 import avatar from '../../assets/avatar.png';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
+import { identity } from '../../data/identity';
+import { toSafeExternalUrl } from '../../security/external-links';
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const siteName = t('site.name');
+
+const linkedinUrl = toSafeExternalUrl(identity.linkedin);
+const orcidUrl = toSafeExternalUrl(identity.orcid);
+const githubUrl = toSafeExternalUrl(identity.github);
+const codebergUrl = toSafeExternalUrl(identity.codeberg);
 ---
 
 <div class="flex flex-col gap-8">
@@ -25,44 +33,48 @@ const siteName = t('site.name');
         {t('role.title')}
       </p>
       <div class="home-social-links flex items-center gap-4">
-        <a
-          href="https://www.linkedin.com/in/anna-zezulka/"
-          target="_blank"
-          rel="me noopener noreferrer"
-          aria-label="LinkedIn"
-        >
-          <Icon name="lucide:linkedin" class="size-5" />
-        </a>
-        <a
-          href="https://orcid.org/0009-0005-7350-5354"
-          target="_blank"
-          rel="me noopener noreferrer"
-          aria-label="ORCID"
-        >
-          <Icon name="simple-icons:orcid" class="size-5" />
-        </a>
-        <a
-          href="https://github.com/annazez"
-          target="_blank"
-          rel="me noopener noreferrer"
-          aria-label="Github"
-        >
-          <Icon name="simple-icons:github" class="size-5" />
-        </a>
-        <a
-          href="https://codeberg.org/annazez"
-          target="_blank"
-          rel="me noopener noreferrer"
-          aria-label="Codeberg"
-        >
-          <Icon name="simple-icons:codeberg" class="size-5" />
-        </a>
+        {
+          linkedinUrl && (
+            <a
+              href={linkedinUrl}
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <Icon name="lucide:linkedin" class="size-5" />
+            </a>
+          )
+        }
+        {
+          orcidUrl && (
+            <a href={orcidUrl} target="_blank" rel="me noopener noreferrer" aria-label="ORCID">
+              <Icon name="simple-icons:orcid" class="size-5" />
+            </a>
+          )
+        }
+        {
+          githubUrl && (
+            <a href={githubUrl} target="_blank" rel="me noopener noreferrer" aria-label="Github">
+              <Icon name="simple-icons:github" class="size-5" />
+            </a>
+          )
+        }
+        {
+          codebergUrl && (
+            <a
+              href={codebergUrl}
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label="Codeberg"
+            >
+              <Icon name="simple-icons:codeberg" class="size-5" />
+            </a>
+          )
+        }
       </div>
     </div>
   </header>
   <section class="home-body-text flex flex-col gap-4">
     <p>{t('hero.manifesto')}</p>
   </section>
-
-  <!-- Social links and contact moved to the bottom of the page -->
 </div>

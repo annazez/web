@@ -1,13 +1,19 @@
 ---
+/**
+ * SECTION CONVENTION:
+ * This component self-wraps its "card chrome" (background, border, shadow).
+ * This ensures visual consistency across the site and simplifies page layouts.
+ */
 import placeholderData from '../data/lighthouse.localhost.json';
 import lighthouseData from '../data/lighthouse.json';
-import type { LighthouseData } from '../types/lighthouse';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import type { LighthouseData, ScoreKey, MetricKey } from '../types/lighthouse';
+import { getLangFromUrl, useTranslations, localeFor } from '../i18n/utils';
 
 const isLocalhost = Astro.url.hostname === 'localhost' || Astro.url.hostname === '127.0.0.1';
 const data = (isLocalhost ? placeholderData : lighthouseData) as LighthouseData;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const locale = localeFor(lang);
 const pages = [...(data.pages ?? [])].sort((a, b) => a.path.localeCompare(b.path));
 const selectedPage = pages[0] ?? null;
 const hasData = pages.length > 0;
@@ -15,38 +21,45 @@ const hasData = pages.length > 0;
 const measuredAt = data.generatedAt ? new Date(data.generatedAt) : null;
 const measuredAtLabel =
   measuredAt && !Number.isNaN(measuredAt.getTime())
-    ? measuredAt.toLocaleString('cs-CZ')
-    : 'No snapshot available yet.';
-
-type ScoreKey = 'performance' | 'accessibility' | 'bestPractices' | 'seo';
-type MetricKey = 'lcp' | 'tbt' | 'cls' | 'fcp' | 'ttfb';
+    ? measuredAt.toLocaleString(locale)
+    : t('quality.noSnapshot');
 
 const scoreDefinitions: ReadonlyArray<{ key: ScoreKey; label: string }> = [
-  { key: 'performance', label: 'Performance' },
-  { key: 'accessibility', label: 'Accessibility' },
-  { key: 'bestPractices', label: 'Best practices' },
-  { key: 'seo', label: 'SEO' },
+  { key: 'performance', label: t('quality.performance') },
+  { key: 'accessibility', label: t('quality.accessibility') },
+  { key: 'bestPractices', label: t('quality.bestPractices') },
+  { key: 'seo', label: t('quality.seo') },
 ];
 
-const metricDefinitions: ReadonlyArray<{ key: MetricKey; label: string }> = [
-  { key: 'lcp', label: 'LCP' },
-  { key: 'tbt', label: 'TBT' },
-  { key: 'cls', label: 'CLS' },
-  { key: 'fcp', label: 'FCP' },
-  { key: 'ttfb', label: 'TTFB' },
+const metricDefinitions: ReadonlyArray<{
+  key: MetricKey;
+  label: string;
+  fullLabel: string;
+}> = [
+  { key: 'lcp', label: 'LCP', fullLabel: t('quality.metrics.lcp') },
+  { key: 'tbt', label: 'TBT', fullLabel: t('quality.metrics.tbt') },
+  { key: 'cls', label: 'CLS', fullLabel: t('quality.metrics.cls') },
+  { key: 'fcp', label: 'FCP', fullLabel: t('quality.metrics.fcp') },
+  { key: 'ttfb', label: 'TTFB', fullLabel: t('quality.metrics.ttfb') },
 ];
 
 const formatTimestamp = (value: string | null): string => {
   if (!value) {
-    return 'N/A';
+    return t('quality.na');
   }
 
   const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString('cs-CZ');
+  return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString(locale);
 };
 
 const resultsByPath = Object.fromEntries(pages.map(page => [page.path, page]));
 const serializedResultsByPath = JSON.stringify(resultsByPath).replace(/</g, '\\u003c');
+
+const i18nData = JSON.stringify({
+  na: t('quality.na'),
+  noSnapshot: t('quality.noSnapshot'),
+  locale,
+}).replace(/</g, '\\u003c');
 
 const scoreClassName = (score: number | null): string => {
   if (score === null) {
@@ -68,11 +81,11 @@ const scoreClassName = (score: number | null): string => {
 {
   (
     <section
-      class="flex flex-col gap-6"
-      aria-label="Lighthouse results"
+      class="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
       data-lighthouse-dashboard
       data-results={serializedResultsByPath}
     >
+      <template data-i18n={i18nData} />
       <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h2>Lighthouse CI</h2>
@@ -81,7 +94,7 @@ const scoreClassName = (score: number | null): string => {
               <time datetime={data.generatedAt}>{measuredAtLabel}</time>
             </p>
           ) : (
-            <p class="text-sm text-(--color-text-muted)">No snapshot available yet.</p>
+            <p class="text-sm text-(--color-text-muted)">{t('quality.noSnapshot')}</p>
           )}
         </div>
 
@@ -89,6 +102,7 @@ const scoreClassName = (score: number | null): string => {
           <select
             id="lighthouse-page-filter"
             data-page-select
+            aria-label={t('quality.filterLabel')}
             class="home-body-text w-full rounded-lg border border-(--color-border) bg-(--color-bg) px-3 py-2"
           >
             {pages.map(page => (
@@ -100,7 +114,7 @@ const scoreClassName = (score: number | null): string => {
         </div>
       </header>
 
-      <div class="flex flex-col gap-4">
+      <div class="mt-6 flex flex-col gap-4">
         <div class="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
           {scoreDefinitions.map(score => (
             <div class="rounded-xl border border-(--color-border) bg-(--color-bg-surface) p-3">
@@ -111,7 +125,7 @@ const scoreClassName = (score: number | null): string => {
                 data-score-badge={score.key}
                 class={`mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset ${scoreClassName(selectedPage?.[score.key] ?? null)}`}
               >
-                {selectedPage?.[score.key] ?? 'N/A'}
+                {selectedPage?.[score.key] ?? t('quality.na')}
               </p>
             </div>
           ))}
@@ -125,30 +139,30 @@ const scoreClassName = (score: number | null): string => {
           <div class="mt-3 grid gap-4 lg:grid-cols-2">
             <dl class="grid gap-y-2">
               <div class="flex items-center justify-between gap-3">
-                <dt class="text-sm font-medium text-(--color-text)">Path</dt>
+                <dt class="text-sm font-medium text-(--color-text)">{t('quality.path')}</dt>
                 <dd class="text-sm text-(--color-text-muted)" data-page-path>
-                  {selectedPage?.path ?? 'N/A'}
+                  {selectedPage?.path ?? t('quality.na')}
                 </dd>
               </div>
 
               <div class="flex items-center justify-between gap-3">
-                <dt class="text-sm font-medium text-(--color-text)">URL</dt>
+                <dt class="text-sm font-medium text-(--color-text)">{t('quality.url')}</dt>
                 <dd class="truncate text-sm text-(--color-text-muted)" data-page-url>
-                  {selectedPage?.url ?? 'N/A'}
+                  {selectedPage?.url ?? t('quality.na')}
                 </dd>
               </div>
 
               <div class="flex items-center justify-between gap-3">
-                <dt class="text-sm font-medium text-(--color-text)">Measured</dt>
+                <dt class="text-sm font-medium text-(--color-text)">{t('quality.measured')}</dt>
                 <dd class="text-sm text-(--color-text-muted)" data-page-time>
                   {formatTimestamp(selectedPage?.generatedAt ?? null)}
                 </dd>
               </div>
 
               <div class="flex items-center justify-between gap-3">
-                <dt class="text-sm font-medium text-(--color-text)">Runs</dt>
+                <dt class="text-sm font-medium text-(--color-text)">{t('quality.runs')}</dt>
                 <dd class="text-sm text-(--color-text-muted)" data-page-runs>
-                  {selectedPage?.runs ?? 'N/A'}
+                  {selectedPage?.runs ?? t('quality.na')}
                 </dd>
               </div>
             </dl>
@@ -156,9 +170,11 @@ const scoreClassName = (score: number | null): string => {
             <dl class="grid gap-y-2">
               {metricDefinitions.map(metric => (
                 <div class="flex items-center justify-between gap-3">
-                  <dt class="text-sm font-medium text-(--color-text)">{metric.label}</dt>
+                  <dt class="text-sm font-medium text-(--color-text)" title={metric.fullLabel}>
+                    {metric.label}
+                  </dt>
                   <dd class="text-sm text-(--color-text-muted)" data-metric-value={metric.key}>
-                    {selectedPage?.[metric.key] ?? 'N/A'}
+                    {selectedPage?.[metric.key] ?? t('quality.na')}
                   </dd>
                 </div>
               ))}
@@ -167,297 +183,7 @@ const scoreClassName = (score: number | null): string => {
         </details>
       </div>
 
-      {!hasData && (
-        <p class="text-sm text-(--color-text-muted)">
-          No Lighthouse page results available yet. Run Lighthouse CI to populate this dashboard.
-        </p>
-      )}
+      {!hasData && <p class="mt-6 text-sm text-(--color-text-muted)">{t('quality.noResults')}</p>}
     </section>
   )
 }
-
-<script is:inline>
-  const dashboards = document.querySelectorAll('[data-lighthouse-dashboard]');
-
-  const scoreKeys = ['performance', 'accessibility', 'bestPractices', 'seo'];
-  const metricKeys = ['lcp', 'tbt', 'cls', 'fcp', 'ttfb'];
-  const badgeBaseClass =
-    'mt-2 inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset';
-
-  const scoreClassName = value => {
-    if (typeof value !== 'number') {
-      return 'bg-stone-100 text-stone-700 ring-stone-200';
-    }
-
-    if (value >= 90) {
-      return 'bg-emerald-100 text-emerald-800 ring-emerald-200';
-    }
-
-    if (value >= 50) {
-      return 'bg-amber-100 text-amber-800 ring-amber-200';
-    }
-
-    return 'bg-rose-100 text-rose-800 ring-rose-200';
-  };
-
-  const normalizePath = value => {
-    if (!value) {
-      return null;
-    }
-
-    try {
-      const parsed =
-        value.startsWith('http://') || value.startsWith('https://')
-          ? new URL(value)
-          : new URL(value, window.location.origin);
-      let pathname = parsed.pathname || '/';
-      const hasFileExtension = /\/[^/]+\.[^/]+$/.test(pathname);
-      if (!hasFileExtension && !pathname.endsWith('/')) {
-        pathname += '/';
-      }
-      return pathname;
-    } catch {
-      return null;
-    }
-  };
-
-  const isTechnicalPath = path => {
-    if (!path) {
-      return true;
-    }
-
-    const lowered = path.toLowerCase();
-    if (lowered === '/404/' || lowered.endsWith('/404/')) {
-      return true;
-    }
-
-    if (lowered.endsWith('.xml') || lowered.endsWith('.txt') || lowered.endsWith('.asc')) {
-      return true;
-    }
-
-    if (lowered.includes('/sitemap')) {
-      return true;
-    }
-
-    if (lowered.endsWith('/rss.xml')) {
-      return true;
-    }
-
-    if (lowered.startsWith('/pgp/')) {
-      return true;
-    }
-
-    if (lowered === '/robots.txt' || lowered === '/humans.txt') {
-      return true;
-    }
-
-    return false;
-  };
-
-  const parseTimestamp = value => {
-    if (!value) {
-      return 'N/A';
-    }
-
-    const parsed = new Date(value);
-    return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString();
-  };
-
-  const fetchXml = async url => {
-    const response = await fetch(url, {
-      headers: { Accept: 'application/xml,text/xml' },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Unable to fetch sitemap: ${url}`);
-    }
-
-    return response.text();
-  };
-
-  const parseSitemapLocations = xml => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(xml, 'application/xml');
-    if (doc.querySelector('parsererror')) {
-      return { kind: 'invalid', locations: [] };
-    }
-
-    const sitemapLocations = [...doc.querySelectorAll('sitemap > loc')]
-      .map(node => node.textContent?.trim())
-      .filter(Boolean);
-    if (sitemapLocations.length > 0) {
-      return { kind: 'index', locations: sitemapLocations };
-    }
-
-    const pageLocations = [...doc.querySelectorAll('url > loc')]
-      .map(node => node.textContent?.trim())
-      .filter(Boolean);
-    return { kind: 'urlset', locations: pageLocations };
-  };
-
-  const fetchSitemapPaths = async () => {
-    const roots = ['/sitemap-index.xml', '/sitemap.xml'];
-    const discoveredPaths = new Set();
-
-    for (const rootUrl of roots) {
-      try {
-        const rootXml = await fetchXml(rootUrl);
-        const rootParsed = parseSitemapLocations(rootXml);
-
-        if (rootParsed.kind === 'urlset') {
-          for (const location of rootParsed.locations) {
-            const path = normalizePath(location);
-            if (path && !isTechnicalPath(path)) {
-              discoveredPaths.add(path);
-            }
-          }
-          break;
-        }
-
-        if (rootParsed.kind === 'index') {
-          const nestedXmlList = await Promise.all(
-            rootParsed.locations.map(async location => {
-              try {
-                return await fetchXml(location);
-              } catch {
-                return null;
-              }
-            })
-          );
-
-          for (const nestedXml of nestedXmlList) {
-            if (!nestedXml) {
-              continue;
-            }
-
-            const nestedParsed = parseSitemapLocations(nestedXml);
-            if (nestedParsed.kind !== 'urlset') {
-              continue;
-            }
-
-            for (const location of nestedParsed.locations) {
-              const path = normalizePath(location);
-              if (path && !isTechnicalPath(path)) {
-                discoveredPaths.add(path);
-              }
-            }
-          }
-
-          break;
-        }
-      } catch {
-        continue;
-      }
-    }
-
-    return [...discoveredPaths].sort((a, b) => a.localeCompare(b));
-  };
-
-  for (const dashboard of dashboards) {
-    if (!(dashboard instanceof HTMLElement)) {
-      continue;
-    }
-
-    const rawResults = dashboard.getAttribute('data-results') ?? '{}';
-    let resultsByPath = {};
-
-    try {
-      resultsByPath = JSON.parse(rawResults);
-    } catch {
-      resultsByPath = {};
-    }
-
-    const resultEntries = Object.values(resultsByPath).filter(
-      entry => entry && typeof entry.path === 'string'
-    );
-
-    const select = dashboard.querySelector('[data-page-select]');
-    const pagePathNode = dashboard.querySelector('[data-page-path]');
-    const pageUrlNode = dashboard.querySelector('[data-page-url]');
-    const pageTimeNode = dashboard.querySelector('[data-page-time]');
-    const pageRunsNode = dashboard.querySelector('[data-page-runs]');
-
-    if (
-      !(select instanceof HTMLSelectElement) ||
-      !(pagePathNode instanceof HTMLElement) ||
-      !(pageUrlNode instanceof HTMLElement) ||
-      !(pageTimeNode instanceof HTMLElement) ||
-      !(pageRunsNode instanceof HTMLElement)
-    ) {
-      continue;
-    }
-
-    const setOptions = paths => {
-      const previousValue = select.value;
-      select.innerHTML = '';
-
-      for (const path of paths) {
-        const option = document.createElement('option');
-        option.value = path;
-        option.textContent = path;
-        select.append(option);
-      }
-
-      const fallbackValue =
-        previousValue && paths.includes(previousValue) ? previousValue : (paths[0] ?? '');
-
-      select.value = fallbackValue;
-    };
-
-    const setPageDetails = path => {
-      const entry = path ? resultsByPath[path] : null;
-
-      pagePathNode.textContent = path || 'N/A';
-      pageUrlNode.textContent = entry?.url ?? 'N/A';
-      pageTimeNode.textContent = parseTimestamp(entry?.generatedAt ?? null);
-      pageRunsNode.textContent = typeof entry?.runs === 'number' ? String(entry.runs) : 'N/A';
-
-      for (const scoreKey of scoreKeys) {
-        const badge = dashboard.querySelector(`[data-score-badge="${scoreKey}"]`);
-        if (!(badge instanceof HTMLElement)) {
-          continue;
-        }
-
-        const scoreValue = entry?.[scoreKey];
-        badge.textContent = typeof scoreValue === 'number' ? String(scoreValue) : 'N/A';
-        badge.className = `${badgeBaseClass} ${scoreClassName(scoreValue)}`;
-      }
-
-      for (const metricKey of metricKeys) {
-        const metricNode = dashboard.querySelector(`[data-metric-value="${metricKey}"]`);
-        if (!(metricNode instanceof HTMLElement)) {
-          continue;
-        }
-
-        const metricValue = entry?.[metricKey];
-        metricNode.textContent = metricValue ?? 'N/A';
-      }
-    };
-
-    const initialPaths = [...new Set(resultEntries.map(entry => entry.path))].sort((a, b) =>
-      a.localeCompare(b)
-    );
-    setOptions(initialPaths);
-    setPageDetails(select.value || null);
-
-    select.addEventListener('change', () => {
-      setPageDetails(select.value || null);
-    });
-
-    fetchSitemapPaths()
-      .then(sitemapPaths => {
-        if (sitemapPaths.length === 0) {
-          return;
-        }
-
-        const mergedPaths = [...new Set([...initialPaths, ...sitemapPaths])].sort((a, b) =>
-          a.localeCompare(b)
-        );
-        setOptions(mergedPaths);
-        setPageDetails(select.value || null);
-      })
-      .catch(() => {
-        // Keep initial page list if sitemap fetch fails.
-      });
-  }
-</script>

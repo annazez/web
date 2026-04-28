@@ -34,10 +34,14 @@ const projects = defineCollection({
       slug: z.string().min(1),
       lang: z.enum(langKeys),
       summary: z.string().min(1),
+      homeDescription: z.string().optional(),
+      featured: z.boolean().default(false),
+      order: z.number().optional(),
       publishedAt: z.date(),
       tags: z.array(z.string().min(1)).min(1),
       website: externalUrl.optional(),
       repo: externalUrl.optional(),
+      ogImage: z.string().optional(),
     })
     .strict(),
 });

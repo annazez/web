@@ -1,11 +1,37 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
-import { languages, routeLookup, languageEntries, type LanguageCode } from '../../i18n/dictionary';
+import { getCollection } from 'astro:content';
+import {
+  languages,
+  languageEntries,
+  buildRouteLookup,
+  type LanguageCode,
+} from '../../i18n/dictionary';
 import ThemeToggle from './ThemeToggle.astro';
 
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
+
+const allProjects = await getCollection('projects');
+
+// Source dynamic slug pairs from projects collection.
+// Grouping by slug field as it currently identifies the same project across languages.
+const projectSlugSets = Object.values(
+  allProjects.reduce(
+    (acc, project) => {
+      const { slug, lang } = project.data;
+      if (!acc[slug]) {
+        acc[slug] = { en: slug, cs: slug };
+      }
+      acc[slug][lang as LanguageCode] = slug;
+      return acc;
+    },
+    {} as Record<string, Record<LanguageCode, string>>
+  )
+);
+
+const routeLookup = buildRouteLookup(projectSlugSets);
 
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const hasLangPrefix =

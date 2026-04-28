@@ -21,21 +21,34 @@ export const dictionary: Record<LanguageCode, TranslationDictionary> = {
   cs,
 };
 
-export const langPrefixRegex = /^\/(en|cs)(?:\/|$)/;
+export const langPrefixRegex = new RegExp(`^\\/(${supportedLangs.join('|')})(?:\\/|$)`);
 
-export const localizedSlugSets: ReadonlyArray<Record<LanguageCode, string>> = [];
+export const staticSlugSets: ReadonlyArray<Record<LanguageCode, string>> = [
+  { en: 'projects', cs: 'projects' },
+  { en: 'quality', cs: 'quality' },
+];
 
-export const routeLookup: ReadonlyMap<string, Record<LanguageCode, string>> = new Map(
-  localizedSlugSets.flatMap(slugSet =>
-    (Object.entries(slugSet) as Array<[LanguageCode, string]>).map(([lang, slug]) => [
-      `${lang}:${slug}`,
-      slugSet,
-    ])
-  )
-);
+export function buildRouteLookup(
+  customSlugSets: ReadonlyArray<Record<LanguageCode, string>>
+): ReadonlyMap<string, Record<LanguageCode, string>> {
+  const allSets = [...staticSlugSets, ...customSlugSets];
+  return new Map(
+    allSets.flatMap(slugSet =>
+      (Object.entries(slugSet) as Array<[LanguageCode, string]>).map(([lang, slug]) => [
+        `${lang}:${slug}`,
+        slugSet,
+      ])
+    )
+  );
+}
+
+// Default lookup with only static slugs
+export const routeLookup = buildRouteLookup([]);
 
 export type { TranslationKey };
 
 export function getValidLanguageCode(value: string | undefined): LanguageCode {
-  return value === 'en' || value === 'cs' ? value : defaultLang;
+  return (supportedLangs as ReadonlyArray<string>).includes(value || '')
+    ? (value as LanguageCode)
+    : defaultLang;
 }

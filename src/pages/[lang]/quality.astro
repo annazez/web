@@ -26,12 +26,15 @@ const t = useTranslations(currentLang);
       <p class="home-body-text">{t('quality.summary')}</p>
     </section>
 
-    <div
-      class="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5"
-    >
-      <PerformanceDashboard />
-    </div>
+    <PerformanceDashboard />
 
     <Footer lang={currentLang} />
   </main>
 </Layout>
+
+<script>
+  import { initPerformanceDashboard } from '../../scripts/performance-dashboard';
+  document.addEventListener('astro:page-load', () => {
+    initPerformanceDashboard();
+  });
+</script>

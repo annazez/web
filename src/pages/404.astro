@@ -4,11 +4,19 @@ import { defaultLang } from '../i18n/dictionary';
 import { useTranslations } from '../i18n/utils';
 import { Icon } from 'astro-icon/components';
 import { languageEntries } from '../i18n/dictionary';
+import ThemeToggle from '../components/ui/ThemeToggle.astro';
 
 const t = useTranslations(defaultLang);
 ---
 
 <Layout title={t('seo.404')}>
+  <div
+    class="z-20 mx-auto w-full max-w-2xl px-6 pt-4 sm:absolute sm:top-8 sm:right-8 sm:mx-0 sm:w-auto sm:max-w-none sm:p-0"
+  >
+    <ThemeToggle
+      className="flex min-h-11 w-full items-center justify-between rounded-xl border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) shadow-sm transition-colors duration-200 hover:text-(--color-brand) sm:w-32"
+    />
+  </div>
   <main
     id="main-content"
     class="mx-auto flex max-w-2xl flex-col items-center justify-center px-6 py-32 text-center"
@@ -28,7 +36,7 @@ const t = useTranslations(defaultLang);
         languageEntries.map(([code, label]) => (
           <a
             href={`/${code}/`}
-            class="home-action-text rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"
+            class="home-action-text rounded-md border border-(--color-border) px-6 py-2 transition-colors hover:bg-(--color-bg-surface)"
           >
             {label}
           </a>
@@ -37,7 +45,7 @@ const t = useTranslations(defaultLang);
 
       <a
         href={`/${defaultLang}/`}
-        class="home-action-text flex items-center gap-2 rounded-md border border-zinc-200 px-6 py-2 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:hover:bg-zinc-900"
+        class="home-action-text flex items-center gap-2 rounded-md border border-(--color-border) px-6 py-2 transition-colors hover:bg-(--color-bg-surface)"
       >
         <Icon name="lucide:arrow-left" class="size-4" />
         <span>{t('404.return')}</span>

@@ -21,3 +21,11 @@ export function useTranslations(lang: LanguageCode) {
     return langDictionary[key] ?? fallbackDictionary[key];
   };
 }
+
+export function localeForOg(lang: LanguageCode): string {
+  return lang === 'cs' ? 'cs_CZ' : 'en_US';
+}
+
+export function localeFor(lang: LanguageCode): string {
+  return lang === 'cs' ? 'cs-CZ' : 'en-GB';
+}

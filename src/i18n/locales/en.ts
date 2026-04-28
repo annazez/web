@@ -26,10 +26,6 @@ const en = {
   'projects.carousel.next': 'Next project',
   'projects.carousel.slide': 'Go to slide',
   readCaseStudy: 'Read case study',
-  'projects.telperion.description':
-    "An NGO's broken website was making their climate education work invisible. I designed and delivered a complete Jamstack ecosystem: bilingual i18n routing, automated email workflows, WCAG-compliant accessibility validated in CI, and fully static output that requires no server. The NGO now owns an independent, high-performance presence built to last.",
-  'projects.mentalHealth.description':
-    'Architecture design for a multidisciplinary wellbeing platform for the Czech market. Covers mood tracking (RULER method), digital diary, sleep monitoring, and a crisis intervention module - with clinically-grounded personalisation via WHO-5, GAD-7, and PHQ-9 questionnaires. Currently in architecture design phase.',
   back: 'Back',
   feedTitle: 'Anna Zezulka – Projects',
   feedDescription: 'Case studies and project write-ups.',
@@ -56,6 +52,25 @@ const en = {
   'footer.carbonFootprint': 'Carbon footprint:',
   'footer.loading': 'calculating...',
   '404.return': 'Home',
+  'og.imageAlt': 'Anna Zezulka - Personal Website and Portfolio',
+  'quality.performance': 'Performance',
+  'quality.accessibility': 'Accessibility',
+  'quality.bestPractices': 'Best practices',
+  'quality.seo': 'SEO',
+  'quality.path': 'Path',
+  'quality.url': 'URL',
+  'quality.measured': 'Measured',
+  'quality.runs': 'Runs',
+  'quality.noSnapshot': 'No snapshot available yet.',
+  'quality.noResults':
+    'No Lighthouse page results available yet. Run Lighthouse CI to populate this dashboard.',
+  'quality.na': 'N/A',
+  'quality.metrics.lcp': 'Largest Contentful Paint',
+  'quality.metrics.tbt': 'Total Blocking Time',
+  'quality.metrics.cls': 'Cumulative Layout Shift',
+  'quality.metrics.fcp': 'First Contentful Paint',
+  'quality.metrics.ttfb': 'Time to First Byte',
+  'quality.filterLabel': 'Filter by page',
 } as const;
 
 export type TranslationKey = keyof typeof en;

@@ -5,6 +5,7 @@ import Footer from '../../../components/ui/Footer.astro';
 import LanguagePicker from '../../../components/ui/LanguagePicker.astro';
 import Layout from '../../../layouts/Layout.astro';
 import { getValidLanguageCode, supportedLangs, type LanguageCode } from '../../../i18n/dictionary';
+import { localeFor } from '../../../i18n/utils';
 
 export async function getStaticPaths() {
   const paths: Array<{ params: { lang: LanguageCode; slug: string } }> = [];
@@ -31,21 +32,16 @@ if (!projectEntry) {
 }
 
 const { Content } = await render(projectEntry);
-const { title, summary, publishedAt, tags } = projectEntry.data;
-const canonicalUrl = new URL(
-  `/${currentLang}/projects/${slug}/`,
-  Astro.site ?? Astro.url
-).toString();
-const publishedLabel = publishedAt.toLocaleDateString(currentLang === 'cs' ? 'cs-CZ' : 'en-US', {
+const { title, summary, publishedAt, tags, ogImage } = projectEntry.data;
+const publishedLabel = publishedAt.toLocaleDateString(localeFor(currentLang), {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
 });
 ---
 
-<Layout title={title} description={summary} lang={currentLang}>
+<Layout title={title} description={summary} lang={currentLang} ogImage={ogImage}>
   <Fragment slot="head">
-    <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" type="application/rss+xml" href="/en/rss.xml" />
     <link rel="alternate" type="application/rss+xml" href="/cs/rss.xml" />
   </Fragment>
@@ -63,7 +59,7 @@ const publishedLabel = publishedAt.toLocaleDateString(currentLang === 'cs' ? 'cs
         <ul class="flex flex-wrap gap-2">
           {
             tags.map(tag => (
-              <li class="home-tag-text inline-block rounded-full bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
+              <li class="home-tag-text inline-block rounded-full bg-(--color-bg-surface-elevated) px-2 py-1">
                 {tag}
               </li>
             ))

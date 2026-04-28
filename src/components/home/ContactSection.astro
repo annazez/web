@@ -1,9 +1,19 @@
 ---
+/**
+ * SECTION CONVENTION:
+ * This component self-wraps its "card chrome" (background, border, shadow).
+ * This ensures visual consistency across the site and simplifies page layouts.
+ */
 import { Icon } from 'astro-icon/components';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { identity } from '../../data/identity';
+import { toSafeExternalUrl } from '../../security/external-links';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const linkedinUrl = toSafeExternalUrl(identity.linkedin);
+const signalUrl = toSafeExternalUrl(identity.signal);
 ---
 
 <section
@@ -16,29 +26,37 @@ const t = useTranslations(lang);
     </header>
     <div class="flex flex-wrap items-center gap-6 pt-1">
       <a
-        href="mailto:anna@zezulka.me"
+        href={`mailto:${identity.email}`}
         class="inline-flex items-center gap-2 rounded-full border-2 border-(--color-brand) px-6 py-3 font-medium text-(--color-brand) transition-colors hover:bg-(--color-brand) hover:text-(--color-bg)"
       >
         <Icon name="lucide:mail" class="size-5" />
         {t('home.contactCta')}
       </a>
       <div class="home-social-links flex items-center gap-4">
-        <a
-          href="https://www.linkedin.com/in/anna-zezulka"
-          target="_blank"
-          rel="me noopener noreferrer"
-          aria-label={t('home.social.linkedin')}
-        >
-          <Icon name="lucide:linkedin" class="size-6" />
-        </a>
-        <a
-          href="https://signal.me/#eu/9qRmDm7yUKwySQZKonrkTt3YjPXONZKdBY8K-IB_rE6Fhuo0bbROi7IKN-l2C1Ky"
-          target="_blank"
-          rel="me noopener noreferrer"
-          aria-label={t('home.social.signal')}
-        >
-          <Icon name="lucide:message-circle-dashed" class="size-6" />
-        </a>
+        {
+          linkedinUrl && (
+            <a
+              href={linkedinUrl}
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label={t('home.social.linkedin')}
+            >
+              <Icon name="lucide:linkedin" class="size-6" />
+            </a>
+          )
+        }
+        {
+          signalUrl && (
+            <a
+              href={signalUrl}
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label={t('home.social.signal')}
+            >
+              <Icon name="lucide:message-circle-dashed" class="size-6" />
+            </a>
+          )
+        }
       </div>
     </div>
   </div>

@@ -28,14 +28,14 @@ const safeRepo = toSafeExternalUrl(repo);
 
     {description && <p class="home-body-text">{description}</p>}
 
-    {summary && <p class="home-subtle-text break-words whitespace-normal">{summary}</p>}
+    {summary && <p class="home-subtle-text wrap-break-word whitespace-normal">{summary}</p>}
 
     <div
       class="mt-auto flex flex-nowrap gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {
         tags.map(tag => (
-          <span class="home-tag-text inline-block rounded-full bg-zinc-100 px-3 py-1 font-medium whitespace-nowrap dark:bg-zinc-800">
+          <span class="home-tag-text inline-block rounded-full bg-(--color-bg-surface-elevated) px-3 py-1 font-medium whitespace-nowrap">
             {tag}
           </span>
         ))
@@ -59,7 +59,7 @@ const safeRepo = toSafeExternalUrl(repo);
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${t('projects.visit')} ${title}`}
-                class="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-200 px-4 py-2.5 text-sm font-medium text-(--color-brand) transition-colors hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600"
+                class="flex w-full items-center justify-center gap-2 rounded-xl bg-(--color-border) px-4 py-2.5 text-sm font-medium text-(--color-brand) transition-colors hover:bg-[color-mix(in_srgb,var(--color-border),var(--color-brand)_10%)]"
               >
                 <Icon name="lucide:external-link" class="h-4 w-4" />
                 {t('projects.visit')}
@@ -71,7 +71,7 @@ const safeRepo = toSafeExternalUrl(repo);
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${t('projects.source')} ${title}`}
-                class="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-100 px-4 py-2.5 text-sm font-medium text-(--color-text-secondary) transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                class="flex w-full items-center justify-center gap-2 rounded-xl bg-(--color-bg-surface-elevated) px-4 py-2.5 text-sm font-medium text-(--color-text-secondary) transition-colors hover:bg-(--color-border)"
               >
                 <Icon name="lucide:code-2" class="h-4 w-4" />
                 {t('projects.source')}
@@ -84,7 +84,7 @@ const safeRepo = toSafeExternalUrl(repo);
           <a
             href={`/${lang}/projects/${articleSlug}/`}
             aria-label={`${t('readCaseStudy')} ${title}`}
-            class="flex w-full items-center justify-center gap-2 rounded-xl border border-(--color-border) bg-zinc-50 px-4 py-2.5 text-sm font-medium text-(--color-text-secondary) transition-colors hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800"
+            class="flex w-full items-center justify-center gap-2 rounded-xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-2.5 text-sm font-medium text-(--color-text-secondary) transition-colors hover:bg-(--color-bg-surface-elevated)"
           >
             <Icon name="lucide:file-text" class="h-4 w-4" />
             {t('readCaseStudy')}

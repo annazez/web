@@ -1,0 +1,18 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "timeout": 60000,
+    "concurrency": 1,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    }
+  },
+  "urls": [
+    "http://localhost:4324/en/",
+    "http://localhost:4324/cs/",
+    "http://localhost:4324/en/projects/",
+    "http://localhost:4324/en/projects/telperion/",
+    "http://localhost:4324/en/quality/",
+    "http://localhost:4324/404.html"
+  ]
+}

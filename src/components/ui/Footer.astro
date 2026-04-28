@@ -1,7 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { useTranslations } from '../../i18n/utils';
+import { useTranslations, localeFor } from '../../i18n/utils';
 import { defaultLang, type LanguageCode } from '../../i18n/dictionary';
+import { identity } from '../../data/identity';
+import { toSafeExternalUrl } from '../../security/external-links';
+import siteModified from '../../data/site-modified.json';
 
 interface Props {
   lang?: LanguageCode;
@@ -10,11 +13,13 @@ interface Props {
 const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
 const qualityHref = `/${lang}/quality/`;
-const lastUpdatedDateTime = new Date().toISOString();
-const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-GB', {
+const lastUpdatedDateTime = siteModified.lastModified;
+const lastUpdated = new Date(lastUpdatedDateTime).toLocaleDateString(localeFor(lang), {
   year: 'numeric',
   month: 'long',
 });
+
+const codebergPagesUrl = toSafeExternalUrl(identity.codebergPages);
 ---
 
 <footer
@@ -28,15 +33,20 @@ const lastUpdated = new Date().toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
       ><Icon name="lucide:gauge" class="h-5 w-5" /></a
     >
-    <a
-      href="https://codeberg.org/annazez/pages"
-      target="_blank"
-      rel="me noopener noreferrer"
-      aria-label={t('footer.sourceCode')}
-      title={t('footer.sourceCode')}
-      class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
-      ><Icon name="lucide:code-2" class="h-5 w-5" /></a
-    >
+    {
+      codebergPagesUrl && (
+        <a
+          href={codebergPagesUrl}
+          target="_blank"
+          rel="me noopener noreferrer"
+          aria-label={t('footer.sourceCode')}
+          title={t('footer.sourceCode')}
+          class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
+        >
+          <Icon name="lucide:code-2" class="h-5 w-5" />
+        </a>
+      )
+    }
     <a
       href="/humans.txt"
       aria-label={t('footer.humansTxt')}

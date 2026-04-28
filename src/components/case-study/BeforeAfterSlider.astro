@@ -50,35 +50,22 @@ const clampedInitial = Math.max(0, Math.min(100, initialPosition));
       />
     </div>
 
-    <div class="before-after__divider" data-before-after-divider>
-      <span
-        class="before-after__handle"
-        role="slider"
-        tabindex="0"
-        aria-label={sliderLabel}
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow={String(clampedInitial)}
-        data-before-after-handle
-      >
-        <span class="before-after__handle-icon" aria-hidden="true">↔</span>
-      </span>
-    </div>
+    <div class="before-after__divider" data-before-after-divider></div>
 
     <span class="before-after__badge before-after__badge--before">{beforeLabel}</span>
     <span class="before-after__badge before-after__badge--after">{afterLabel}</span>
-  </div>
 
-  <input
-    class="before-after__range"
-    type="range"
-    min="0"
-    max="100"
-    step="1"
-    value={clampedInitial}
-    aria-label={sliderLabel}
-    data-before-after-input
-  />
+    <input
+      class="before-after__range"
+      type="range"
+      min="0"
+      max="100"
+      step="1"
+      value={clampedInitial}
+      aria-label={sliderLabel}
+      data-before-after-input
+    />
+  </div>
 
   {caption && <figcaption class="before-after__caption">{caption}</figcaption>}
 </figure>
@@ -126,35 +113,93 @@ const clampedInitial = Math.max(0, Math.min(100, initialPosition));
     touch-action: none;
   }
 
-  .before-after__handle {
+  .before-after__range {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: grid;
-    place-items: center;
+    inset: 0;
+    width: calc(100% + 2.25rem);
+    height: 100%;
+    left: -1.125rem;
+    margin: 0;
+    appearance: none;
+    background: transparent;
+    cursor: ew-resize;
+    z-index: 10;
+  }
+
+  .before-after__range:focus {
+    outline: none;
+  }
+
+  /* Webkit thumb */
+  .before-after__range::-webkit-slider-thumb {
+    appearance: none;
     width: 2.25rem;
     height: 2.25rem;
     border: 1px solid var(--color-border);
     border-radius: 9999px;
-    background: color-mix(in srgb, var(--color-bg-surface) 90%, transparent);
+    background-color: color-mix(in srgb, var(--color-bg-surface) 95%, transparent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 15-3-3 3-3'/%3E%3Cpath d='m15 9 3 3-3 3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1.1rem;
     color: var(--color-text-strong);
     box-shadow: 0 2px 8px color-mix(in srgb, var(--color-brand) 14%, transparent);
     cursor: ew-resize;
-    user-select: none;
-    touch-action: none;
+    transition: transform 0.1s ease;
   }
 
-  .before-after__handle:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--color-brand) 80%, transparent);
+  .before-after__range:active::-webkit-slider-thumb {
+    transform: scale(1.05);
+  }
+
+  /* Firefox thumb */
+  .before-after__range::-moz-range-thumb {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    background-color: color-mix(in srgb, var(--color-bg-surface) 95%, transparent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 15-3-3 3-3'/%3E%3Cpath d='m15 9 3 3-3 3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1.1rem;
+    color: var(--color-text-strong);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-brand) 14%, transparent);
+    cursor: ew-resize;
+    transition: transform 0.1s ease;
+  }
+
+  .before-after__range:active::-moz-range-thumb {
+    transform: scale(1.05);
+  }
+
+  /* Focus styles */
+  .before-after__range:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
 
-  .before-after__handle-icon {
-    font-size: 0.95rem;
-    line-height: 1;
+  .before-after__range:focus-visible::-moz-range-thumb {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
   }
 
+  /* Hide track */
+  .before-after__range::-webkit-slider-runnable-track {
+    background: transparent;
+    border: none;
+  }
+
+  .before-after__range::-moz-range-track {
+    background: transparent;
+    border: none;
+  }
+
+  .before-after__caption {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
   .before-after__badge {
     position: absolute;
     top: 0.75rem;
@@ -178,121 +223,62 @@ const clampedInitial = Math.max(0, Math.min(100, initialPosition));
   .before-after__badge--after {
     right: 0.75rem;
   }
-
-  .before-after__range {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .before-after__caption {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    line-height: 1.4;
-  }
 </style>
 
-<script is:inline>
+<script>
   const sliders = document.querySelectorAll('[data-before-after]');
 
   for (const slider of sliders) {
     const viewport = slider.querySelector('[data-before-after-viewport]');
     const input = slider.querySelector('[data-before-after-input]');
-    const divider = slider.querySelector('[data-before-after-divider]');
-    const handle = slider.querySelector('[data-before-after-handle]');
 
-    if (
-      !(viewport instanceof HTMLElement) ||
-      !(input instanceof HTMLInputElement) ||
-      !(divider instanceof HTMLElement) ||
-      !(handle instanceof HTMLElement)
-    ) {
+    if (!(viewport instanceof HTMLElement) || !(input instanceof HTMLInputElement)) {
       continue;
     }
 
-    const clamp = value => Math.max(0, Math.min(100, value));
-
     const syncSliderPosition = () => {
       viewport.style.setProperty('--before-after-position', `${input.value}%`);
-      handle.setAttribute('aria-valuenow', input.value);
-      handle.setAttribute('aria-valuetext', `${input.value}%`);
     };
 
-    const setFromClientX = clientX => {
+    // Native range handles keyboard and thumb drag.
+    // We add a pointer listener to the viewport to allow "drag anywhere" UX.
+    const setFromClientX = (clientX: number) => {
       const bounds = viewport.getBoundingClientRect();
-      if (!bounds.width) {
-        return;
-      }
-
+      if (!bounds.width) return;
       const percent = ((clientX - bounds.left) / bounds.width) * 100;
-      input.value = String(Math.round(clamp(percent)));
+      input.value = String(Math.round(Math.max(0, Math.min(100, percent))));
       syncSliderPosition();
     };
 
-    const onPointerDown = event => {
-      if (!(event instanceof PointerEvent)) {
-        return;
-      }
+    let isDragging = false;
 
-      event.preventDefault();
-      divider.setPointerCapture(event.pointerId);
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.button !== 0) return; // Only left click
+      isDragging = true;
+      setFromClientX(event.clientX);
+      if (event.target instanceof HTMLElement) {
+        event.target.setPointerCapture(event.pointerId);
+      }
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (!isDragging) return;
       setFromClientX(event.clientX);
     };
 
-    const onPointerMove = event => {
-      if (!(event instanceof PointerEvent)) {
-        return;
+    const onPointerUp = (event: PointerEvent) => {
+      isDragging = false;
+      if (event.target instanceof HTMLElement && event.target.hasPointerCapture(event.pointerId)) {
+        event.target.releasePointerCapture(event.pointerId);
       }
-
-      if (!divider.hasPointerCapture(event.pointerId)) {
-        return;
-      }
-
-      setFromClientX(event.clientX);
-    };
-
-    const onPointerEnd = event => {
-      if (!(event instanceof PointerEvent)) {
-        return;
-      }
-
-      if (divider.hasPointerCapture(event.pointerId)) {
-        divider.releasePointerCapture(event.pointerId);
-      }
-    };
-
-    const onHandleKeyDown = event => {
-      let nextValue = Number(input.value);
-
-      if (event.key === 'ArrowLeft') {
-        nextValue -= 2;
-      } else if (event.key === 'ArrowRight') {
-        nextValue += 2;
-      } else if (event.key === 'Home') {
-        nextValue = 0;
-      } else if (event.key === 'End') {
-        nextValue = 100;
-      } else {
-        return;
-      }
-
-      event.preventDefault();
-      input.value = String(Math.round(clamp(nextValue)));
-      syncSliderPosition();
     };
 
     input.addEventListener('input', syncSliderPosition);
-    divider.addEventListener('pointerdown', onPointerDown);
-    divider.addEventListener('pointermove', onPointerMove);
-    divider.addEventListener('pointerup', onPointerEnd);
-    divider.addEventListener('pointercancel', onPointerEnd);
-    handle.addEventListener('keydown', onHandleKeyDown);
+    input.addEventListener('pointerdown', onPointerDown);
+    input.addEventListener('pointermove', onPointerMove);
+    input.addEventListener('pointerup', onPointerUp);
+    input.addEventListener('pointercancel', onPointerUp);
+
     syncSliderPosition();
   }
 </script>

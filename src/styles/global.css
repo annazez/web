@@ -18,6 +18,8 @@
     --color-text-secondary: #52525b;
     --color-text-muted: #71717a;
     --color-text-strong: #27272a;
+    --color-bg-surface: #ffffff;
+    --color-bg-surface-elevated: #f4f4f5;
   }
 
   :where(main, article, section, .case-study-content) :is(h1, h2, h3, h4, h5, h6) {
@@ -75,6 +77,8 @@
     --color-text-secondary: #a1a1aa;
     --color-text-muted: #71717a;
     --color-text-strong: #e4e4e7;
+    --color-bg-surface: #18181b;
+    --color-bg-surface-elevated: #27272a;
   }
 
   html {
@@ -409,7 +413,13 @@ html:has(#layers:target) #page-shell.layers-dragging {
   cursor: grabbing;
 }
 
-html:has(#layers:target) #page-shell * {
+/* 
+ * PERFORMANCE: Use an explicit element list instead of the universal selector (*) 
+ * to minimize evaluation cost within the expensive :has() ancestor matching chain.
+ */
+html:has(#layers:target)
+  #page-shell
+  :is(header, section, footer, article, ul, h1, h2, p, a, button) {
   transform-style: preserve-3d;
   transition:
     transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
