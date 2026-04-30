@@ -30,15 +30,15 @@ jobs:
           npm run typecheck
           npm run build
 
-      - name: Accessibility tests
-        run: |
-          npx puppeteer browsers install chrome
-          npm run test:a11y:ci
-
       - name: E2E tests
         run: |
           npx playwright install --with-deps chromium firefox
           npm run test:e2e
+
+      - name: Accessibility tests
+        run: |
+          npx puppeteer browsers install chrome
+          npm run test:a11y:ci
 
       - name: Performance tests
         run: |
