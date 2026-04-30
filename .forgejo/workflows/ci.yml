@@ -9,7 +9,7 @@ env:
 
 jobs:
   build-test-deploy:
-    runs-on: docker
+    runs-on: codeberg
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
