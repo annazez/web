@@ -66,7 +66,32 @@ const adrs = defineCollection({
     .strict(),
 });
 
+const blog = defineCollection({
+  loader: glob({
+    pattern: '**/*.mdx',
+    base: './src/content/blog',
+    generateId: ({ data, entry }) => {
+      const slug = typeof data.slug === 'string' ? data.slug : entry.replace(/\.mdx$/, '');
+      const lang = typeof data.lang === 'string' ? data.lang : 'en';
+
+      return `${slug}-${lang}`;
+    },
+  }),
+  schema: z
+    .object({
+      title: z.string().min(1),
+      slug: z.string().min(1),
+      lang: z.enum(langKeys),
+      summary: z.string().min(1),
+      publishedAt: z.date(),
+      tags: z.array(z.string().min(1)).min(1).optional(),
+      ogImage: z.string().optional(),
+    })
+    .strict(),
+});
+
 export const collections = {
   projects,
   adrs,
+  blog,
 };

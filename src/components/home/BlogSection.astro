@@ -2,11 +2,14 @@
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
 import Surface from '../ui/Surface.astro';
+import { getBlogPosts } from '../../lib/blog';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const blogHref = `/${lang}/blog/`;
 const moreLabel = t('blog.more');
+const posts = await getBlogPosts(lang);
+const recentPosts = posts.slice(0, 3);
 ---
 
 <Surface as="section">
@@ -24,10 +27,40 @@ const moreLabel = t('blog.more');
       </p>
     </header>
 
-    <div
-      class="flex flex-col items-center justify-center gap-4 py-8 text-center text-(--color-text-muted)"
-    >
-      <p>{t('blog.empty')}</p>
+    <div class="flex flex-col gap-4">
+      {
+        recentPosts.length > 0 ? (
+          recentPosts.map(post => (
+            <article class="flex flex-col gap-1 rounded-lg p-3 transition-colors hover:bg-(--color-surface-hover)">
+              <div class="flex items-center justify-between gap-4">
+                <h3 class="text-base font-medium text-(--color-text)">
+                  <a
+                    href={`/${lang}/blog/${post.data.slug}`}
+                    class="focus-ring relative after:absolute after:inset-0"
+                  >
+                    {post.data.title}
+                  </a>
+                </h3>
+                <time
+                  class="text-xs whitespace-nowrap text-(--color-text-muted)"
+                  datetime={post.data.publishedAt.toISOString()}
+                >
+                  {post.data.publishedAt.toLocaleDateString(lang === 'cs' ? 'cs-CZ' : 'en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </time>
+              </div>
+              <p class="line-clamp-2 text-sm text-(--color-text-muted)">{post.data.summary}</p>
+            </article>
+          ))
+        ) : (
+          <div class="flex flex-col items-center justify-center gap-4 py-8 text-center text-(--color-text-muted)">
+            <p>{t('blog.empty')}</p>
+          </div>
+        )
+      }
     </div>
   </div>
 </Surface>
