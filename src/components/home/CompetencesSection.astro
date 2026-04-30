@@ -1,0 +1,80 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { Icon } from 'astro-icon/components';
+import Surface from '../ui/Surface.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const competencesHref = `/${lang}/competences/`;
+const moreLabel = t('competences.more');
+
+const competences = [
+  {
+    icon: 'lucide:brain',
+    title: t('competences.psychology'),
+    desc: t('competences.psychology.desc'),
+  },
+  {
+    icon: 'lucide:heart-handshake',
+    title: t('competences.socialWork'),
+    desc: t('competences.socialWork.desc'),
+  },
+  {
+    icon: 'lucide:monitor-smartphone',
+    title: t('competences.webDevelopment'),
+    desc: t('competences.webDevelopment.desc'),
+  },
+  {
+    icon: 'lucide:graduation-cap',
+    title: t('competences.academics'),
+    desc: t('competences.academics.desc'),
+  },
+  {
+    icon: 'lucide:briefcase',
+    title: t('competences.business'),
+    desc: t('competences.business.desc'),
+  },
+];
+---
+
+<Surface as="section">
+  <div class="flex flex-col gap-4">
+    <header class="flex flex-col gap-3 border-b border-(--color-border) pb-4">
+      <div class="flex items-center justify-between gap-4">
+        <h2>{t('competences.title')}</h2>
+        <a href={competencesHref} class="home-section-more-link">
+          <span>{moreLabel}</span>
+          <Icon name="lucide:arrow-right" class="home-section-more-link-icon" />
+        </a>
+      </div>
+      <p class="home-body-text">
+        {t('competences.subtitle')}
+      </p>
+    </header>
+
+    <div class="flex flex-col gap-3 pt-2">
+      {
+        competences.map(competence => (
+          <details class="group rounded-xl border border-(--color-border) bg-(--color-bg-surface) transition-colors hover:border-(--color-brand)">
+            <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl p-4 text-base font-medium text-(--color-text) outline-none focus-visible:ring-2 focus-visible:ring-(--color-brand) [&::-webkit-details-marker]:hidden">
+              <div class="flex items-center gap-3">
+                <Icon
+                  name={competence.icon}
+                  class="h-5 w-5 text-(--color-brand) opacity-70 transition-opacity group-hover:opacity-100"
+                />
+                {competence.title}
+              </div>
+              <Icon
+                name="lucide:chevron-down"
+                class="h-5 w-5 text-(--color-text-muted) transition-transform group-open:rotate-180"
+              />
+            </summary>
+            <div class="border-t border-(--color-border) px-4 py-3 text-sm text-(--color-text-muted)">
+              {competence.desc}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</Surface>

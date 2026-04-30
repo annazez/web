@@ -104,6 +104,24 @@ const en = {
   'blog.subtitle': 'Thoughts, notes, and writings.',
   'blog.more': 'View all posts',
   'blog.empty': 'No posts available yet.',
+  'competences.title': 'Competences',
+  'competences.subtitle': 'Core areas of expertise and interdisciplinary skills.',
+  'competences.more': 'View all competences',
+  'competences.psychology': 'Psychology',
+  'competences.psychology.desc':
+    'Understanding human behavior, cognition, and emotion to build better user experiences and empathize with user needs.',
+  'competences.socialWork': 'Social Work',
+  'competences.socialWork.desc':
+    'Applying empathy, active listening, and social science principles to support communities and individuals.',
+  'competences.webDevelopment': 'Web Development',
+  'competences.webDevelopment.desc':
+    'Building responsive, accessible, and performant web applications using modern web technologies.',
+  'competences.academics': 'Academics',
+  'competences.academics.desc':
+    'Engaging in continuous learning, research, and critical thinking to stay at the forefront of knowledge.',
+  'competences.business': 'Business',
+  'competences.business.desc':
+    'Understanding market dynamics, product strategy, and value creation to deliver impactful solutions.',
 } as const;
 
 export type TranslationKey = keyof typeof en;

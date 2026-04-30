@@ -104,6 +104,24 @@ const cs: TranslationDictionary = {
   'blog.subtitle': 'Myšlenky, poznámky a texty.',
   'blog.more': 'Všechny příspěvky',
   'blog.empty': 'Zatím žádné příspěvky.',
+  'competences.title': 'Kompetence',
+  'competences.subtitle': 'Klíčové oblasti odborných znalostí a mezioborových dovedností.',
+  'competences.more': 'Všechny kompetence',
+  'competences.psychology': 'Psychologie',
+  'competences.psychology.desc':
+    'Porozumění lidskému chování, kognici a emocím pro vytváření lepších uživatelských zážitků a empatii s potřebami uživatelů.',
+  'competences.socialWork': 'Sociální práce',
+  'competences.socialWork.desc':
+    'Uplatňování empatie, aktivního naslouchání a principů sociálních věd pro podporu komunit a jednotlivců.',
+  'competences.webDevelopment': 'Web development',
+  'competences.webDevelopment.desc':
+    'Tvorba responzivních, přístupných a výkonných webových aplikací pomocí moderních webových technologií.',
+  'competences.academics': 'Akademika',
+  'competences.academics.desc':
+    'Zapojení do neustálého vzdělávání, výzkumu a kritického myšlení pro udržení se na špici poznání.',
+  'competences.business': 'Podnikání',
+  'competences.business.desc':
+    'Porozumění tržní dynamice, produktové strategii a tvorbě hodnoty pro dodávání řešení, která mají dopad.',
 };
 
 export default cs;
