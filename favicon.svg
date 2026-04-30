@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    .bg { 
+      fill: #18181b; /* Tailwind zinc-900 */
+    }
+    .text { 
+      fill: #fafafa; /* Tailwind zinc-50 */
+      font-family: 'Segoe UI', 'San Francisco', Roboto, system-ui, sans-serif;
+      font-weight: 800; /* Co nejtučnější řez pro dobrou čitelnost v miniatuře */
+      font-size: 52px;  /* Mírně zvětšeno oproti monospace */
+      letter-spacing: -2px; /* Zjemněné přiblížení znaků */
+    }
+
+    /* Automatická inverze pro tmavý režim prohlížeče */
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #fafafa; }
+      .text { fill: #09090b; }
+    }
+  </style>
+
+  <rect width="100" height="100" rx="16" class="bg" />
+  
+  <text x="50%" y="50%" dy="0.35em" text-anchor="middle" class="text">AZ</text>
+</svg>
