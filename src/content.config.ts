@@ -46,26 +46,6 @@ const projects = defineCollection({
     .strict(),
 });
 
-const adrs = defineCollection({
-  loader: glob({
-    pattern: '**/*.mdx',
-    base: './src/content/adrs',
-  }),
-  schema: z
-    .object({
-      id: z.string().min(1),
-      project: z.string().min(1),
-      title: z.string().min(1),
-      lang: z.enum(langKeys),
-      context: z.string().min(1),
-      decision: z.string().min(1),
-      consequences: z.string().min(1),
-      tags: z.array(z.string().min(1)).min(1),
-      decidedAt: z.date(),
-    })
-    .strict(),
-});
-
 const blog = defineCollection({
   loader: glob({
     pattern: '**/*.mdx',
@@ -92,6 +72,5 @@ const blog = defineCollection({
 
 export const collections = {
   projects,
-  adrs,
   blog,
 };
