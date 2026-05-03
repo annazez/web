@@ -25,7 +25,7 @@ const {
   as: Heading = 'h3',
 } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 const safeWebsite = toSafeExternalUrl(website);
 const safeRepo = toSafeExternalUrl(repo);
 ---

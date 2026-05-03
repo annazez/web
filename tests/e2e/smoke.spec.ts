@@ -23,5 +23,5 @@ test('404 page has recovery links', async ({ page }) => {
   await page.goto('/missing-page');
   await expect(page.getByRole('heading', { level: 1, name: '404' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'EN', exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: /Domu|Domů|Home/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Domu|Domů|Home/i }).first()).toBeVisible();
 });

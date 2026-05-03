@@ -1,0 +1,15 @@
+{
+  "title": "Psychologie",
+  "desc": "Porozumění lidskému chování, kognici a emocím pro vytváření lepších uživatelských zážitků a empatii s potřebami uživatelů.",
+  "icon": "lucide:brain",
+  "order": 1,
+  "links": [
+    {
+      "title": "Ostravská univerzita",
+      "subtitle": "Bakalářské studium, Psychologie (2025 – Současnost)",
+      "url": "https://ff.osu.cz/kps/",
+      "image": "/images/osu-logo.png",
+      "imageAlt": "Logo Ostravské univerzity"
+    }
+  ]
+}

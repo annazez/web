@@ -1,29 +1,47 @@
 @import 'tailwindcss';
 
+@theme {
+  /* Baseline system stacks with no webfont loading. */
+  --font-sans: 'Segoe UI', 'San Francisco', Roboto, system-ui, sans-serif;
+  --font-mono: Consolas, 'SF Mono', Menlo, 'Noto Mono', ui-monospace, monospace;
+
+  /* Semantic Tokens */
+  --color-fg: #18181b;
+  --color-bg: #fafafa;
+  --color-accent: #3b82f6;
+  --color-dot: #e4e4e7;
+  --color-border: #e4e4e7;
+  --color-text-secondary: #52525b;
+  --color-text-muted: #6b6b72;
+  --color-text-strong: #27272a;
+  --color-surface-1: #ffffff;
+  --color-surface-2: #f4f4f5;
+
+  /* Surface Template Tokens */
+  --radius-card: 1rem;
+  --surface-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --surface-border: 1px solid var(--color-border);
+  --surface-padding: 1rem 1.25rem;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  :root {
-    /* Baseline system stacks with no webfont loading. */
-    --font-sans: 'Segoe UI', 'San Francisco', Roboto, system-ui, sans-serif;
-    --font-mono: Consolas, 'SF Mono', Menlo, 'Noto Mono', ui-monospace, monospace;
-    --default-mono-font-family: var(--font-mono);
-
-    /* Light mode colors */
-    --color-brand: #18181b;
-    --color-bg: #fafafa;
-    --color-dot: #e4e4e7;
-    --color-accent: #3b82f6;
-    --color-border: #e4e4e7;
-    --color-text-secondary: #52525b;
-    --color-text-muted: #6b6b72;
-    --color-text-strong: #27272a;
-    --color-bg-surface: #ffffff;
-    --color-bg-surface-elevated: #f4f4f5;
+  .dark {
+    --color-fg: #fafafa;
+    --color-bg: #09090b;
+    --color-accent: #60a5fa;
+    --color-dot: #27272a;
+    --color-border: #27272a;
+    --color-text-secondary: #a1a1aa;
+    --color-text-muted: #a1a1aa; /* zinc-400 for better contrast in dark mode (7.42:1) */
+    --color-text-strong: #e4e4e7;
+    --color-surface-1: #18181b;
+    --color-surface-2: #27272a;
   }
 
   :where(main, article, section, .case-study-content) :is(h1, h2, h3, h4, h5, h6) {
-    color: var(--color-brand);
+    color: var(--color-fg);
     font-family: var(--font-sans);
     margin: 0;
   }
@@ -150,11 +168,11 @@
     background: #a1a1aa;
   }
 
-  html.dark ::-webkit-scrollbar-thumb {
+  .dark ::-webkit-scrollbar-thumb {
     background: #52525b;
   }
 
-  html.dark ::-webkit-scrollbar-thumb:hover {
+  .dark ::-webkit-scrollbar-thumb:hover {
     background: #71717a;
   }
 
@@ -235,7 +253,7 @@
   }
 
   .home-section-more-link:hover {
-    color: var(--color-brand);
+    color: var(--color-fg);
   }
 
   .home-body-text {
@@ -281,7 +299,7 @@
   }
 
   .home-social-links a:hover {
-    color: var(--color-brand);
+    color: var(--color-fg);
   }
 
   #carbon-footprint-value {
@@ -303,13 +321,6 @@
   }
 }
 
-/* Architectural X-Ray Mode (Zero-JS via URL hash) */
-html:has(#arch:target) * {
-  outline: 1px solid rgba(161, 161, 170, 0.4) !important;
-  background: transparent !important;
-  color: var(--color-brand) !important;
-}
-
 html:has(#arch:target) body {
   background-image: none !important;
 }
@@ -320,17 +331,12 @@ html:has(#arch:target) section,
 html:has(#arch:target) article,
 html:has(#arch:target) footer,
 html:has(#arch:target) nav {
-  outline: 1px dashed var(--color-brand) !important;
+  outline: 1px dashed var(--color-fg) !important;
 }
 
 /* Remove outlines from the hidden anchor itself */
 html:has(#arch:target) #arch {
   outline: none !important;
-}
-
-/* Accessibility Auditor Mode (Zero-JS via URL hash) */
-html:has(#audit:target) {
-  filter: grayscale(100%) contrast(110%);
 }
 
 /* Expose hidden screen-reader labels visually */
@@ -361,15 +367,6 @@ html:has(#audit:target) img:not([alt]),
 html:has(#audit:target) a:not([href]) {
   outline: 4px dashed red !important;
   outline-offset: 4px;
-}
-
-/* Exploded Layers 3D Mode (Zero-JS via URL hash) */
-html:has(#layers:target) {
-  background: #09090b !important;
-  overflow: hidden !important;
-  /* Prevent scrollbars from popping in/out due to 3D scaling */
-  height: 100vh;
-  width: 100vw;
 }
 
 /* Tilt the entire body into an isometric perspective */
@@ -410,8 +407,8 @@ html:has(#layers:target) #page-shell.layers-dragging {
   cursor: grabbing;
 }
 
-/* 
- * PERFORMANCE: Use an explicit element list instead of the universal selector (*) 
+/*
+ * PERFORMANCE: Use an explicit element list instead of the universal selector (*)
  * to minimize evaluation cost within the expensive :has() ancestor matching chain.
  */
 html:has(#layers:target)

@@ -16,7 +16,7 @@ interface Props {
 
 const { projectArticles: featuredProjects } = Astro.props as Props;
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 const projectsHref = `/${lang}/projects/`;
 const moreLabel = t('projects.more');
 ---

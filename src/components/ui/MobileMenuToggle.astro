@@ -1,0 +1,61 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = await useTranslations(lang);
+---
+
+<details data-mobile-menu-toggle class="group/menu relative w-full sm:hidden">
+  <summary
+    aria-label={t('ui.mobileNavigationLabel')}
+    class="relative flex min-h-11 w-full cursor-pointer list-none items-center justify-center rounded-xl border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) shadow-sm transition-colors duration-200 group-open/menu:text-(--color-brand) hover:text-(--color-brand) [&::-webkit-details-marker]:hidden"
+  >
+    <Icon
+      name="lucide:menu"
+      class="pointer-events-none absolute left-3 size-4 shrink-0 group-open/menu:hidden"
+      aria-hidden="true"
+    />
+    <Icon
+      name="lucide:x"
+      class="pointer-events-none absolute left-3 hidden size-4 shrink-0 group-open/menu:block"
+      aria-hidden="true"
+    />
+    <span class="home-micro-label whitespace-nowrap">{t('ui.mobileNavigationLabel')}</span>
+    <Icon
+      name="lucide:chevron-down"
+      class="pointer-events-none absolute right-3 size-4 shrink-0 transition-transform duration-200 group-open/menu:rotate-180"
+      aria-hidden="true"
+    />
+  </summary>
+</details>
+
+<script>
+  /**
+   * ZERO-RUNTIME FALLBACK:
+   * The menu visibility is handled entirely via CSS :has([data-mobile-menu-toggle][open]).
+   * This script only handles closing the menu when an internal link is clicked,
+   * which is necessary for a smooth SPA-like experience with View Transitions.
+   */
+  import { bindOnce } from '../../scripts/bind-once';
+
+  function initToggle() {
+    const details = document.querySelector<HTMLDetailsElement>('[data-mobile-menu-toggle]');
+    const header = details?.closest('[data-header-nav]');
+
+    if (!details || !header) return;
+
+    // Close on any internal link click
+    header.addEventListener('click', event => {
+      const target = event.target as HTMLElement;
+      if (target.closest('a, button:not(summary)')) {
+        details.removeAttribute('open');
+      }
+    });
+  }
+
+  initToggle();
+  bindOnce('mobile-menu-toggle-init', () => {
+    document.addEventListener('astro:page-load', initToggle);
+  });
+</script>

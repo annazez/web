@@ -2,176 +2,94 @@
 
 ## Core Principles
 
-| Principle             | Enforcement                                     |
-| --------------------- | ----------------------------------------------- |
-| Restrained hierarchy  | Fixed scale; no arbitrary sizes                 |
-| System fonts only     | No webfont loading permitted                    |
-| Calm defaults         | Light weights, subtle tracking                  |
-| Consistent vocabulary | Semantic h1-h6 headings + shared body utilities |
+This system enforces visual consistency through centralized control. See `src/styles/global.css` for all canonical token values.
+
+### Restrained Hierarchyhej navečeřím
+
+Fixed scale with no arbitrary sizes. All heading levels (`h1`-`h6`) are styled by element in CSS, ensuring consistent appearance across the entire site. Markdown content follows the same scale automatically.
+
+**Rationale**: Prevents visual inconsistency from ad-hoc sizing decisions.
+
+### System Fonts Only
+
+No webfont loading permitted. The font stack uses platform-native fonts only.
+
+**Rationale**: Performance, privacy, and reliability. External font requests are blocked by CSP.
+
+### Calm Defaults
+
+Light weights and subtle tracking create an unobtrusive reading experience.
+
+**Rationale**: Reduces visual noise; prioritizes content over decoration.
+
+### Consistent Vocabulary
+
+Semantic HTML elements (`h1`-`h6`) for headings plus a shared set of utility classes for body text and metadata.
+
+**Rationale**: Predictable patterns reduce cognitive load for contributors.
 
 ---
 
 ## Semantic Heading Scale
 
-The site uses a single heading logic everywhere: native `h1`-`h6` tags, styled by element rather than component-specific classes. Markdown content follows the same scale.
+Headings use native `h1`-`h6` tags styled by element. The specific size, weight, leading, and tracking values are defined in `src/styles/global.css` and must not be overridden in component code.
 
-| Element | Mobile   | Desktop  | Weight | Leading | Tracking |
-| ------- | -------- | -------- | ------ | ------- | -------- |
-| `h1`    | 2.25rem  | 3rem     | 500    | 1.05    | -0.025em |
-| `h2`    | 1.75rem  | 2rem     | 500    | 1.15    | -0.02em  |
-| `h3`    | 1.25rem  | 1.25rem  | 600    | 1.35    | 0        |
-| `h4`    | 1.125rem | 1.125rem | 600    | 1.4     | 0        |
-| `h5`    | 1rem     | 1rem     | 600    | 1.4     | 0        |
-| `h6`    | 0.75rem  | 0.75rem  | 600    | 1       | 0.08em   |
+**Rationale**: Centralized control ensures consistency. Headings should be styled by their semantic level, not by page-specific utility classes.
 
-### Body Level
+---
 
-| Class                | Usage      | Size     | Weight | Leading | Color     |
-| -------------------- | ---------- | -------- | ------ | ------- | --------- |
-| `home-body-text`     | Paragraphs | 1rem     | 400    | 1.75    | secondary |
-| `home-inline-strong` | Emphasis   | 1rem     | 500    | inherit | strong    |
-| `home-subtle-text`   | Metadata   | 0.875rem | 400    | 1.6     | muted     |
+## Body Text System
 
-### Micro Level
+Body copy uses dedicated classes (`home-body-text`, `home-subtle-text`, `home-inline-strong`) rather than inline utilities. Color values reference CSS custom properties defined in `global.css`.
 
-| Class               | Usage         | Size     | Weight | Leading | Tracking | Transform |
-| ------------------- | ------------- | -------- | ------ | ------- | -------- | --------- |
-| `home-micro-label`  | Labels, links | 0.75rem  | 500    | 1       | 0.08em   | uppercase |
-| `home-micro-copy`   | Fine print    | 0.75rem  | 400    | 1.6     | 0        | none      |
-| `home-tag-text`     | Tags, badges  | 0.75rem  | 500    | 1       | 0        | none      |
-| `home-action-text`  | Buttons       | 0.75rem  | 600    | 1       | 0.01em   | none      |
-| `home-social-links` | Nav links     | 0.875rem | 500    | 1       | 0        | none      |
+**Rationale**: Ensures consistent color application across light and dark modes. The reduced contrast for body text is intentional for visual calm.
 
 ---
 
 ## Font Stacks
 
-### Primary (Sans-Serif)
+Font families are defined as CSS custom properties (`--font-sans`, `--font-mono`) in `global.css`. Platform-specific overrides ensure optimal rendering on each operating system.
 
-```css
---font-sans: 'Segoe UI', 'San Francisco', Roboto, system-ui, sans-serif;
-```
-
-### Platform Overrides
-
-| Platform | Stack                                              |
-| -------- | -------------------------------------------------- |
-| Windows  | `'Segoe UI'`, system-ui                            |
-| Apple    | `'SF Pro Text'`, `'SF Pro Display'`, -apple-system |
-| Android  | `Roboto`, `'Noto Sans'`                            |
-| Linux    | `'Adwaita Sans'`, `'Cantarell'`, `'Noto Sans'`     |
-
-### Monospace (Code)
-
-```css
---font-mono: Consolas, 'SF Mono', Menlo, 'Noto Mono', ui-monospace, monospace;
-```
+**Rationale**: Leverages system fonts for zero-load-time typography while maintaining visual consistency.
 
 ---
 
 ## Color System
 
-### Text Colors
+Text colors use CSS custom properties (`--color-brand`, `--color-text-secondary`, `--color-text-muted`, `--color-text-strong`). The mapping of semantic elements to color variables is defined in `global.css`.
 
-| Variable                 | Light   | Dark    | Usage                  |
-| ------------------------ | ------- | ------- | ---------------------- |
-| `--color-brand`          | #18181b | #fafafa | Headings, primary text |
-| `--color-text-secondary` | #52525b | #a1a1aa | Body copy (default)    |
-| `--color-text-muted`     | #71717a | #71717a | Metadata,辅助 text     |
-| `--color-text-strong`    | #27272a | #e4e4e7 | Emphasized inline      |
-
-### Color Application Rules
-
-| Element/utility    | Color Variable           | Rationale                        |
-| ------------------ | ------------------------ | -------------------------------- |
-| `h1`, `h2`, `h3`   | `--color-brand`          | Maximum prominence               |
-| `h4`, `h5`         | `--color-brand`          | Secondary hierarchy              |
-| `h6`               | `--color-text-muted`     | Micro heading / label treatment  |
-| `home-body-text`   | `--color-text-secondary` | Reduced contrast for readability |
-| `home-subtle-text` | `--color-text-muted`     | Secondary metadata               |
-| `home-micro-label` | `--color-text-muted`     | Non-primary action               |
+**Rationale**: Centralized color management enables consistent light/dark mode switching and simplifies theming.
 
 ---
 
 ## Spacing System
 
-### Vertical Rhythm
+Vertical rhythm uses Tailwind spacing utilities. The specific gap values for different contexts are standardized across the codebase.
 
-| Context             | Utility        | Value           | Usage                    |
-| ------------------- | -------------- | --------------- | ------------------------ |
-| Main container flow | `gap-4`        | 1rem            | Between major elements   |
-| Section spacing     | `gap-8`        | 2rem            | Between content sections |
-| Category spacing    | `gap-3`        | 0.75rem         | Header to list           |
-| Card list           | `gap-4`        | 1rem            | Between cards            |
-| Card internal       | `mt-2`, `mt-3` | 0.5rem, 0.75rem | Title to description     |
+**Rationale**: Consistent spacing improves readability and visual flow.
 
-### Page Padding
+---
 
-| Breakpoint | Horizontal      | Vertical       |
-| ---------- | --------------- | -------------- |
-| Mobile     | `px-6` (1.5rem) | `py-16` (4rem) |
-| Desktop    | `px-6` (1.5rem) | `py-16` (4rem) |
+## Surface Template
 
-### Card Padding
-
-| Default surface padding | `px-4 py-5 sm:px-5` |
-| Legacy simple card | `p-4` (1rem) |
-
-### Surface Template
-
-The site uses a shared `<Surface>` component to implement floating panels, cards, and dashboards. This ensures consistent border radii, backgrounds, and shadows across all features.
-
-**Implementation**:
-
-```astro
-<Surface as="section" class="flex flex-col gap-4">
-  <slot />
-</Surface>
-```
-
-| Purpose       | Attribute / Utility                                                            |
-| ------------- | ------------------------------------------------------------------------------ |
-| Component     | `src/components/ui/Surface.astro`                                              |
-| Outer shell   | `rounded-2xl border border-(--color-border) bg-(--color-bg-surface) shadow-sm` |
-| Inner spacing | `px-4 py-5 sm:px-5`                                                            |
-| Clipping      | `overflow-hidden`                                                              |
+The shared `<Surface>` component in `src/components/ui/Surface.astro` implements floating panels, cards, and dashboards with consistent border radii, backgrounds, and shadows.
 
 **Rules**:
 
-- **Always** use the `<Surface>` component instead of inlining its classes.
-- Use the `as` prop to specify the semantic element (`section`, `article`, `li`, etc.).
-- Do not add custom shadows or alternate border radii for new feature surfaces.
-- Keep background and border tokens consistent so light and dark modes match.
+- Always use the `<Surface>` component instead of inlining its classes
+- Use the `as` prop to specify the semantic element
+- Do not add custom shadows or alternate border radii
+- Keep background and border tokens consistent for light/dark mode parity
+
+**Rationale**: Prevents proliferation of inconsistent card styles.
 
 ---
 
 ## Layout Constraints
 
-| Property       | Value               | Rationale                           |
-| -------------- | ------------------- | ----------------------------------- |
-| Max width      | `max-w-2xl` (672px) | Optimal line length for readability |
-| Mobile padding | `px-6`              | Consistent edge spacing             |
-| Centering      | `mx-auto`           | Symmetrical layout                  |
+All pages use `max-w-2xl` (672px) container with consistent padding (`px-6` horizontal, `py-16` vertical).
 
----
-
-## Class Usage Matrix
-
-### Valid Combinations
-
-| Class              | Valid Elements | Invalid Elements |
-| ------------------ | -------------- | ---------------- |
-| `home-body-text`   | p, span        | h1-h6            |
-| `home-micro-label` | a, span, small | h1-h6, p         |
-
-### Required Pairings
-
-| Class              | Required/Recommended        | Example                                 |
-| ------------------ | --------------------------- | --------------------------------------- |
-| `h1`               | none                        | Site titles, page titles                |
-| `h2`               | none                        | Section titles                          |
-| `h3`               | none                        | Card titles                             |
-| `home-micro-label` | `transition-colors` (links) | `src/components/home/ContentCard.astro` |
+**Rationale**: Optimal line length for readability across devices.
 
 ---
 
@@ -179,160 +97,50 @@ The site uses a shared `<Surface>` component to implement floating panels, cards
 
 ### Rule 1: Semantic Classes Only
 
-**DO**:
-
-```astro
-<h1>Title</h1>
-<p class="home-body-text">Description</p>
-```
-
-**DON'T**:
-
-```astro
-<h1 class="text-3xl font-light">Title</h1>
-<p class="text-gray-600">Description</p>
-```
-
-**Rationale**: Centralized control, consistent appearance. Headings should be styled by their semantic level, not by page-specific utility classes.
-
----
+Use semantic HTML elements with their default styling. Do not add utility classes that duplicate or override typography defined in `global.css`.
 
 ### Rule 2: Hierarchy Matching
 
-| Heading Level | Required Class      |
-| ------------- | ------------------- |
-| h1            | display title scale |
-| h2            | section title scale |
-| h3            | card title scale    |
-
-**Rationale**: Visual hierarchy reflects DOM hierarchy.
-
----
+Visual hierarchy must reflect DOM hierarchy. `h1` for page titles, `h2` for section titles, `h3` for card titles.
 
 ### Rule 3: Body Text Color
 
-`home-body-text` **must** use `--color-text-secondary` (default in CSS).
-
-**DON'T** override with darker colors for "better contrast" — the reduced contrast is intentional for visual calm.
-
----
+`home-body-text` must use `--color-text-secondary`. Do not override with darker colors.
 
 ### Rule 4: No Webfonts
 
-**NEVER** add:
-
-- `@font-face` declarations
-- Google Fonts imports
-- `font-family` pointing to external services
-
-**Rationale**: Performance, privacy, reliability.
-
----
+Never add `@font-face` declarations, Google Fonts imports, or external font services.
 
 ### Rule 5: Light Weights for Large Text
 
-| Element | Weight | Reason                      |
-| ------- | ------ | --------------------------- |
-| `h1`    | 500    | Elegant appearance          |
-| `h2`    | 500    | Consistent with display     |
-| `h3`    | 600    | Card prominence (exception) |
-
----
+Large headings use lighter weights (500) for elegant appearance.
 
 ### Rule 6: Negative Tracking on Headlines
 
-| Element | Tracking | Reason           |
-| ------- | -------- | ---------------- |
-| `h1`    | -0.025em | Tighter headline |
-| `h2`    | -0.02em  | Tighter headline |
-
-**DON'T** add positive tracking to headlines.
-
----
+`h1` and `h2` use negative letter-spacing for tighter appearance. Defined in CSS.
 
 ### Rule 7: Uppercase Labels
 
-`home-micro-label` **includes** `text-transform: uppercase` and `letter-spacing: 0.08em`.
-
-**DON'T** apply uppercase to body text or titles.
-
----
+`home-micro-label` includes uppercase transformation and tracking. Do not apply uppercase to body text or titles.
 
 ### Rule 8: Line Height Scale
 
-| Size Category      | Leading   |
-| ------------------ | --------- |
-| Display (2.25rem+) | 1.05-1.15 |
-| Card (1.25rem)     | 1.35      |
-| Body (1rem)        | 1.75      |
-| Micro (0.75rem)    | 1-1.6     |
-
-**Rationale**: Smaller text needs more leading for readability.
-
----
+Smaller text needs more leading for readability. The scale is defined in `global.css`.
 
 ### Rule 9: Responsive Automation
 
-`h1` and `h2` auto-scale at 640px breakpoint.
-
-**DON'T** add manual `@media` queries for typography — handled in `global.css`.
-
----
+`h1` and `h2` auto-scale at 640px breakpoint. Do not add manual `@media` queries for typography.
 
 ### Rule 10: New Pages Inherit System
 
-Any new page **must**:
-
-1. Use semantic heading levels (`h1`-`h3`) for titles
-2. Use `home-body-text` and `home-micro-label` for supporting copy
-3. Match spacing conventions (`gap-4`, `py-16`, `px-6`)
-4. Use `max-w-2xl` container
-
-**Rationale**: Site-wide visual consistency.
+Any new page must use semantic heading levels, `home-body-text` for copy, standard spacing, and `max-w-2xl` container.
 
 ### Rule 11: Surface Template Reuse
 
-Any new surface-like component **must** reuse the shared shell attributes from the Surface Template section instead of inventing a new card style.
-
-**Rationale**: Keeps floating panels visually consistent across the entire website.
-
----
-
-## Quick Reference
-
-### Creating a New Section
-
-```astro
-<section class="flex flex-col gap-8">
-  <h2>Section Title</h2>
-  <p class="home-body-text">Section description goes here.</p>
-
-  <ul class="flex flex-col gap-4">
-    <Surface as="li">
-      <h3>Card Title</h3>
-      <p class="home-body-text mt-2">Card description.</p>
-    </Surface>
-  </ul>
-</section>
-```
-
-### Creating a Back Link
-
-```astro
-<a class="home-subtle-text inline-flex items-center gap-1" href="/en/">
-  <span>←</span>
-  <span>Back</span>
-</a>
-```
-
-### Creating Metadata Labels
-
-```astro
-<span class="home-micro-label">External Link</span>
-```
+Any new surface-like component must reuse the shared shell attributes from the Surface component.
 
 ---
 
 ## Source of Truth
 
-All typography classes defined in: `src/styles/global.css` (lines 188-280)
+All typography values are defined in: `src/styles/global.css`

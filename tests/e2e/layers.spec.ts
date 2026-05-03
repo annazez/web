@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test.describe('3D Exploded Layers Mode', () => {
   test('initializes mode correctly when navigating to #layers', async ({ page }) => {
-    await page.goto('/en/#layers');
+    await page.goto('/en/lab/#layers');
 
     const pageShell = page.locator('#page-shell');
 
@@ -22,7 +22,7 @@ test.describe('3D Exploded Layers Mode', () => {
   });
 
   test('updates rotation transforms on pointer drag', async ({ page }) => {
-    await page.goto('/en/#layers');
+    await page.goto('/en/lab/#layers');
 
     const pageShell = page.locator('#page-shell');
 
@@ -66,7 +66,7 @@ test.describe('3D Exploded Layers Mode', () => {
   });
 
   test('updates scale transform on wheel zoom', async ({ page }) => {
-    await page.goto('/en/#layers');
+    await page.goto('/en/lab/#layers');
 
     const pageShell = page.locator('#page-shell');
 
@@ -101,7 +101,7 @@ test.describe('3D Exploded Layers Mode', () => {
   });
 
   test('cleans up state and transforms when exiting mode', async ({ page }) => {
-    await page.goto('/en/#layers');
+    await page.goto('/en/lab/#layers');
 
     const pageShell = page.locator('#page-shell');
 

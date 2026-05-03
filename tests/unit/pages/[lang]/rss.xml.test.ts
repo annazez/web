@@ -5,7 +5,6 @@ import { mock } from 'node:test';
 import { SITE_URL } from '../../../../src/config.ts';
 
 import { defaultLang, supportedLangs } from '../../../../src/i18n/dictionary.ts';
-import { dictionary } from '../../../../src/i18n/dictionary.ts';
 
 // Data setup
 const mockProjects = [
@@ -42,6 +41,27 @@ mock.module('astro:content', {
         return mockProjects.filter(filter);
       }
       return mockProjects;
+    },
+    getEntry: async (collection: string, id: string) => {
+      if (collection === 'translations') {
+        if (id === 'en') {
+          return {
+            data: {
+              feedTitle: 'Anna Zezulka – Projects',
+              feedDescription: 'Case studies and project write-ups.',
+            },
+          };
+        }
+        if (id === 'cs') {
+          return {
+            data: {
+              feedTitle: 'Anna Zezulka – Projekty',
+              feedDescription: 'Případové studie a zápisky o projektech.',
+            },
+          };
+        }
+      }
+      return null;
     },
   },
 });
@@ -86,8 +106,8 @@ test('rss.xml.ts', async t => {
     const options = rssArgs[0];
 
     // Check main feed metadata
-    assert.strictEqual(options.title, dictionary.en.feedTitle);
-    assert.strictEqual(options.description, dictionary.en.feedDescription);
+    assert.strictEqual(options.title, 'Anna Zezulka – Projects');
+    assert.strictEqual(options.description, 'Case studies and project write-ups.');
     assert.strictEqual(options.site, mockContext.site);
 
     // Check items sorting and shape (Project A is newer than Project B)
@@ -104,7 +124,6 @@ test('rss.xml.ts', async t => {
     assert.strictEqual(options.items[1].link, 'https://custom-site.com/en/projects/project-b/');
 
     // Check if the Response returned is the mock one
-    // Actually our test mock returns a static Response, but the real @astrojs/rss returns a Response too.
     assert.ok(response instanceof Response);
   });
 
@@ -126,7 +145,7 @@ test('rss.xml.ts', async t => {
     assert.ok(!filter({ data: { lang: 'invalid-lang' } }));
 
     // Verify translations used are the fallback ones
-    assert.strictEqual(rssArgs[0].title, dictionary[defaultLang].feedTitle);
+    assert.strictEqual(rssArgs[0].title, 'Anna Zezulka – Projects');
   });
 
   await t.test('GET should use SITE_URL fallback when context.site is missing', async () => {

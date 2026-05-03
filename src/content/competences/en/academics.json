@@ -1,0 +1,15 @@
+{
+  "title": "Academics",
+  "desc": "Engaging in continuous learning, research, and critical thinking to stay at the forefront of knowledge.",
+  "icon": "lucide:graduation-cap",
+  "order": 4,
+  "links": [
+    {
+      "title": "RUNSHIFT",
+      "subtitle": "Cohort Coordinator, Charles University & OSU (2026 – 2029)",
+      "url": "https://runshift.cz",
+      "image": "/images/runshift-logo.png",
+      "imageAlt": "RUNSHIFT Logo"
+    }
+  ]
+}

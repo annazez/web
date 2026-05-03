@@ -1,0 +1,72 @@
+---
+import NavLinks from './NavLinks.astro';
+import LanguagePicker from './LanguagePicker.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import MobileMenuToggle from './MobileMenuToggle.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = await useTranslations(lang);
+---
+
+<header
+  data-header-nav
+  class="z-50 mx-auto w-full max-w-2xl px-6 pt-4 sm:absolute sm:top-8 sm:right-8 sm:mx-0 sm:w-auto sm:max-w-none sm:p-0"
+>
+  <div class="relative flex flex-col gap-2">
+    <MobileMenuToggle />
+
+    <nav
+      id="header-nav-panel"
+      aria-label={t('ui.mobileNavigationLabel')}
+      class="nav-panel flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-6"
+    >
+      <div class="nav-panel__links">
+        <NavLinks />
+      </div>
+
+      <div class="nav-panel__controls flex flex-col items-stretch gap-2 sm:flex-row sm:gap-2">
+        <LanguagePicker />
+        <ThemeToggle
+          className="min-h-11 w-full justify-between rounded-xl border border-(--color-border) bg-(--color-bg) text-(--color-text-muted) shadow-sm transition-colors duration-200 group-open:bg-(--color-bg-surface) group-open:text-(--color-brand) hover:text-(--color-brand) sm:w-32"
+        />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Mobile visibility via :has() */
+  .nav-panel {
+    display: flex;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-0.35rem);
+    transition:
+      max-height 220ms ease,
+      opacity 160ms ease,
+      transform 220ms ease;
+  }
+
+  [data-header-nav]:has([data-mobile-menu-toggle][open]) .nav-panel {
+    max-height: 40rem;
+    opacity: 1;
+    overflow: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  /* Desktop visibility */
+  @media (min-width: 40rem) {
+    .nav-panel {
+      max-height: none;
+      opacity: 1;
+      overflow: visible;
+      pointer-events: auto;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

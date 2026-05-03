@@ -5,7 +5,7 @@ import Surface from '../ui/Surface.astro';
 import { getBlogPosts } from '../../lib/blog';
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 const blogHref = `/${lang}/blog/`;
 const moreLabel = t('blog.more');
 const posts = await getBlogPosts(lang);

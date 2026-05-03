@@ -28,17 +28,6 @@ function getDialog(): HTMLDialogElement | null {
   return document.getElementById('command-palette') as HTMLDialogElement | null;
 }
 
-function togglePalette(): void {
-  const dialog = getDialog();
-  if (!dialog) return;
-
-  if (dialog.open) {
-    dialog.close();
-  } else {
-    dialog.showModal();
-  }
-}
-
 function closePalette(): void {
   const dialog = getDialog();
   if (dialog?.open) dialog.close();
@@ -60,19 +49,12 @@ function handleKeydown(e: KeyboardEvent): void {
   // Never intercept when typing in form fields
   if (isEditableTarget(e.target)) return;
 
-  // Ignore when modifier keys are held (except Shift for ?)
+  // Ignore when modifier keys are held
   if (e.ctrlKey || e.metaKey || e.altKey) return;
 
   const dialog = getDialog();
 
-  // ? (Shift + /) — toggle palette
-  if (e.key === '?') {
-    e.preventDefault();
-    togglePalette();
-    return;
-  }
-
-  // Remaining shortcuts only apply when the palette is open
+  // shortcuts only apply when the palette is open
   if (!dialog?.open) return;
 
   switch (e.key.toUpperCase()) {

@@ -11,7 +11,7 @@ export function getStaticPaths() {
 
 export async function GET(context: APIContext) {
   const currentLang = getValidLanguageCode(context.params.lang as string);
-  const t = useTranslations(currentLang);
+  const t = await useTranslations(currentLang);
   const site = context.site ?? SITE_URL;
 
   const sortedProjects = await getProjects(currentLang);

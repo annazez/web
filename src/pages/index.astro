@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { defaultLang, languageEntries } from '../i18n/dictionary';
 import { useTranslations } from '../i18n/utils';
 
-const t = useTranslations(defaultLang);
+const t = await useTranslations(defaultLang);
 const canonicalEn = new URL(`/${defaultLang}/`, Astro.site ?? Astro.url).toString();
 ---
 

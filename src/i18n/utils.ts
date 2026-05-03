@@ -1,10 +1,9 @@
+import { getEntry } from 'astro:content';
 import {
-  dictionary,
   defaultLang,
   langPrefixRegex,
   getValidLanguageCode,
   type LanguageCode,
-  type TranslationKey,
 } from './dictionary';
 
 export function getLangFromUrl(url: URL): LanguageCode {
@@ -12,13 +11,19 @@ export function getLangFromUrl(url: URL): LanguageCode {
   return (match?.[1] as LanguageCode) ?? defaultLang;
 }
 
-export function useTranslations(lang: LanguageCode) {
+export async function useTranslations(lang: LanguageCode) {
   const validLang = getValidLanguageCode(lang);
-  const langDictionary = dictionary[validLang];
-  const fallbackDictionary = dictionary[defaultLang];
+  const entry = await getEntry('translations', validLang);
+  const fallbackEntry = await getEntry('translations', defaultLang);
 
-  return function t(key: TranslationKey): string {
-    const value = langDictionary[key] ?? fallbackDictionary[key];
+  if (!entry) {
+    throw new Error(`Translations not found for language: ${validLang}`);
+  }
+
+  return function t(key: string): string {
+    const value =
+      entry.data[key as keyof typeof entry.data] ??
+      fallbackEntry?.data[key as keyof typeof entry.data];
     if (value !== undefined) {
       return value;
     }

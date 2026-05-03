@@ -8,7 +8,7 @@ interface Props {
 
 const { href, label } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 const resolvedLabel = label ?? t('back');
 ---
 

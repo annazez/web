@@ -1,0 +1,22 @@
+{
+  "title": "Web Development",
+  "desc": "Building responsive, accessible, and performant web applications using modern web technologies.",
+  "icon": "lucide:monitor-smartphone",
+  "order": 3,
+  "links": [
+    {
+      "title": "Telperion",
+      "subtitle": "Full-stack development and architecture (2025 – Present)",
+      "url": "/en/projects/telperion/",
+      "image": "/images/telperion-logo.ico",
+      "imageAlt": "Telperion Logo"
+    },
+    {
+      "title": "ITnetwork",
+      "subtitle": "React Web Application Development (MŠMT accredited, 2025)",
+      "url": "https://www.itnetwork.cz",
+      "image": "/images/itnetwork-logo.png",
+      "imageAlt": "ITnetwork Logo"
+    }
+  ]
+}

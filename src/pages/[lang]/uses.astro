@@ -8,36 +8,36 @@
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
 import Footer from '../../components/ui/Footer.astro';
-import LanguagePicker from '../../components/ui/LanguagePicker.astro';
 import Surface from '../../components/ui/Surface.astro';
+import Avatar from '../../components/ui/Avatar.astro';
 import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
 import { useTranslations } from '../../i18n/utils';
 import { toSafeExternalUrl } from '../../security/external-links';
 import uses from '../../data/uses';
-import type { TranslationKey } from '../../i18n/locales/en';
 
 export function getStaticPaths() {
   return supportedLangs.map(lang => ({ params: { lang } }));
 }
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
-const t = useTranslations(currentLang);
+const t = await useTranslations(currentLang);
 ---
 
 <Layout title={t('seo.uses')} description={t('uses.subtitle')} lang={currentLang}>
-  <LanguagePicker />
-
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
     <BackLink href={`/${currentLang}/`} />
 
-    <section class="flex flex-col gap-4">
-      <h1>{t('uses.title')}</h1>
-      <p class="home-body-text">{t('uses.subtitle')}</p>
+    <section class="flex flex-col gap-6 sm:flex-row sm:items-center">
+      <Avatar size="lg" class="hidden sm:block" />
+      <div class="flex flex-col gap-4">
+        <h1>{t('uses.title')}</h1>
+        <p class="home-body-text">{t('uses.subtitle')}</p>
+      </div>
     </section>
 
     {
       uses.map(category => {
-        const categoryLabel = t(category.categoryKey as TranslationKey);
+        const categoryLabel = t(category.categoryKey);
         return (
           <Surface as="section" id={`uses-${category.categoryKey.split('.').pop()}`}>
             <h2>{categoryLabel}</h2>

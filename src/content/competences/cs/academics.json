@@ -1,0 +1,15 @@
+{
+  "title": "Akademika",
+  "desc": "Zapojení do neustálého vzdělávání, výzkumu a kritického myšlení pro udržení se na špici poznání.",
+  "icon": "lucide:graduation-cap",
+  "order": 4,
+  "links": [
+    {
+      "title": "RUNSHIFT",
+      "subtitle": "Koordinátorka kohorty, Univerzita Karlova & OSU (2026 – 2029)",
+      "url": "https://runshift.cz",
+      "image": "/images/runshift-logo.png",
+      "imageAlt": "Logo RUNSHIFT"
+    }
+  ]
+}

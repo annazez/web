@@ -1,0 +1,15 @@
+{
+  "title": "Podnikání",
+  "desc": "Porozumění tržní dynamice, produktové strategii a tvorbě hodnoty pro dodávání řešení, která mají dopad.",
+  "icon": "lucide:briefcase",
+  "order": 5,
+  "links": [
+    {
+      "title": "Social Impact Award",
+      "subtitle": "Lumi: wellbeing aplikace (2026)",
+      "url": "/cs/projects/lumi/",
+      "image": "/images/social-impact-award-logo.svg",
+      "imageAlt": "Logo Social Impact Award"
+    }
+  ]
+}

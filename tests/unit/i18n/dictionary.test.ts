@@ -3,13 +3,12 @@ import { describe, it } from 'node:test';
 import {
   languages,
   defaultLang,
-  dictionary,
   langPrefixRegex,
   getValidLanguageCode,
   routeLookup,
 } from '../../../src/i18n/dictionary.ts';
 
-describe('dictionary', () => {
+describe('dictionary config', () => {
   describe('languages', () => {
     it('should define supported languages', () => {
       assert.deepStrictEqual(languages, { en: 'EN', cs: 'CS' });
@@ -19,31 +18,6 @@ describe('dictionary', () => {
   describe('defaultLang', () => {
     it('should be "en"', () => {
       assert.strictEqual(defaultLang, 'en');
-    });
-  });
-
-  describe('dictionary', () => {
-    it('should have entries for all supported languages', () => {
-      assert.ok(dictionary.en);
-      assert.ok(dictionary.cs);
-    });
-
-    it('should have matching keys across all languages', () => {
-      const enKeys = Object.keys(dictionary.en);
-      const csKeys = Object.keys(dictionary.cs);
-      assert.strictEqual(enKeys.length, csKeys.length);
-
-      for (const key of enKeys) {
-        assert.ok(csKeys.includes(key), `Missing key "${key}" in Czech dictionary`);
-      }
-    });
-
-    it('should have non-empty translations', () => {
-      for (const [lang, dict] of Object.entries(dictionary)) {
-        for (const [key, value] of Object.entries(dict)) {
-          assert.ok(value && value.length > 0, `Empty translation for key "${key}" in ${lang}`);
-        }
-      }
     });
   });
 
@@ -86,15 +60,10 @@ describe('dictionary', () => {
     });
   });
 
-  describe('routes', () => {
-    it('should not define localized non-language routes when none exist', () => {
-      assert.strictEqual(routeLookup.size, 8);
-    });
-  });
-
   describe('routeLookup', () => {
-    it('should be empty when no localized slug mappings are configured', () => {
-      assert.strictEqual(routeLookup.size, 8);
+    it('should have standard static routes', () => {
+      // 5 static routes * 2 languages = 10
+      assert.strictEqual(routeLookup.size, 10);
     });
 
     it('should not match segment from different language', () => {

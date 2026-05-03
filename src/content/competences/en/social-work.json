@@ -1,0 +1,22 @@
+{
+  "title": "Social Work",
+  "desc": "Applying empathy, active listening, and social science principles to support communities and individuals.",
+  "icon": "lucide:heart-handshake",
+  "order": 2,
+  "links": [
+    {
+      "title": "Centrum pro rodinu",
+      "subtitle": "Personal Assistant, OASA (2026 – Present)",
+      "url": "https://prorodiny.cz",
+      "image": "/images/centrum-pro-rodinu-logo.png",
+      "imageAlt": "Centrum pro rodinu Logo"
+    },
+    {
+      "title": "Ministry of Education",
+      "subtitle": "Qualification course for social service workers (Centrum pro rodinu, 2026)",
+      "url": "https://www.prorodiny.cz/vzdelavani-a-skolska-prevence/akreditovane-kurzy-pro-socialni-pracovniky/kvalifikacni-kurz-pro-pracovniky-v-socialnich-sluzbach/a-549/",
+      "image": "/images/msmt-logo.jpg",
+      "imageAlt": "MŠMT Logo"
+    }
+  ]
+}

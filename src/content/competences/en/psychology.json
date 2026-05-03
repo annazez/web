@@ -1,0 +1,15 @@
+{
+  "title": "Psychology",
+  "desc": "Understanding human behavior, cognition, and emotion to build better user experiences and empathize with user needs.",
+  "icon": "lucide:brain",
+  "order": 1,
+  "links": [
+    {
+      "title": "University of Ostrava",
+      "subtitle": "Bachelor's degree, Psychology (2025 – Present)",
+      "url": "https://ff.osu.cz/kps/",
+      "image": "/images/osu-logo.png",
+      "imageAlt": "University of Ostrava Logo"
+    }
+  ]
+}

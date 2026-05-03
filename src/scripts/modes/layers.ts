@@ -3,9 +3,9 @@
  * Only called when user explicitly navigates to #layers hash.
  * All event listeners are registered here and cleanup is returned for disposal.
  */
-export function initLayersMode() {
+export function init() {
   const pageShell = document.getElementById('page-shell');
-  if (!pageShell) return;
+  if (!pageShell) return null;
 
   const defaults = {
     rotateX: 60,

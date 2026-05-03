@@ -7,7 +7,7 @@ interface Props {
 }
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 const { className } = Astro.props as Props;
 const summaryBaseClass =
   'flex min-h-11 w-full cursor-pointer list-none items-center gap-2 px-3 py-2 [&::-webkit-details-marker]:hidden';

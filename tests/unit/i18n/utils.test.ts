@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert';
 import { getLangFromUrl, useTranslations } from '../../../src/i18n/utils.ts';
-import { defaultLang, dictionary, type TranslationKey } from '../../../src/i18n/dictionary.ts';
+import { defaultLang } from '../../../src/i18n/dictionary.ts';
 
 test('getLangFromUrl', async t => {
   await t.test('should return supported language when URL has valid prefix', () => {
@@ -36,48 +36,29 @@ test('getLangFromUrl', async t => {
 });
 
 test('useTranslations', async t => {
-  await t.test('should return correct translation for English', () => {
-    const translate = useTranslations('en');
-    assert.strictEqual(translate('seo.home'), dictionary.en['seo.home']);
+  await t.test('should return correct translation for English', async () => {
+    const translate = await useTranslations('en');
+    assert.strictEqual(translate('seo.home'), 'Home');
   });
 
-  await t.test('should return correct translation for Czech', () => {
-    const translate = useTranslations('cs');
-    assert.strictEqual(translate('seo.home'), dictionary.cs['seo.home']);
+  await t.test('should return correct translation for Czech', async () => {
+    const translate = await useTranslations('cs');
+    assert.strictEqual(translate('seo.home'), 'Domů');
   });
-
-  await t.test(
-    'should fallback to default language if translation is missing in the target dictionary',
-    () => {
-      const translate = useTranslations('cs');
-      const testKey = 'seo.home' as const;
-      const originalCsValue = dictionary.cs[testKey];
-
-      // @ts-expect-error - testing fallback logic by temporarily deleting a key
-      delete dictionary.cs[testKey];
-
-      try {
-        assert.strictEqual(dictionary.cs[testKey], undefined);
-        assert.strictEqual(translate(testKey), dictionary[defaultLang][testKey]);
-      } finally {
-        dictionary.cs[testKey] = originalCsValue;
-      }
-    }
-  );
 
   await t.test(
     'should return the key itself if missing in both dictionaries (production-like)',
-    () => {
-      const translate = useTranslations('cs');
-      const missingKey = 'non.existent.key' as TranslationKey;
+    async () => {
+      const translate = await useTranslations('cs');
+      const missingKey = 'non.existent.key';
 
       assert.strictEqual(translate(missingKey), missingKey);
     }
   );
 
-  await t.test('should throw Error in development if key is missing', () => {
-    const translate = useTranslations('cs');
-    const missingKey = 'non.existent.key' as TranslationKey;
+  await t.test('should throw Error in development if key is missing', async () => {
+    const translate = await useTranslations('cs');
+    const missingKey = 'non.existent.key';
 
     const originalNodeEnv = process.env.NODE_ENV;
     process.env.NODE_ENV = 'development';
@@ -91,17 +72,16 @@ test('useTranslations', async t => {
     }
   });
 
-  await t.test('should work correctly for the default language itself', () => {
-    const translate = useTranslations(defaultLang);
-    assert.strictEqual(translate('seo.home'), dictionary[defaultLang]['seo.home']);
+  await t.test('should work correctly for the default language itself', async () => {
+    const translate = await useTranslations(defaultLang);
+    assert.strictEqual(translate('seo.home'), 'Home');
   });
 
   await t.test(
     'should gracefully fallback to default language for unsupported language codes',
-    () => {
-      // @ts-expect-error - testing runtime behavior for invalid input
-      const translate = useTranslations('fr');
-      assert.strictEqual(translate('seo.home'), dictionary[defaultLang]['seo.home']);
+    async () => {
+      const translate = await useTranslations('fr' as any);
+      assert.strictEqual(translate('seo.home'), 'Home');
     }
   );
 });

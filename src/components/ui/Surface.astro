@@ -17,7 +17,7 @@ const { as: Tag = 'div', class: className, ...rest } = Astro.props;
 
 <Tag
   {...rest}
-  class={`overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-sm sm:px-5 ${className ?? ''}`}
+  class={`overflow-hidden rounded-(--radius-card) border border-(--color-border) bg-(--color-bg-surface) px-4 py-5 shadow-(--surface-shadow) sm:px-5 ${className ?? ''}`}
 >
   <slot />
 </Tag>

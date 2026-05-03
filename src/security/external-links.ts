@@ -2,7 +2,7 @@ import { identity } from '../data/identity';
 
 const ADDITIONAL_ALLOWED_HOSTS = [
   'telperion.cz',
-  'wellbeing.zezulka.me',
+  'lumi.zezulka.me',
   // /uses page tool links
   'fedoraproject.org',
   'code.visualstudio.com',

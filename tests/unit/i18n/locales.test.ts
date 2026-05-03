@@ -1,7 +1,18 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
-import en from '../../../src/i18n/locales/en.ts';
-import cs from '../../../src/i18n/locales/cs.ts';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, '../../../');
+
+const en = JSON.parse(
+  fs.readFileSync(path.join(projectRoot, 'src/content/translations/en.json'), 'utf8')
+);
+const cs = JSON.parse(
+  fs.readFileSync(path.join(projectRoot, 'src/content/translations/cs.json'), 'utf8')
+);
 
 describe('locales', () => {
   describe('English translations', () => {
@@ -19,7 +30,7 @@ describe('locales', () => {
     it('should have non-empty values for all keys', () => {
       for (const [key, value] of Object.entries(en)) {
         assert.ok(
-          value && value.trim().length > 0,
+          typeof value === 'string' && value.trim().length > 0,
           `Empty translation for key "${key}" in English`
         );
       }
@@ -38,7 +49,10 @@ describe('locales', () => {
 
     it('should have non-empty values for all keys', () => {
       for (const [key, value] of Object.entries(cs)) {
-        assert.ok(value && value.trim().length > 0, `Empty translation for key "${key}" in Czech`);
+        assert.ok(
+          typeof value === 'string' && value.trim().length > 0,
+          `Empty translation for key "${key}" in Czech`
+        );
       }
     });
 
@@ -62,8 +76,8 @@ describe('locales', () => {
       const getPlaceholders = (value: string) => value.match(/\{[^}]+\}/g)?.sort() ?? [];
 
       for (const [key, enValue] of Object.entries(en)) {
-        const csValue = cs[key as keyof typeof cs];
-        if (csValue) {
+        const csValue = cs[key];
+        if (typeof enValue === 'string' && typeof csValue === 'string') {
           const enPlaceholders = getPlaceholders(enValue);
           const csPlaceholders = getPlaceholders(csValue);
           if (enPlaceholders.length || csPlaceholders.length) {

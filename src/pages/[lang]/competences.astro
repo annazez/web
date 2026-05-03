@@ -2,51 +2,25 @@
 import Layout from '../../layouts/Layout.astro';
 import BackLink from '../../components/BackLink.astro';
 import Footer from '../../components/ui/Footer.astro';
-import LanguagePicker from '../../components/ui/LanguagePicker.astro';
 import Surface from '../../components/ui/Surface.astro';
 import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
 import { useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
+import { getCollection } from 'astro:content';
 
 export function getStaticPaths() {
   return supportedLangs.map(lang => ({ params: { lang } }));
 }
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
-const t = useTranslations(currentLang);
+const t = await useTranslations(currentLang);
 
-const competences = [
-  {
-    icon: 'lucide:brain',
-    title: t('competences.psychology'),
-    desc: t('competences.psychology.desc'),
-  },
-  {
-    icon: 'lucide:heart-handshake',
-    title: t('competences.socialWork'),
-    desc: t('competences.socialWork.desc'),
-  },
-  {
-    icon: 'lucide:monitor-smartphone',
-    title: t('competences.webDevelopment'),
-    desc: t('competences.webDevelopment.desc'),
-  },
-  {
-    icon: 'lucide:graduation-cap',
-    title: t('competences.academics'),
-    desc: t('competences.academics.desc'),
-  },
-  {
-    icon: 'lucide:briefcase',
-    title: t('competences.business'),
-    desc: t('competences.business.desc'),
-  },
-];
+const competences = (await getCollection('competences'))
+  .filter(c => c.id.startsWith(`${currentLang}/`))
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout title={t('seo.competences')} description={t('competences.subtitle')} lang={currentLang}>
-  <LanguagePicker />
-
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
     <BackLink href={`/${currentLang}/`} />
 
@@ -60,162 +34,33 @@ const competences = [
         competences.map(competence => (
           <Surface as="section" class="flex flex-col gap-3">
             <div class="flex items-center gap-3">
-              <Icon name={competence.icon} class="h-6 w-6 text-(--color-brand)" />
-              <h2>{competence.title}</h2>
+              <Icon name={competence.data.icon} class="h-6 w-6 text-(--color-brand)" />
+              <h2>{competence.data.title}</h2>
             </div>
-            <p class="home-body-text leading-relaxed">{competence.desc}</p>
-            {competence.title === t('competences.psychology') && (
-              <a
-                href="https://ff.osu.cz/kps/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group mt-2 flex items-center gap-4 rounded-xl border border-(--color-border) bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
+            <p class="home-body-text leading-relaxed">{competence.data.desc}</p>
+            {competence.data.links?.map(link => (
+              <Surface
+                as="a"
+                href={link.url}
+                target={link.url.startsWith('http') ? '_blank' : undefined}
+                rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                class="group mt-2 flex items-center gap-4 bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
               >
-                <img
-                  src="/images/osu-logo.png"
-                  alt="University of Ostrava Logo"
-                  class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
-                />
+                {link.image && (
+                  <img
+                    src={link.image}
+                    alt={link.imageAlt || ''}
+                    class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
+                  />
+                )}
                 <div class="flex flex-col">
                   <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
-                    {t('competences.psychology.university')}
+                    {link.title}
                   </span>
-                  <span class="text-sm text-(--color-text-muted)">
-                    {t('competences.psychology.degree')}, {t('competences.psychology.study')} (2025
-                    – {t('competences.psychology.present')})
-                  </span>
+                  <span class="text-sm text-(--color-text-muted)">{link.subtitle}</span>
                 </div>
-              </a>
-            )}
-            {competence.title === t('competences.socialWork') && (
-              <div class="flex flex-col gap-2">
-                <a
-                  href="https://prorodiny.cz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group flex items-center gap-4 rounded-xl border border-(--color-border) bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
-                >
-                  <img
-                    src="/images/centrum-pro-rodinu-logo.png"
-                    alt="Centrum pro rodinu Logo"
-                    class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
-                  />
-                  <div class="flex flex-col">
-                    <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
-                      Centrum pro rodinu
-                    </span>
-                    <span class="text-sm text-(--color-text-muted)">
-                      {t('competences.socialWork.centrum.subtitle')}
-                    </span>
-                  </div>
-                </a>
-                <a
-                  href="https://www.prorodiny.cz/vzdelavani-a-skolska-prevence/akreditovane-kurzy-pro-socialni-pracovniky/kvalifikacni-kurz-pro-pracovniky-v-socialnich-sluzbach/a-549/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group flex items-center gap-4 rounded-xl border border-(--color-border) bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
-                >
-                  <img
-                    src="/images/msmt-logo.jpg"
-                    alt="MŠMT Logo"
-                    class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
-                  />
-                  <div class="flex flex-col">
-                    <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
-                      {t('competences.socialWork.course.provider')}
-                    </span>
-                    <span class="text-sm text-(--color-text-muted)">
-                      {t('competences.socialWork.course.subtitle')}
-                    </span>
-                  </div>
-                </a>
-              </div>
-            )}
-            {competence.title === t('competences.webDevelopment') && (
-              <div class="flex flex-col gap-2">
-                <a
-                  href={`/${currentLang}/projects/telperion/`}
-                  class="group flex items-center gap-4 rounded-xl border border-(--color-border) bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
-                >
-                  <img
-                    src="/images/telperion-logo.ico"
-                    alt="Telperion Logo"
-                    class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
-                  />
-                  <div class="flex flex-col">
-                    <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
-                      Telperion
-                    </span>
-                    <span class="text-sm text-(--color-text-muted)">
-                      {t('competences.webDevelopment.telperion.subtitle')}
-                    </span>
-                  </div>
-                </a>
-                <a
-                  href="https://www.itnetwork.cz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group flex items-center gap-4 rounded-xl border border-(--color-border) bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
-                >
-                  <img
-                    src="/images/itnetwork-logo.png"
-                    alt="ITnetwork Logo"
-                    class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
-                  />
-                  <div class="flex flex-col">
-                    <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
-                      ITnetwork
-                    </span>
-                    <span class="text-sm text-(--color-text-muted)">
-                      {t('competences.webDevelopment.itnetwork.subtitle')}
-                    </span>
-                  </div>
-                </a>
-              </div>
-            )}
-            {competence.title === t('competences.academics') && (
-              <a
-                href="https://runshift.cz"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group mt-2 flex items-center gap-4 rounded-xl border border-(--color-border) bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
-              >
-                <img
-                  src="/images/runshift-logo.png"
-                  alt="RUNSHIFT Logo"
-                  class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
-                />
-                <div class="flex flex-col">
-                  <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
-                    RUNSHIFT
-                  </span>
-                  <span class="text-sm text-(--color-text-muted)">
-                    {t('competences.academics.runshift.role')},{' '}
-                    {t('competences.academics.runshift.details')}
-                  </span>
-                </div>
-              </a>
-            )}
-            {competence.title === t('competences.business') && (
-              <a
-                href={`/${currentLang}/projects/lumi/`}
-                class="group mt-2 flex items-center gap-4 rounded-xl border border-(--color-border) bg-(--color-bg-surface-elevated) p-4 transition-colors hover:border-(--color-brand)"
-              >
-                <img
-                  src="/images/social-impact-award-logo.svg"
-                  alt="Social Impact Award Logo"
-                  class="h-12 w-12 shrink-0 rounded-md bg-white object-contain p-1"
-                />
-                <div class="flex flex-col">
-                  <span class="font-medium text-(--color-text) transition-colors group-hover:text-(--color-brand)">
-                    Social Impact Award
-                  </span>
-                  <span class="text-sm text-(--color-text-muted)">
-                    {t('competences.business.sia.subtitle')}
-                  </span>
-                </div>
-              </a>
-            )}
+              </Surface>
+            ))}
           </Surface>
         ))
       }

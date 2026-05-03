@@ -1,0 +1,22 @@
+{
+  "title": "Web development",
+  "desc": "Tvorba responzivních, přístupných a výkonných webových aplikací pomocí moderních webových technologií.",
+  "icon": "lucide:monitor-smartphone",
+  "order": 3,
+  "links": [
+    {
+      "title": "Telperion",
+      "subtitle": "Full-stack vývoj a architektura (2025 – současnost)",
+      "url": "/cs/projects/telperion/",
+      "image": "/images/telperion-logo.ico",
+      "imageAlt": "Logo Telperion"
+    },
+    {
+      "title": "ITnetwork",
+      "subtitle": "Tvorba webových aplikací React (akreditace MŠMT, 2025)",
+      "url": "https://www.itnetwork.cz",
+      "image": "/images/itnetwork-logo.png",
+      "imageAlt": "Logo ITnetwork"
+    }
+  ]
+}

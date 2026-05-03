@@ -1,28 +1,19 @@
 ---
-import { Image } from 'astro:assets';
-import avatar from '../../assets/avatar.png';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { Icon } from 'astro-icon/components';
 import { identity } from '../../data/identity';
 import { toSafeExternalUrl } from '../../security/external-links';
+import Avatar from '../ui/Avatar.astro';
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 const siteName = t('site.name');
 const keyoxideUrl = toSafeExternalUrl(identity.keyoxide);
 ---
 
 <div class="flex flex-col gap-8">
   <header class="flex flex-col gap-6 sm:flex-row sm:items-center">
-    <Image
-      src={avatar}
-      alt={siteName}
-      width={128}
-      height={128}
-      loading="eager"
-      fetchpriority="high"
-      class="size-24 shrink-0 rounded-full border border-(--color-border) object-cover sm:size-32"
-    />
+    <Avatar size="hero" loading="eager" fetchpriority="high" />
     <div class="flex flex-col gap-2 sm:gap-4">
       <div class="flex items-center gap-1.75">
         <h1>{siteName}</h1>

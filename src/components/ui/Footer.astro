@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { lang = defaultLang } = Astro.props;
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 const qualityHref = `/${lang}/quality/`;
 const lastUpdatedDateTime = siteModified.lastModified;
 const lastUpdated = new Date(lastUpdatedDateTime).toLocaleDateString(localeFor(lang), {
@@ -68,6 +68,13 @@ const codebergPagesUrl = toSafeExternalUrl(identity.codebergPages);
       class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
       ><Icon name="lucide:laptop" class="h-5 w-5" /></a
     >
+    <a
+      href={`/${lang}/lab/`}
+      aria-label={t('lab.title')}
+      title={t('lab.title')}
+      class="text-(--color-text-muted) transition-colors hover:text-(--color-brand)"
+      ><Icon name="lucide:beaker" class="h-5 w-5" /></a
+    >
   </nav>
 
   <div
@@ -79,13 +86,10 @@ const codebergPagesUrl = toSafeExternalUrl(identity.codebergPages);
     </p>
     <p data-carbon-footprint>
       <span>{t('footer.carbonFootprint')}</span>
-      <span id="carbon-footprint-value" data-loading={t('footer.loading')} data-timeout-ms="5000">
-        {t('footer.loading')}</span
-      >
+      <span id="carbon-footprint-value">{t('footer.loading')}</span>
     </p>
   </div>
 
-  <script src="../../scripts/carbon-footprint.ts"></script>
   <div class="symbol-of-tolerance" role="img" aria-label="Progress Pride Flag"></div>
 </footer>
 

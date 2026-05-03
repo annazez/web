@@ -2,7 +2,6 @@
 import { render } from 'astro:content';
 import BackLink from '../../../components/BackLink.astro';
 import Footer from '../../../components/ui/Footer.astro';
-import LanguagePicker from '../../../components/ui/LanguagePicker.astro';
 import Layout from '../../../layouts/Layout.astro';
 import { getValidLanguageCode, supportedLangs, type LanguageCode } from '../../../i18n/dictionary';
 import { localeFor } from '../../../i18n/utils';
@@ -44,8 +43,6 @@ const publishedLabel = publishedAt.toLocaleDateString(localeFor(currentLang), {
     <link rel="alternate" type="application/rss+xml" href="/en/rss.xml" />
     <link rel="alternate" type="application/rss+xml" href="/cs/rss.xml" />
   </Fragment>
-
-  <LanguagePicker />
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-4 px-6 py-16">
     <BackLink href={`/${currentLang}/`} />

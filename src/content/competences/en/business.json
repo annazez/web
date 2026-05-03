@@ -1,0 +1,15 @@
+{
+  "title": "Business",
+  "desc": "Understanding market dynamics, product strategy, and value creation to deliver impactful solutions.",
+  "icon": "lucide:briefcase",
+  "order": 5,
+  "links": [
+    {
+      "title": "Social Impact Award",
+      "subtitle": "Lumi: wellbeing application (2026)",
+      "url": "/en/projects/lumi/",
+      "image": "/images/social-impact-award-logo.svg",
+      "imageAlt": "Social Impact Award Logo"
+    }
+  ]
+}

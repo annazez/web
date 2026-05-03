@@ -1,7 +1,3 @@
-import en from './locales/en.ts';
-import cs from './locales/cs.ts';
-import type { TranslationDictionary, TranslationKey } from './locales/en';
-
 export const languages = {
   en: 'EN',
   cs: 'CS',
@@ -16,11 +12,6 @@ export const languageEntries: ReadonlyArray<[LanguageCode, string]> = Object.ent
 
 export const defaultLang: LanguageCode = 'en';
 
-export const dictionary: Record<LanguageCode, TranslationDictionary> = {
-  en,
-  cs,
-};
-
 export const langPrefixRegex = new RegExp(`^\\/(${supportedLangs.join('|')})(?:\\/|$)`);
 
 export const staticSlugSets: ReadonlyArray<Record<LanguageCode, string>> = [
@@ -28,6 +19,7 @@ export const staticSlugSets: ReadonlyArray<Record<LanguageCode, string>> = [
   { en: 'quality', cs: 'quality' },
   { en: 'uses', cs: 'uses' },
   { en: 'competences', cs: 'competences' },
+  { en: 'lab', cs: 'laborator' },
 ];
 
 export function buildRouteLookup(
@@ -46,8 +38,6 @@ export function buildRouteLookup(
 
 // Default lookup with only static slugs
 export const routeLookup = buildRouteLookup([]);
-
-export type { TranslationKey };
 
 export function getValidLanguageCode(value: string | undefined): LanguageCode {
   return (supportedLangs as ReadonlyArray<string>).includes(value || '')

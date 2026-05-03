@@ -4,8 +4,8 @@ import { ClientRouter } from 'astro:transitions';
 import { langPrefixRegex, supportedLangs, type LanguageCode } from '../i18n/dictionary';
 import { useTranslations, localeForOg } from '../i18n/utils';
 import { SITE_CSP, THEME_BOOTSTRAP_SCRIPT } from '../data/csp';
-import CommandPalette from '../components/ui/CommandPalette.astro';
 import DottedBackground from '../components/DottedBackground.astro';
+import HeaderNav from '../components/ui/HeaderNav.astro';
 
 interface Props {
   title?: string;
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const { title, description, lang = 'en', noIndex = false, ogImage } = Astro.props;
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 const siteName = t('site.name');
 const pageDescription = description ?? siteName;
 
@@ -107,51 +107,10 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
   </head>
   <body data-print-banner={t('print.banner')}>
     <DottedBackground />
-    <div id="arch" hidden aria-hidden="true"></div>
-    <div id="audit" hidden aria-hidden="true"></div>
-    <div id="layers" hidden aria-hidden="true"></div>
     <div id="page-shell">
       <a href="#main-content" class="skip-link">{t('layout.skipToMain')}</a>
+      <HeaderNav />
       <slot />
     </div>
-    <CommandPalette />
-    <script>
-      import '../scripts/command-palette';
-    </script>
-    <script>
-      let cleanupLayers: (() => void) | null = null;
-
-      const checkLayers = async () => {
-        if (window.location.hash === '#layers') {
-          if (!cleanupLayers) {
-            const { initLayersMode } = await import('../scripts/layers');
-            // Re-check hash after dynamic import to prevent race conditions
-            if (window.location.hash !== '#layers' || cleanupLayers) {
-              return;
-            }
-            cleanupLayers = initLayersMode() || null;
-          }
-        } else {
-          if (cleanupLayers) {
-            cleanupLayers();
-            cleanupLayers = null;
-          }
-        }
-      };
-
-      // Ensure the listener is only attached once
-      window.addEventListener('hashchange', checkLayers);
-
-      document.addEventListener('astro:page-load', () => {
-        // Track the current #page-shell instance. If it changes due to
-        // Astro View Transitions while layers are active, force a reset
-        // and re-initialization so listeners bind to the new DOM.
-        if (cleanupLayers && window.location.hash === '#layers') {
-          cleanupLayers();
-          cleanupLayers = null;
-        }
-        checkLayers();
-      });
-    </script>
   </body>
 </html>

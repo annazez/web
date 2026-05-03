@@ -1,0 +1,103 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
+import Footer from '../../components/ui/Footer.astro';
+import CommandPalette from '../../components/ui/CommandPalette.astro';
+import Surface from '../../components/ui/Surface.astro';
+import { getValidLanguageCode, supportedLangs } from '../../i18n/dictionary';
+import { useTranslations } from '../../i18n/utils';
+import { Icon } from 'astro-icon/components';
+import '../../styles/modes.css';
+
+export function getStaticPaths() {
+  return supportedLangs.map(lang => ({ params: { lang } }));
+}
+
+const currentLang = getValidLanguageCode(Astro.params.lang);
+const t = await useTranslations(currentLang);
+
+const modes = [
+  {
+    id: 'arch',
+    hash: '#arch',
+    title: t('palette.archMode'),
+    icon: 'lucide:layout-template',
+    desc: 'Visualize the DOM structure as an architectural blueprint. Zero-JS interaction using CSS :has().',
+  },
+  {
+    id: 'audit',
+    hash: '#audit',
+    title: t('palette.auditMode'),
+    icon: 'lucide:accessibility',
+    desc: 'Real-time accessibility inspection. Highlights structural violations and exposes aria-labels visually.',
+  },
+  {
+    id: 'layers',
+    hash: '#layers',
+    title: t('palette.layersMode'),
+    icon: 'lucide:layers',
+    desc: 'Isometric exploded view of the page hierarchy. Enhances depth perception and structural understanding.',
+  },
+];
+---
+
+<Layout title={t('seo.lab')} description={t('lab.subtitle')} lang={currentLang}>
+  <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
+    <BackLink href={`/${currentLang}/`} />
+
+    <section class="flex flex-col gap-4">
+      <div class="flex items-center gap-3">
+        <Icon name="lucide:beaker" class="size-8 text-(--color-brand)" />
+        <h1 class="m-0">{t('lab.title')}</h1>
+      </div>
+      <p class="home-body-text">{t('lab.subtitle')}</p>
+    </section>
+
+    <div class="grid gap-4 sm:grid-cols-1">
+      {
+        modes.map(mode => (
+          <Surface class="flex flex-col gap-4">
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <Icon name={mode.icon} class="size-6 text-(--color-brand) opacity-80" />
+                <h2 class="text-lg font-semibold">{mode.title}</h2>
+              </div>
+              <a
+                href={mode.hash}
+                class="home-action-text rounded-md border border-(--color-border) px-4 py-1.5 transition-colors hover:bg-(--color-bg-surface-elevated)"
+              >
+                {t('projects.visit')}
+              </a>
+            </div>
+            <p class="home-subtle-text">{mode.desc}</p>
+          </Surface>
+        ))
+      }
+    </div>
+
+    <Surface class="flex flex-col gap-3">
+      <div class="flex items-center gap-3">
+        <Icon name="lucide:keyboard" class="size-6 text-(--color-brand) opacity-80" />
+        <h2 class="text-lg font-semibold">{t('palette.title')}</h2>
+      </div>
+      <p class="home-subtle-text">
+        {t('palette.openHint')}. The palette acts as a centralized dispatcher for all experimental
+        modes and system shortcuts.
+      </p>
+    </Surface>
+
+    <div id="arch" hidden aria-hidden="true"></div>
+    <div id="audit" hidden aria-hidden="true"></div>
+    <div id="layers" hidden aria-hidden="true"></div>
+
+    <Footer lang={currentLang} />
+  </main>
+
+  <CommandPalette />
+</Layout>
+
+<script>
+  import '../../scripts/command-palette';
+  import '../../scripts/hotkeys';
+  import '../../scripts/modes/manager';
+</script>

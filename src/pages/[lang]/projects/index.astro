@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import LanguagePicker from '../../../components/ui/LanguagePicker.astro';
 import BackLink from '../../../components/BackLink.astro';
 import ProjectCard from '../../../components/home/ProjectCard.astro';
 import Footer from '../../../components/ui/Footer.astro';
@@ -14,7 +13,7 @@ export function getStaticPaths() {
 }
 
 const currentLang = getValidLanguageCode(Astro.params.lang);
-const t = useTranslations(currentLang);
+const t = await useTranslations(currentLang);
 const projectArticles = await getProjects(currentLang);
 ---
 
@@ -23,8 +22,6 @@ const projectArticles = await getProjects(currentLang);
     <link rel="alternate" type="application/rss+xml" href="/en/rss.xml" />
     <link rel="alternate" type="application/rss+xml" href="/cs/rss.xml" />
   </Fragment>
-
-  <LanguagePicker />
 
   <main id="main-content" class="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-16">
     <BackLink href={`/${currentLang}/`} />

@@ -1,0 +1,29 @@
+---
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = await useTranslations(lang);
+
+const links = [
+  { href: `/${lang}/`, label: t('seo.home') },
+  { href: `/${lang}/projects/`, label: t('projects.title') },
+  { href: `/${lang}/blog/`, label: t('blog.title') },
+  { href: `/${lang}/competences/`, label: t('competences.title') },
+  { href: `/${lang}/lab/`, label: t('lab.title') },
+];
+---
+
+<ul class="flex flex-col gap-2 sm:flex-row sm:gap-6">
+  {
+    links.map(link => (
+      <li>
+        <a
+          href={link.href}
+          class="home-micro-label block py-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand) sm:py-0"
+        >
+          {link.label}
+        </a>
+      </li>
+    ))
+  }
+</ul>

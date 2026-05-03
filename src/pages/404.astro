@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon/components';
 import { languageEntries } from '../i18n/dictionary';
 import ThemeToggle from '../components/ui/ThemeToggle.astro';
 
-const t = useTranslations(defaultLang);
+const t = await useTranslations(defaultLang);
 ---
 
 <Layout title={t('seo.404')}>

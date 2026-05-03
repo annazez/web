@@ -7,15 +7,13 @@ import {
   buildRouteLookup,
   type LanguageCode,
 } from '../../i18n/dictionary';
-import ThemeToggle from './ThemeToggle.astro';
 import { getAllProjectSlugSets } from '../../lib/projects';
 
 const currentLang = getLangFromUrl(Astro.url);
-const t = useTranslations(currentLang);
+const t = await useTranslations(currentLang);
 
 // Source dynamic slug pairs from projects collection.
 const projectSlugSets = await getAllProjectSlugSets();
-
 const routeLookup = buildRouteLookup(projectSlugSets);
 
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
@@ -45,103 +43,45 @@ function getLocalizedHref(targetLang: LanguageCode): string {
 }
 ---
 
-<nav
-  aria-label={t('ui.languageNavigation')}
-  class="z-20 mx-auto w-full max-w-2xl px-6 pt-4 sm:absolute sm:top-8 sm:right-8 sm:mx-0 sm:w-auto sm:max-w-none sm:p-0"
->
-  <div id="mobile-controls-menu" class="relative">
-    <button
-      type="button"
-      aria-label={t('ui.mobileNavigationLabel')}
-      aria-controls="mobile-controls-panel"
-      aria-expanded="false"
-      data-mobile-controls-trigger
-      class="relative flex min-h-11 w-full items-center justify-center rounded-xl border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) shadow-sm transition-colors duration-200 hover:text-(--color-brand) sm:hidden"
-    >
-      <Icon
-        name="lucide:menu"
-        class="pointer-events-none absolute left-3 size-4 shrink-0"
-        aria-hidden="true"
-      />
-      <span class="home-micro-label whitespace-nowrap">{t('ui.mobileNavigationLabel')}</span>
-      <Icon
-        name="lucide:chevron-down"
-        class="mobile-controls__chevron pointer-events-none absolute right-3 size-4 shrink-0 transition-transform duration-200"
-        aria-hidden="true"
-      />
-    </button>
+<details class="rolldown-menu group relative w-full sm:w-auto">
+  <summary
+    aria-label={`${t('ui.languageNavigation')}: ${languages[currentLang]}`}
+    class="flex min-h-11 w-full cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) shadow-sm transition-colors duration-200 group-open:bg-(--color-bg-surface) group-open:text-(--color-brand) hover:text-(--color-brand) sm:w-32 [&::-webkit-details-marker]:hidden"
+  >
+    <Icon name="lucide:globe" class="size-3.5 shrink-0" aria-hidden="true" />
+    <span class="home-micro-label whitespace-nowrap">{languages[currentLang]}</span>
+    <Icon
+      name="lucide:chevron-down"
+      class="size-4 shrink-0 transition-transform duration-200 group-open:rotate-180"
+      aria-hidden="true"
+    />
+  </summary>
 
-    <div
-      id="mobile-controls-panel"
-      class="mobile-controls__panel mt-2 flex flex-col items-stretch gap-2 sm:mt-0 sm:flex-row"
-    >
-      <details class="rolldown-menu group relative w-full sm:w-auto">
-        <summary
-          aria-label={`${t('ui.languageNavigation')}: ${languages[currentLang]}`}
-          class="flex min-h-11 w-full cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-(--color-border) bg-(--color-bg) px-3 py-2 text-(--color-text-muted) shadow-sm transition-colors duration-200 group-open:bg-(--color-bg-surface) group-open:text-(--color-brand) hover:text-(--color-brand) sm:w-32 [&::-webkit-details-marker]:hidden"
-        >
-          <Icon name="lucide:globe" class="size-3.5 shrink-0" aria-hidden="true" />
-          <span class="home-micro-label whitespace-nowrap">{languages[currentLang]}</span>
-          <Icon
-            name="lucide:chevron-down"
-            class="size-4 shrink-0 transition-transform duration-200 group-open:rotate-180"
-            aria-hidden="true"
-          />
-        </summary>
-
-        <ul
-          class="mt-2 rounded-lg border border-(--color-border) bg-(--color-bg-surface) p-1 shadow-sm sm:absolute sm:top-[calc(100%+0.4rem)] sm:right-0 sm:mt-0 sm:min-w-32"
-        >
-          {
-            languageEntries.map(([code, label]) => (
-              <li>
-                <a
-                  href={getLocalizedHref(code)}
-                  aria-current={currentLang === code ? 'page' : undefined}
-                  aria-label={`${t('ui.languageNavigation')}: ${label}`}
-                  class={
-                    currentLang === code
-                      ? 'home-micro-label block rounded-md bg-(--color-bg) px-3 py-2 text-(--color-brand)'
-                      : 'home-micro-label block rounded-md px-3 py-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand)'
-                  }
-                >
-                  {label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </details>
-
-      <ThemeToggle
-        className="min-h-11 w-full justify-between rounded-xl border border-(--color-border) bg-(--color-bg) text-(--color-text-muted) shadow-sm transition-colors duration-200 group-open:bg-(--color-bg-surface) group-open:text-(--color-brand) hover:text-(--color-brand) sm:w-32"
-      />
-    </div>
-  </div>
-</nav>
+  <ul
+    class="mt-2 rounded-lg border border-(--color-border) bg-(--color-bg-surface) p-1 shadow-sm sm:absolute sm:top-[calc(100%+0.4rem)] sm:right-0 sm:mt-0 sm:min-w-32"
+  >
+    {
+      languageEntries.map(([code, label]) => (
+        <li>
+          <a
+            href={getLocalizedHref(code)}
+            aria-current={currentLang === code ? 'page' : undefined}
+            aria-label={`${t('ui.languageNavigation')}: ${label}`}
+            class={
+              currentLang === code
+                ? 'home-micro-label block rounded-md bg-(--color-bg) px-3 py-2 text-(--color-brand)'
+                : 'home-micro-label block rounded-md px-3 py-2 text-(--color-text-muted) transition-colors hover:text-(--color-brand)'
+            }
+          >
+            {label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
 
 <style>
-  #mobile-controls-menu > .mobile-controls__panel {
-    display: flex;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    pointer-events: none;
-    transform: translateY(-0.35rem);
-    transition:
-      max-height 220ms ease,
-      opacity 160ms ease,
-      transform 220ms ease;
-  }
-
-  #mobile-controls-menu:global([data-open='true']) > .mobile-controls__panel {
-    max-height: 24rem;
-    opacity: 1;
-    overflow: visible;
-    pointer-events: auto;
-    transform: translateY(0);
-  }
-
   details.rolldown-menu > ul {
     display: block;
     max-height: 0;
@@ -167,68 +107,8 @@ function getLocalizedHref(targetLang: LanguageCode): string {
   }
 
   @media (min-width: 40rem) {
-    #mobile-controls-menu > .mobile-controls__panel {
-      display: flex;
-      max-height: none;
-      opacity: 1;
-      overflow: visible;
-      pointer-events: auto;
-      transform: none;
-      transition: none;
-    }
-
     details.rolldown-menu:global([open]) > ul {
       margin-top: 0;
     }
   }
 </style>
-
-<script>
-  import { bindOnce } from '../../scripts/bind-once';
-
-  function initMobileControls() {
-    const menu = document.getElementById('mobile-controls-menu') as HTMLDivElement | null;
-    if (!menu || menu.dataset.bound === 'true') {
-      return;
-    }
-
-    const trigger = menu.querySelector<HTMLButtonElement>('[data-mobile-controls-trigger]');
-    const chevron = trigger?.querySelector<HTMLElement>('.mobile-controls__chevron') ?? null;
-    const panel = document.getElementById('mobile-controls-panel');
-    if (!trigger || !panel) {
-      return;
-    }
-
-    menu.dataset.bound = 'true';
-
-    const setOpen = (isOpen: boolean) => {
-      menu.dataset.open = isOpen ? 'true' : 'false';
-      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      if (chevron) {
-        chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-      }
-    };
-
-    setOpen(false);
-
-    trigger.addEventListener('click', () => {
-      setOpen(menu.dataset.open !== 'true');
-    });
-
-    panel.addEventListener('click', event => {
-      const target = event.target;
-      if (!(target instanceof Element)) {
-        return;
-      }
-
-      if (target.closest('a, button')) {
-        setOpen(false);
-      }
-    });
-  }
-
-  initMobileControls();
-  bindOnce('mobile-controls-page-load', () => {
-    document.addEventListener('astro:page-load', initMobileControls);
-  });
-</script>

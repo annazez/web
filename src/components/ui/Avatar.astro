@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import avatarImage from '../../assets/avatar.png';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg' | 'hero';
+  class?: string;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+  size = 'md',
+  class: className = '',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+} = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = await useTranslations(lang);
+
+const sizeClasses = {
+  sm: 'size-8',
+  md: 'size-12',
+  lg: 'size-16',
+  hero: 'size-24 sm:size-32',
+};
+
+const baseClasses = 'shrink-0 rounded-full border border-(--color-border) object-cover';
+const combinedClasses = `${baseClasses} ${sizeClasses[size]} ${className}`;
+---
+
+<Image
+  src={avatarImage}
+  alt={t('site.name')}
+  width={256}
+  height={256}
+  loading={loading}
+  fetchpriority={fetchpriority}
+  class={combinedClasses}
+/>

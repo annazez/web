@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "npm run last-modified && astro build",
+    "build": "npm run last-modified && astro build && node --experimental-strip-types scripts/post-build-carbon.ts",
     "last-modified": "node --experimental-strip-types scripts/generate-last-modified.ts && node --experimental-strip-types scripts/generate-csp.ts",
     "preview": "astro preview",
     "preview:ci": "astro preview --host 127.0.0.1 --port 4322",

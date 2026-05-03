@@ -11,7 +11,7 @@ import { toSafeExternalUrl } from '../../security/external-links';
 import Surface from '../ui/Surface.astro';
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslations(lang);
 
 const signalUrl = toSafeExternalUrl(identity.signal);
 ---

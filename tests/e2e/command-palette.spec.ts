@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test.describe('Command Palette', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/en/');
+    await page.goto('/en/lab/');
     // Wait for the command-palette script to bind its keydown listener
     await page.waitForFunction(() => {
       const w = window as unknown as Record<string, boolean>;
