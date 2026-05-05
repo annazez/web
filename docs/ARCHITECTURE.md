@@ -214,12 +214,14 @@ Output: dist/ → Codeberg Pages
 │ npm run check        → Astro validation                 │
 │ npm run typecheck    → TypeScript check                │
 │ npm run build        → Production build                │
-│ npm run test:e2e     → Playwright E2E tests            │
+│ npm run test:e2e     → Playwright E2E (uses preview)   │
 │ npm run lighthouse:ci → Performance audit (CI)         │
 │ npm run size:check   → Bundle size limits              │
 │ npm run security-audit → npm vulnerability scan        │
 └─────────────────────────────────────────────────────────┘
 ```
+
+**E2E Note**: Tests use `astro preview` against a production build for stability. In CI environments, workers are capped to 4 to prevent resource exhaustion.
 
 All gates must pass before merge.
 
