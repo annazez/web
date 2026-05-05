@@ -65,6 +65,7 @@
     "wait-on": "^9.0.5"
   },
   "overrides": {
+    "vite": "^7",
     "@astrojs/check": {
       "typescript": "$typescript"
     },
