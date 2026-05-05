@@ -8,9 +8,9 @@ env:
   SITE_URL: https://zezulka.me
 
 jobs:
-  build-test-deploy:
+  static-checks:
     runs-on: codeberg-medium
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -19,16 +19,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: 'npm' # Speeds up npm ci
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Format, Lint and Build
+      - name: Format, Lint and Typecheck
         run: |
           npm run format:check
           npm run lint
-          npm run last-modified
           npm run typecheck
+  testing:
+    runs-on: codeberg-medium
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for Testing
+        run: |
+          npm run last-modified
           npm run build
           npm run test:static
 
@@ -43,17 +62,34 @@ jobs:
         run: |
           npx puppeteer browsers install chrome
           npm run test:a11y:ci
+  performance-and-deploy:
+    runs-on: codeberg-medium
+    timeout-minutes: 10
+    needs: [static-checks, testing]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-      - name: Performance tests
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Initial Build & Performance tests
         run: |
+          npm run last-modified
+          npm run build
+          npm run test:static
           npm run size:check
           npm run lighthouse:ci
 
-      - name: Extract Lighthouse report
-        run: node --experimental-strip-types scripts/extract-lighthouse.ts
-
-      - name: Rebuild with Lighthouse report
+      - name: Extract Lighthouse report & Rebuild
         run: |
+          node --experimental-strip-types scripts/extract-lighthouse.ts
           npm run build
           npm run test:static
           npm run size:check
