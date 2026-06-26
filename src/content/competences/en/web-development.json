@@ -6,14 +6,14 @@
   "links": [
     {
       "title": "Telperion",
-      "subtitle": "Full-stack development and architecture (2025 – Present)",
+      "subtitle": "Full-stack development & architecture (2025 – Present)",
       "url": "/en/projects/telperion/",
       "image": "/images/telperion-logo.ico",
       "imageAlt": "Telperion Logo"
     },
     {
       "title": "ITnetwork",
-      "subtitle": "React Web Application Development (MŠMT accredited, 2025)",
+      "subtitle": "Tvorba www aplikací (MŠMT accredited, 2025)",
       "url": "https://www.itnetwork.cz",
       "image": "/images/itnetwork-logo.png",
       "imageAlt": "ITnetwork Logo"

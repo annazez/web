@@ -1,5 +1,5 @@
 export const identity = {
-  email: 'anna@zezulka.me',
+  email: 'anna.zezulka@proton.me',
   codeberg: 'https://codeberg.org/annazez',
   codebergPages: 'https://codeberg.org/annazez/pages',
 

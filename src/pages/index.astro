@@ -6,7 +6,7 @@ import { useTranslations } from '../i18n/utils';
 const t = await useTranslations(defaultLang);
 ---
 
-<Layout title={t('seo.home')} lang={defaultLang} noIndex={true} canonicalPath={`/${defaultLang}/`}>
+<Layout title={t('seo.home')} lang={defaultLang} canonicalPath={`/${defaultLang}/`}>
   <Fragment slot="head">
     <meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
   </Fragment>

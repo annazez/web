@@ -2,8 +2,8 @@
 title: Telperion
 slug: telperion
 lang: cs
-summary: Návrh kompletního Jamstack ekosystému pro dvojjazyčnou neziskovku - od infrastruktury a i18n routingu přes automatizované e-mailové toky až po vlastnictví bez nutnosti údržby.
-homeDescription: 'Web neziskovky byl rozbitý a dělal jejich klimatické vzdělávání neviditelným. Navrhla jsem a dodala kompletní Jamstack ekosystém: dvojjazyčný i18n routing, automatizované e-mailové toky, WCAG přístupnost ověřovanou v CI a plně statický výstup bez potřeby serveru. Organizace nyní vlastní nezávislou, výkonnou přítomnost postavenou tak, aby vydržela.'
+summary: Budování veřejné přítomnosti Telperionu napříč webem, PR, obsahem a komunitní komunikací - od dvojjazyčné infrastruktury po srozumitelnější vyprávění o klimatickém vzdělávání.
+homeDescription: 'Rozbitý web a roztříštěná komunikace ztěžovaly objevování klimatického vzdělávání Telperionu. Navrhla jsem a dodala kompletní Jamstack ekosystém, zpřesnila veřejný příběh a propojila webovou přítomnost s PR, obsahem a sociálními sítěmi. Organizace nyní vlastní nezávislou, výkonnou přítomnost postavenou tak, aby vydržela.'
 featured: true
 order: 1
 publishedAt: 2026-04-03
@@ -13,6 +13,8 @@ tags:
   - SSG
   - WCAG
   - Jamstack
+  - PR
+  - Obsah
 website: https://telperion.cz
 repo: https://github.com/annazez/telperion-web
 ---
@@ -23,7 +25,7 @@ import newTelperionWeb from '../../assets/images/new_telperion_web.png';
 
 ## Problém
 
-Telperion je nezisková organizace věnující se klimatickému vzdělávání. Jejich tehdejší digitální přítomnost byla spíše přítěží: web byl vizuálně rozbitý, strukturálně nepřístupný a nenabízel žádnou soudržnou dvojjazyčnou zkušenost. Vzdělávací zdroje - hlavní výstup jejich mise - byly pro veřejnost prakticky neviditelné. Organizace neměla interní technické kapacity pro správu komplexního systému, takže dlouhodobá udržitelnost byla od prvního dne klíčovým požadavkem.
+Telperion je nezisková organizace věnující se klimatickému vzdělávání. Jejich tehdejší digitální přítomnost byla spíše přítěží: web byl vizuálně rozbitý, strukturálně nepřístupný a nenabízel žádnou soudržnou dvojjazyčnou zkušenost. Vzdělávací zdroje - hlavní výstup jejich mise - byly pro veřejnost prakticky neviditelné a širší komunikace projektů, akcí a komunitní práce potřebovala stejnou jasnost jako technická platforma. Organizace neměla interní technické kapacity pro správu komplexního systému, takže dlouhodobá udržitelnost byla od prvního dne klíčovým požadavkem.
 
 ## Před a po
 
@@ -41,10 +43,10 @@ Telperion je nezisková organizace věnující se klimatickému vzdělávání. 
 
 ## Architektura
 
-Nešlo o přebarvení frontendu. Spolupráce pokrývala kompletní dodavatelský stack: statické generování stránek, nativní i18n routing, integrované zpracování kontaktních a přihlašovacích formulářů, automatizovaný transakční e-mail přes serverless funkce a napojení na newsletter pro průběžné oslovování příznivců. Výsledkem je soběstačný, samostatně provozovaný ekosystém bez runtime serveru, bez databáze a bez placených CMS nástrojů třetích stran.
+Nešlo o přebarvení frontendu. Spolupráce pokrývala kompletní dodavatelský stack: statické generování stránek, nativní i18n routing, integrované zpracování kontaktních a přihlašovacích formulářů, automatizovaný transakční e-mail přes serverless funkce a napojení na newsletter pro průběžné oslovování příznivců. Zároveň zasahovala do komunikační strategie: strukturování obsahu tak, aby byly programy srozumitelné, formulování textů kolem skutečných projektových příběhů a podporu PR i sociálních sítí jednotným veřejným vyprávěním. Výsledkem je soběstačný, samostatně provozovaný ekosystém bez runtime serveru, bez databáze a bez placených CMS nástrojů třetích stran.
 
 Organizace nyní má plné vlastnictví. Redaktoři obsahu upravují stránky přes jednoduché Markdown soubory v Git repozitáři - bez kódu, bez CMS předplatného, bez závislosti na externím dodavateli. Budoucí vývojář přebírá dobře zdokumentovanou kódovou základnu s minimem závislostí a jasným odůvodněním každého podstatného rozhodnutí.
 
 ## Výsledek
 
-Dodaný ekosystém dosahuje skóre výkonu Lighthouse 100. Web je plně dvojjazyčný, plně přístupný, bez cookies a bez sledování od základu. Organizace má autoritativní online přítomnost reflektující váhu jejich vzdělávací mise a udržovatelnou kódovou základnu, kterou skutečně vlastní.
+Dodaný ekosystém dosahuje skóre výkonu Lighthouse 100. Web je plně dvojjazyčný, plně přístupný, bez cookies a bez sledování od základu. Organizace má autoritativní online přítomnost reflektující váhu jejich vzdělávací mise, podporuje průběžné PR a komunitní komunikaci a stojí na udržovatelné kódové základně, kterou skutečně vlastní.

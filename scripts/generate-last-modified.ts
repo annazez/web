@@ -14,15 +14,25 @@ const DATA_DIR = join(process.cwd(), 'src/data');
 const OUTPUT_FILE = join(DATA_DIR, 'site-modified.json');
 const HUMANS_TEMPLATE = join(DATA_DIR, 'humans.txt.template');
 const HUMANS_OUTPUT = join(process.cwd(), 'public/humans.txt');
+const CONTENT_PATHS = ['src/content', 'src/i18n', 'src/data/uses.ts'];
 
 function getLastModified() {
   try {
+    const dirtyContent = execSync(`git status --porcelain -- ${CONTENT_PATHS.join(' ')}`, {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+
+    if (dirtyContent) {
+      return new Date().toISOString();
+    }
+
     // Find most recent commit date for relevant content files
     // --format=%cI provides the committer date in ISO 8601 format
-    const result = execSync(
-      'git log -1 --format=%cI -- src/content/**/*.mdx src/i18n/locales/*.ts',
-      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
-    ).trim();
+    const result = execSync(`git log -1 --format=%cI -- ${CONTENT_PATHS.join(' ')}`, {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
 
     if (result) {
       return result;

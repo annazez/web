@@ -7,6 +7,9 @@ const ADDITIONAL_ALLOWED_HOSTS = [
   'runshift.cz',
   'www.itnetwork.cz',
   'ff.osu.cz',
+  'web.unisa.it',
+  'www.amnesty.cz',
+  'www.teleinformatika.eu',
   'prorodiny.cz',
   'www.prorodiny.cz',
   // /uses page tool links

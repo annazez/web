@@ -1,0 +1,36 @@
+{
+  "title": "Communication & Community",
+  "desc": "Finding and telling the stories of people and projects, and connecting communities — through communication strategy, PR, content, and social media.",
+  "icon": "lucide:messages-square",
+  "order": 2,
+  "links": [
+    {
+      "title": "Telperion",
+      "subtitle": "PR, communication & web (2025 – Present)",
+      "url": "/en/projects/telperion/",
+      "image": "/images/telperion-logo.ico",
+      "imageAlt": "Telperion Logo"
+    },
+    {
+      "title": "Secondary School of Teleinformatics",
+      "subtitle": "Social Media Manager (2023 – 2025)",
+      "url": "https://www.teleinformatika.eu/",
+      "image": "/images/teleinformatika-logo.png",
+      "imageAlt": "Secondary School of Teleinformatics Logo"
+    },
+    {
+      "title": "Amnesty International",
+      "subtitle": "Group Coordinator, Ostrava (2025 – Present)",
+      "url": "https://www.amnesty.cz/",
+      "image": "/images/amnesty-international-logo.png",
+      "imageAlt": "Amnesty International Logo"
+    },
+    {
+      "title": "Centrum pro rodinu a sociální péči",
+      "subtitle": "Personal Assistant (2026, ended)",
+      "url": "https://prorodiny.cz/",
+      "image": "/images/centrum-pro-rodinu-logo.png",
+      "imageAlt": "Centrum pro rodinu a sociální péči Logo"
+    }
+  ]
+}

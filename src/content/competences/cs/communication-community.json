@@ -1,0 +1,36 @@
+{
+  "title": "Komunikace a komunita",
+  "desc": "Hledání a vyprávění příběhů lidí a projektů a propojování komunity — komunikační strategií, PR, obsahem a sociálními sítěmi.",
+  "icon": "lucide:messages-square",
+  "order": 2,
+  "links": [
+    {
+      "title": "Telperion",
+      "subtitle": "PR, komunikace a web (2025 – současnost)",
+      "url": "/cs/projects/telperion/",
+      "image": "/images/telperion-logo.ico",
+      "imageAlt": "Logo Telperion"
+    },
+    {
+      "title": "Střední škola teleinformatiky",
+      "subtitle": "Social Media Manager (2023 – 2025)",
+      "url": "https://www.teleinformatika.eu/",
+      "image": "/images/teleinformatika-logo.png",
+      "imageAlt": "Logo Střední školy teleinformatiky"
+    },
+    {
+      "title": "Amnesty International",
+      "subtitle": "Koordinátorka skupiny, Ostrava (2025 – současnost)",
+      "url": "https://www.amnesty.cz/",
+      "image": "/images/amnesty-international-logo.png",
+      "imageAlt": "Logo Amnesty International"
+    },
+    {
+      "title": "Centrum pro rodinu a sociální péči",
+      "subtitle": "Osobní asistentka (2026, ukončeno)",
+      "url": "https://prorodiny.cz/",
+      "image": "/images/centrum-pro-rodinu-logo.png",
+      "imageAlt": "Logo Centra pro rodinu a sociální péči"
+    }
+  ]
+}
