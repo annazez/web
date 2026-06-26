@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import '../styles/modes.css';
-import { ClientRouter } from 'astro:transitions';
 import { langPrefixRegex, supportedLangs, type LanguageCode } from '../i18n/dictionary';
 import { useTranslations, localeForOg } from '../i18n/utils';
 import { SITE_CSP, THEME_BOOTSTRAP_SCRIPT } from '../data/csp';
@@ -69,22 +68,7 @@ const absoluteOgImage = new URL(ogImage ?? '/og-image.jpg', siteUrl).toString();
       They are configured in astro.config.mjs for dev/preview and in public/_headers for supported hosts.
     -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <ClientRouter />
     <script is:inline set:html={THEME_BOOTSTRAP_SCRIPT} />
-    <script>
-      import { bindOnce } from '../scripts/bind-once';
-
-      const _window = window as Window & {
-        __applyPreferredTheme?: () => void;
-      };
-
-      // Astro view transitions can swap DOM state; re-apply persisted theme right after swap.
-      bindOnce('theme-after-swap', () => {
-        document.addEventListener('astro:after-swap', () => {
-          if (_window.__applyPreferredTheme) _window.__applyPreferredTheme();
-        });
-      });
-    </script>
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
 
